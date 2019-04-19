@@ -1,0 +1,36 @@
+.save-btn {
+    margin-top: 3px;
+    background-color: #3581b8!important;
+    color: white!important;
+  }
+  
+  .save-btn:hover {
+    background-color: #539acd!important;
+  }
+  
+  .cancel-btn {
+    background-color: #f74428!important;
+    color: white!important;
+    margin: 3px!important;
+  }
+  .edit-btn {
+    background-color: #0a2239!important;
+    color: #e8e9eb!important;
+    margin: 3px!important;
+  }
+  
+  .edit-btn:hover {
+    background-color: #10365a!important;
+    margin: 3px!important;
+  }
+ .cancel-btn:hover {
+    background-color: #f96f59!important;
+  }
+
+  .note-container{
+      text-align:center !important;
+      display:block;
+      overflow-x:hidden;
+      padding-left: 5px;
+      padding-right: 5px;  }
+

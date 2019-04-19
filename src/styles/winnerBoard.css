@@ -1,0 +1,46 @@
+.back-to-user {
+    flex: 1 100%;
+    background: #007bff;
+    border: none;
+    align-self: flex-end;
+    overflow: hidden;
+    position: fixed;
+    height: 6%;
+    width: 25%;
+    top: 1px;
+    right: 1px;
+    border-radius: 5px;
+    z-index: 1000;
+  }
+  .logout-text {
+    color: white;
+    font-size: 20px;
+  }
+
+.winner-board {
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 15px;
+}
+
+.points-card {
+  padding-bottom: 0!important;
+}
+
+.button-card {
+  padding-top: 0!important;
+}
+
+.winner-points {
+  color: #f96f59!important;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+  
+button:focus {
+  outline:0!important;
+}
+
+a:link, a:hover {
+  text-decoration: none!important;
+}

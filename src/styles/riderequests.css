@@ -1,0 +1,102 @@
+.ride-requests {
+  display: flex;
+  flex-direction: column;
+  color: black;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+button:focus {
+  outline:0!important;
+}
+
+.pending-request-button {
+  text-align: center;
+}
+
+.pending-request-button .show-on-map, .show-on-map, .view-notes {
+  background-color: #0A2239!important;
+  color: white!important;
+  margin: 3px!important;
+}
+
+.request-card {
+  margin: 1em;
+  margin-top: 10px;
+}
+
+.requests-card-container {
+  background-color: #f5f5f5;
+  vertical-align: middle;
+}
+
+.pending-request-button .show-on-map:hover, .show-on-map:hover, .view-notes:hover {
+  background-color: #10365a!important;
+}
+
+.pending-request-button .accept {
+  margin-top: 3px;
+  background-color: #3581b8!important;
+  color: white!important;
+}
+
+.pending-request-button .accept:hover {
+  background-color: #539acd!important;
+}
+
+.pending-request-button .deny, .cancel-request {
+  background-color: #f74428!important;
+  color: white!important;
+  margin: 3px!important;
+}
+
+.pending-request-button .deny:hover, .cancel-request:hover {
+  background-color: #f96f59!important;
+}
+
+.request-person-info {
+  padding-top: 10px;
+}
+
+.ride-requests-text {
+  margin: auto;
+  border-radius: 5px;
+  text-align: center;
+  align-self: flex-start;
+  color: grey;
+  font-size: 15px;
+}
+.ride-requests-input {
+  margin: auto;
+  border-radius: 5px;
+  text-align: center;
+  align-self: flex-end;
+}
+.ride-requests-button {
+  margin: 5px;
+  border-radius: 5px;
+}
+div.requestListTable {
+  display: flex;
+}
+div.requestListTable table {
+  display: flex;
+  flex-direction: column;
+}
+div.requestListTable table tbody tr td {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.new-badge {
+  margin-top: 10px;
+}
+.name-para {
+  padding-left: 20px;
+}
+
+.pending-requests-container {
+  justify-content: center;
+}
+

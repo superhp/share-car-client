@@ -1,0 +1,61 @@
+{
+  "name": "share-car-client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@mapbox/polyline": "^1.0.0",
+    "@material-ui/core": "^3.9.2",
+    "@material-ui/icons": "^3.0.2",
+    "algolia-places-react": "^1.4.0",
+    "axios": "^0.18.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "bootstrap": "^4.1.3",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.10.0",
+    "jest-fetch-mock": "^2.1.1",
+    "moment": "^2.22.2",
+    "ol": "^5.1.3",
+    "places.js": "^1.7.3",
+    "prop-types": "^15.6.2",
+    "react": "^16.4.1",
+    "react-alert": "^4.0.4",
+    "react-autocomplete-input": "^1.0.10",
+    "react-autosuggest": "^9.4.3",
+    "react-bootstrap": "^0.32.1",
+    "react-datetime-picker": "^1.4.1",
+    "react-dom": "^16.4.1",
+    "react-facebook-login": "^4.0.1",
+    "react-google-login": "^5.0.2",
+    "react-infinite-calendar": "^2.3.1",
+    "react-media": "^1.9.2",
+    "react-moment": "^0.7.9",
+    "react-responsive-modal": "^3.6.0",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.1.5",
+    "react-transition-group": "^2.4.0",
+    "typeface-roboto": "0.0.54"
+  },
+  "scripts": {
+    "start": "set HTTPS=true&&react-scripts start",
+    "build": "set HTTPS=true&&react-scripts build",
+    "test": "react-app-rewired test --env=jsdom",
+    "eject": "react-scripts eject",
+    "flow": "flow"
+  },
+  "devDependencies": {
+    "eslint": "^5.4.0",
+    "flow-bin": "^0.75.0",
+    "flow-typed": "^2.5.1",
+    "history": "^4.7.2",
+    "jest-canvas-mock": "^2.0.0-alpha.3",
+    "react-app-rewired": "^2.1.0"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

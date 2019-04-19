@@ -1,0 +1,18 @@
+body {
+  height: 100vh;
+}
+
+.requestMap {
+  position: relative !important;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  height: 300px !important;
+
+}
+.map{
+  height:300px !important;
+}
+
+button:focus {
+  outline:0!important;
+}

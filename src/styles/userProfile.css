@@ -1,0 +1,66 @@
+.container {
+  margin-top: none;
+}
+.container.profile-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20%;
+}
+
+s div.form-group {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+div.form-group label {
+  font-weight: bold;
+}
+.form-header {
+  font-size: 15px;
+  color: grey;
+}
+div.form-group input {
+  font-style: italic;
+}
+.profile-form button {
+  width: 100%;
+}
+
+button:focus {
+  outline:0!important;
+}
+
+.profile-save-button {
+  background-color: #f74428!important;
+  color: #e8e9eb!important;
+}
+
+.profile-save-button:hover {
+  background-color: #f96f59!important;
+}
+
+img.thumbnail {
+  height: 10%;
+  margin: 0 auto;
+  text-align: center;
+  display: block;
+  border-radius: 50%;
+}
+.logout-button {
+  flex: 1 100%;
+  background: #007bff;
+  border: none;
+  align-self: flex-end;
+  overflow: hidden;
+  position: fixed;
+  height: 6%;
+  width: 25%;
+  top: 1px;
+  right: 1px;
+  border-radius: 5px;
+  z-index: 1000;
+}
+.logout-text {
+  color: white;
+  font-size: 20px;
+}

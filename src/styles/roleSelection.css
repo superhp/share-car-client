@@ -1,0 +1,26 @@
+.role-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+.role-image {
+    display: block;
+    align-self:center;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: auto;
+    margin: none;
+    margin-right: 25%;
+    margin-left: 25%;
+    margin-bottom: 20px;
+    margin-top: 20px;
+
+}
+
+button:focus {
+    outline:0!important;
+}

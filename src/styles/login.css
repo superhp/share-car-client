@@ -1,0 +1,74 @@
+.login-container {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10%;
+}
+.login-image {
+    align-self:center;
+    justify-content: center;
+    align-items: center;
+    display: block;
+    height: 40%;
+    width: auto;
+}
+
+.login-card {
+    margin: 10px;
+}
+
+.email-submit, .code-submit{
+    margin-top: 25px;
+    text-align: left!important;
+}
+
+.email-input-field, .verification-code-field{
+    width: 190px;
+    margin-top: 15px;
+}
+
+.button-submit {
+    height: 40px!important;
+    margin-top: 15px!important;
+    margin-left: 5px!important;
+    background-color: #0a2239!important;
+    color: white!important;
+}
+
+.button-submit:disabled {
+    background-color: #cccccc!important;
+}
+
+.email-submit, .email-input, .code-submit, .code-input {
+    align-self:center;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+}
+
+.facebook-login-button {
+    display: inline-block;
+    height: 43px;
+    width: 100%;
+    background-color: #3b5998;
+    border: 1px solid #1a356e;
+    font-weight: bold;
+    font-size: 14px;
+    color: white;
+    font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+    line-height: 22px;
+    margin-bottom: 15px;
+} 
+
+.login-buttons-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+button:focus {
+    outline:0!important;
+}

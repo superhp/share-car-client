@@ -1,0 +1,11 @@
+form.ride-requests {
+  display: flex;
+  justify-content: center;
+}
+form.ride-requests input {
+  flex: 0 0 100%;
+}
+
+button:focus {
+  outline:0!important;
+}

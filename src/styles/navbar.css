@@ -1,0 +1,43 @@
+.navBar {
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 9%;
+  display: flex;
+  background-color: white;
+  align-items: center;
+  z-index: 10;
+}
+
+.navBar-button {
+  flex: 1;
+  height: 100%;
+  background-color: #0A2239;
+  margin: 1px;
+  margin-top: 13 px;
+  flex-direction: column;
+  align-items: center;
+}
+a.navBar-button {
+  align-items: center;
+  color: #e8e9eb;
+}
+
+a.navBar-button:hover {
+  color: #e8e9eb;
+  text-decoration: none;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin-top: 5px;
+}
+
+button:focus {
+  outline:0!important;
+}

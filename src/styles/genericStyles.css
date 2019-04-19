@@ -1,0 +1,192 @@
+@media only screen and (max-width: 700px) {
+  .list-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-right: 10px;
+  }
+  .list-buttons button {
+    margin-bottom: 5px;
+  }
+}
+
+@media only screen and (min-width: 699px) {
+	.list-buttons {
+	  display: flex;
+	  justify-content: flex-end;
+    padding-right: 10px;
+    align-items: center;
+  }
+  .list-buttons button {
+    margin-left: 7px;
+  }
+}
+
+button:focus {
+  outline:0!important;
+}
+
+
+.generic {
+  display: flex;
+  flex-direction: column;
+  color: black;
+  margin: 10px;
+  border-radius: 5px;
+  width: 300px;
+}
+
+.ride-completed-notification-button, .ride-completed-notification-button:hover {
+  color: #f74428!important;
+  border-color: #f74428!important;
+  background-color: white!important;
+}
+
+.passengers-list .show-on-map {
+  background-color: #0A2239;
+  color: white;
+}
+
+.passengers-list .show-on-map:hover {
+  background-color: #10365a;
+}
+
+.gdpr-checkbox {
+  margin-top: 15px;
+}
+
+.progress-circle {
+  text-align: center;
+  padding-top: 20px;
+}
+
+.informative-message {
+  text-align: center;
+  margin: 1em 0 !important;
+}
+
+.pending-requests {
+  background-color: #e8e9eb;
+}
+
+.generic-container-color {
+  background-color: #0A2239 !important;
+  color: #e8e9eb;
+}
+.generic-button {
+  margin: 3px !important;
+  width: 100px;
+}
+
+.rides-delete-button {
+  background-color: #f74428!important;
+  color: white!important;
+}
+
+.rides-delete-button:hover {
+  background-color: #f96f59!important;
+}
+
+.generic-table {
+  width: 100%;
+  text-align: center;
+}
+.request-card-container {
+  width: 300px;
+  box-shadow: 2px 1px 2px 1px #212529, 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+    0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+  margin-top: 10px;
+}
+
+.no-requests-div {
+  text-align: center;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.next-button {
+  margin-left: 20px!important;
+  background-color: #0A2239!important;
+  color: #e8e9eb!important;
+}
+
+.next-button:hover {
+  background-color: #10365a!important;
+}
+
+.passengers-list {
+  padding-left: 5%;
+}
+
+.dialog-title {
+  padding-bottom: 0!important;
+}
+
+td {
+  background-color: aliceblue;
+  padding: 0.5rem;
+  border: 1 px solid white;
+  text-align: center;
+}
+
+th {
+  background-color: #007bff;
+  color: aliceblue;
+  border: 1 px solid white;
+  font-size: 16px;
+  margin: 3px;
+}
+
+.winner-container {
+  margin-top: 20px !important;
+  color: #f74428!important;
+}
+.point-container {
+  width: 25% !important;
+}
+.name-container {
+  width: 50% !important;
+}
+.winner-mapping {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.generic-card {
+  margin-top: 10px;
+
+    box-shadow: 1px 1px 1px 1px #463876, 1px 1px 1px 1px rgba(0, 0, 0, 0.14), 1px 2px 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.generic-color{
+  color:#3581b8 !important;
+}
+
+.read-more{
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.manual{
+  padding: 3vh;
+  overflow-y: hidden;
+  width: 100%;
+}
+
+.manual img {
+  max-width: 100%;
+  height: auto;
+  align-content: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.manual-heading {
+ text-align: center; 
+ color: #173f5f;
+}
