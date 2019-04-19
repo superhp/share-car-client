@@ -1,4 +1,3 @@
-#deploy.sh
 #!/bin/bash
 
 # ----------------------
@@ -70,7 +69,7 @@ fi
 
 selectNodeVersion () {
   if [[ -n "$KUDU_SELECT_NODE_VERSION_CMD" ]]; then
-    SELECT_NODE_VERSION="$KUDU_SELECT_NODE_VERSION_CMD \"$DEPLOYMENT_SOURCE\ShareCar.Client\" \"$DEPLOYMENT_TARGET\" \"$DEPLOYMENT_TEMP\""
+    SELECT_NODE_VERSION="$KUDU_SELECT_NODE_VERSION_CMD \"$DEPLOYMENT_SOURCE\" \"$DEPLOYMENT_TARGET\" \"$DEPLOYMENT_TEMP\""
     eval $SELECT_NODE_VERSION
     exitWithMessageOnError "select node version failed"
 
@@ -103,10 +102,20 @@ echo Handling node.js deployment.
 # 1. Select node version
 selectNodeVersion
 
-  cd "$DEPLOYMENT_SOURCE\ShareCar.Client"
+# 2. Install npm packages
+if [ -e "$DEPLOYMENT_SOURCE/package.json" ]; then
+  cd "$DEPLOYMENT_SOURCE"
   eval $NPM_CMD install
-  eval $NPM_CMD run-script build
-  xcopy /s "$DEPLOYMENT_SOURCE\ShareCar.Client/build/*.*" $DEPLOYMENT_TARGET
+  exitWithMessageOnError "npm failed"
+  cd - > /dev/null
+fi
+
+# 3. KuduSync
+if [[ "$IN_PLACE_DEPLOYMENT" -ne "1" ]]; then
+  "$KUDU_SYNC_CMD" -v 50 -f "$DEPLOYMENT_SOURCE/build" -t "$DEPLOYMENT_TARGET" -n "$NEXT_MANIFEST_PATH" -p "$PREVIOUS_MANIFEST_PATH" -i ".git;.hg;.deployment;deploy.sh"
+  cp "$DEPLOYMENT_SOURCE/web.config" "$DEPLOYMENT_TARGET/web.config"
+  exitWithMessageOnError "Kudu Sync failed"
+fi
 
 ##################################################################################################################################
 echo "Finished successfully."
