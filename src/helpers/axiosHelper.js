@@ -3,7 +3,7 @@ import axios from "axios";
 import history from "./history";
 
 const api = axios.create({
-  baseURL: process.env['API_URL'] || `https://localhost:44347/api/`,
+  baseURL: `https://cts-share-car-api.azurewebsites.net/api/`,
   withCredentials: true
 });
 
