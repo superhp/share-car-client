@@ -86,7 +86,7 @@ class Login extends Component<{}> {
         <h1>ShareCar Login</h1>
         <div className="login-buttons-container">
           <FacebookLogin
-              appId="599580833757975"
+              appId="2371871473042404"
               fields="name,email,picture"
               callback={this.responseFacebook}
               cssClass="facebook-login-button"
