@@ -13,7 +13,10 @@ type UserProfileData =
   profilePicture: string,
   email: string,
   licensePlate: string,
-  phone: string
+  phone: string,
+  carModel: string,
+  carColor: string,
+  numberOfSeats: number,
 };
 pointCount: number;
 

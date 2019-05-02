@@ -132,7 +132,7 @@ export class ViewRideRequests extends React.Component {
       RideId: rideId,
       DriverEmail: driverEmail
     };
-    api.put("https://localhost:44347/api/RideRequest", data).then(res => {
+    api.put("RideRequest", data).then(res => {
       if (res.status === 200) {
         if (response === 1) {
           this.props.showSnackBar("Request accepted", 0)
