@@ -22,6 +22,7 @@ class VerificationCode extends Component {
     api.post("authentication/VerificationCodeSubmit", objectToSend)
     .then((response) => {
       if (response.status === 200) {
+        document.cookie = "token=" + response.data + ";path=/;";
         history.push("/");
       }
     }).catch((error) => {

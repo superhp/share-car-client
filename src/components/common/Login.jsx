@@ -13,7 +13,10 @@ import { SnackbarVariants } from "../common/SnackbarVariants";
 
 class Login extends Component<{}> {
   authService: AuthenticationService = new AuthenticationService();
-
+  constructor(props) {
+    super(props);
+    this.buttomRef = React.createRef();
+  }
   state: any = {
     unauthorized: false,
     verificationCodeSent: false,
@@ -62,7 +65,9 @@ class Login extends Component<{}> {
   };
 
   userUnauthorized = () => {
-    this.setState({ submitEmail: true, submitCode: false });
+    this.setState({ submitEmail: true, submitCode: false },() => {
+      this.buttomRef.current.scrollIntoView({block: 'end', behavior: 'smooth'});
+    });
   };
 
   showSnackBar(message, variant) {
@@ -95,7 +100,6 @@ class Login extends Component<{}> {
               clientId="875441727934-b39rfvblph43cr5u9blmp4cafbnqcr9k.apps.googleusercontent.com"
               buttonText="Login with Google"
               onSuccess={this.responseGoogle}
-            //   onFailure={ Generic error message }
             />
         </div>
         {
@@ -116,6 +120,7 @@ class Login extends Component<{}> {
             :
             <div></div>
         }
+        <div ref={this.buttomRef}></div>
         <SnackBars
           message={this.state.snackBarMessage}
           snackBarClicked={this.state.snackBarClicked}

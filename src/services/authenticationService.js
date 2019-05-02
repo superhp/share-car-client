@@ -8,8 +8,10 @@ class AuthenticationService {
             accessToken: accessToken
         })
         .then((response) => {
-            if (response.status === 200)
-            success();
+            if (response.status === 200){
+                document.cookie = "token=" + response.data + ";path=/;";
+                success();
+            }
         })
         .catch((error) => {
             if(error.response && error.response.status === 401){
@@ -23,8 +25,10 @@ class AuthenticationService {
     loginWithGoogle = (profileObj: ProfileObj, success: () => void, unauthorized: () => void) => {
         api.post('authentication/GoogleLogin', profileObj)
         .then((response) => {
-            if (response.status === 200)
-            success();
+            if (response.status === 200){
+                document.cookie = "token=" + response.data + ";path=/;";
+                success();
+            }
         })
         .catch((error) => {
             if(error.response && error.response.status === 401){
