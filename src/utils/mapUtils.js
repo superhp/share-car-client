@@ -5,14 +5,13 @@ import Point from "ol/geom/Point";
 import { fromLonLat } from "ol/proj";
 import Polyline from "ol/format/Polyline";
 
-const URL_OSRM_NEAREST = "//cts-maps.northeurope.cloudapp.azure.com/nearest/v1/driving/";
-const BEARINGS = "?number=3&bearings=0,20";
-const LOCATION_IQ = "//eu1.locationiq.com/v1/reverse.php?key=ad45b0b60450a4&lat=";
+const URL_OSRM_NEAREST = "//maps.cts-parking.lt/nearest/v1/driving/";
 
+const NOMINATIM = "//locations.cts-parking.lt/reverse?format=json&lat=";
 export const getNearest = (long, lat) => {
   return new Promise((resolve, reject) => {
     //make sure the coord is on street
-    fetch(URL_OSRM_NEAREST + long + "," + lat + BEARINGS)
+    fetch(URL_OSRM_NEAREST + long + "," + lat)
       .then(response => {
         return response.json();
       })
@@ -27,11 +26,10 @@ export const getNearest = (long, lat) => {
 export const coordinatesToLocation = (latitude, longitude) => {
   return new Promise(function (resolve, reject) {
     fetch(
-      LOCATION_IQ +
+      NOMINATIM +
       latitude +
       "&lon=" +
-      longitude +
-      "&format=json"
+      longitude
     )
       .then(function (response) {
         return response.json();
@@ -72,7 +70,7 @@ export const createRouteFeature = (geometry) => {
 }
 
 export const createRoute = (routePoints, direction) => {
-  const URL_OSMR_ROUTE = "//cts-maps.northeurope.cloudapp.azure.com/route/v1/driving/";
+  const URL_OSMR_ROUTE = "//maps.cts-parking.lt/route/v1/driving/";
 
   var coordinates = "";
   if (direction) {

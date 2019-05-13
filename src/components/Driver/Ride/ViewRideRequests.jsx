@@ -6,6 +6,8 @@ import { DriverRideRequestsList } from "./DriverRideRequestList";
 import { Status } from "../../../utils/status"
 import SnackBars from "../../common/Snackbars";
 import { SnackbarVariants } from "../../common/SnackbarVariants"
+import { NOMINATIM } from "../../utils/mapUtils";
+
 export class ViewRideRequests extends React.Component {
   state = {
     driverRequests: [],
@@ -31,11 +33,10 @@ export class ViewRideRequests extends React.Component {
   coordinatesToLocation(latitude, longitude) {
     return new Promise(function (resolve, reject) {
       fetch(
-        "//eu1.locationiq.com/v1/reverse.php?key=ad45b0b60450a4&lat=" +
+        NOMINATIM +
         latitude +
         "&lon=" +
-        longitude +
-        "&format=json"
+        longitude
       )
         .then(function (response) {
           return response.json();
