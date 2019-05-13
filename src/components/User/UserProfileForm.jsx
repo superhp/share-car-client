@@ -20,32 +20,53 @@ export const UserProfileForm = (props) => (
                 value={props.user.email ? props.user.email : ""}
             />
             <UserProfileFormField 
-                displayName="First Name"
+                displayName="First name"
                 name="name"
                 type="text"
                 value={props.user.firstName ? props.user.firstName : ""}
                 onChange={e => props.onNameChange(e)}
             />
             <UserProfileFormField 
-                displayName="Last Name"
+                displayName="Last name"
                 name="surname"
                 type="text"
                 value={props.user.lastName ? props.user.lastName : ""}
                 onChange={e => props.onSurnameChange(e)}
             />
             <UserProfileFormField 
-                displayName="Phone Number"
+                displayName="Phone number"
                 name="phone"
                 type="text"
                 value={props.user.phone ? props.user.phone : ""}
                 onChange={e => props.onPhoneChange(e)}
             />
             <UserProfileFormField 
-                displayName="License Plate Number"
+                displayName="License plate number"
                 name="license"
                 type="text"
                 value={props.user.licensePlate ? props.user.licensePlate : ""}
                 onChange={e => props.onLicenseChange(e)}
+            />
+                        <UserProfileFormField 
+                displayName="Number of seats"
+                name="seats"
+                type="text"
+                value={props.user.numberOfSeats ? props.user.numberOfSeats : ""}
+                onChange={e => props.onNumberOfSeatsChanged(e)}
+            />
+                        <UserProfileFormField 
+                displayName="Car model"
+                name="model"
+                type="text"
+                value={props.user.carModel ? props.user.carModel : ""}
+                onChange={e => props.onCarModelChanged(e)}
+            />
+                        <UserProfileFormField 
+                displayName="Car color"
+                name="color"
+                type="text"
+                value={props.user.carColor ? props.user.carColor : ""}
+                onChange={e => props.onCarColorChanged(e)}
             />
             <Button
               onClick={e => props.onButtonClick(e)}

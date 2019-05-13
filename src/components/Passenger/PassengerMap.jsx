@@ -287,7 +287,7 @@ this.setState({note});
         routeDto = { ToAddress: address };
       else
         routeDto = { FromAddress: address };
-      api.post("https://localhost:44347/api/Ride/routes", routeDto).then(res => {
+      api.post("Ride/routes", routeDto).then(res => {
         if (res.status === 200 && res.data !== "") {
           this.setState({ routes: res.data, fetchedRoutes: res.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, this.displayRoute);
         }

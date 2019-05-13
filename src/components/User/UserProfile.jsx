@@ -53,9 +53,12 @@ class UserProfile extends Component<{}, UserProfileState, LayoutProps, MyProfile
       profilePicture: this.state.user.pictureUrl,
       email: this.state.user.email,
       licensePlate: this.state.user.licensePlate,
-      phone: this.state.user.phone
+      phone: this.state.user.phone,
+      numberOfSeats: this.state.user.numberOfSeats,
+      carModel: this.state.user.carModel,
+      carColor: this.state.user.carColor,
     };
-    api.post(`https://localhost:44347/api/user`, data).then(res => {
+    api.post(`user`, data).then(res => {
       if (res.status === 200) {
         this.setState({
           snackBarClicked: true,
@@ -80,6 +83,9 @@ class UserProfile extends Component<{}, UserProfileState, LayoutProps, MyProfile
             onSurnameChange={e => this.setState({ user: { ...this.state.user, lastName: e.target.value } })}
             onPhoneChange={e => this.setState({ user: { ...this.state.user, phone: e.target.value } })}
             onLicenseChange={e => this.setState({ user: { ...this.state.user, licensePlate: e.target.value } })}
+            onNumberOfSeatsChanged={e => this.setState({ user: { ...this.state.user, numberOfSeats: e.target.value } })}
+            onCarModelChanged={e => this.setState({ user: { ...this.state.user, carModel: e.target.value } })}
+            onCarColorChanged={e => this.setState({ user: { ...this.state.user, carColor: e.target.value } })}
             onButtonClick={e => {
               this.handleSubmit(e);
               setTimeout(
