@@ -13,6 +13,7 @@ class DriverRoutesSugestionsModal extends React.Component {
   
     handleClickOpen = () => {
       this.setState({open: true});
+      this.props.showDrivers();
     };
   
     handleClose = value => {
@@ -23,7 +24,7 @@ class DriverRoutesSugestionsModal extends React.Component {
       return (
             <div className="drivers-sugestion-modal">
                 <Button variant="contained" className="show-drivers" onClick={this.handleClickOpen}>
-                    Show drivers
+                    Route's drivers
                 </Button>
                 <Dialog className="sugestion-modal-dialog" onClose={this.handleClose} aria-labelledby="simple-dialog-title" open={this.state.open}>
                     <DriverRoutesSugestions
