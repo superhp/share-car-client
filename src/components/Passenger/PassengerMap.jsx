@@ -28,8 +28,8 @@ import NavigateNext from "@material-ui/icons/NavigateNext";
 import NavigateBefore from "@material-ui/icons/NavigateBefore";
 import Button from "@material-ui/core/Button";
 
-
 export class PassengerMap extends React.Component {
+
   state = {
     passengerAddress: null,
     direction: "from",
@@ -40,11 +40,12 @@ export class PassengerMap extends React.Component {
     currentRoute: { routeFeature: null, fromFeature: null, toFeature: null },
     currentRouteIndex: 0,
     currentRides: [],
-    note:"",
-    showDriver: false,
+    note: "",
     snackBarMessage: "",
     snackBarClicked: false,
     snackBarVariant: null,
+    showFilters: true,
+    showDrivers: false
   }
 
   componentDidMount() {
@@ -66,10 +67,11 @@ export class PassengerMap extends React.Component {
       currentRoute: { routeFeature: null, fromFeature: null, toFeature: null },
       currentRouteIndex: 0,
       currentRides: [],
-      showDriver: false,
       snackBarMessage: "",
       snackBarClick: false,
       snackBarVariant: null,
+      showFilters: true,
+      showDrivers: false,
     });
     this.getAllRoutes(OfficeAddresses[0], this.state.direction);
     this.getUsers();
@@ -92,12 +94,12 @@ export class PassengerMap extends React.Component {
   }
 
   onAutosuggestBlur(resetRoutes) {
-    if(resetRoutes){
-    this.setState({ routes: this.state.fetchedRoutes, currentRouteIndex: 0 }, this.displayRoute);
-  }else{
-    this.setState({ routes: [], currentRouteIndex: 0 }, this.displayRoute);
+    if (resetRoutes) {
+      this.setState({ routes: this.state.fetchedRoutes, currentRouteIndex: 0 }, this.displayRoute);
+    } else {
+      this.setState({ routes: [], currentRouteIndex: 0 }, this.displayRoute);
+    }
   }
-}
 
   initializeMap() {
     const vectorSource = new SourceVector();
@@ -125,7 +127,6 @@ export class PassengerMap extends React.Component {
   }
 
   displayRoute() {
-    this.setState({ showDriver: true });
     this.vectorSource.clear();
     if (this.state.pickUpPointFeature) {
       this.vectorSource.addFeature(this.state.pickUpPointFeature);
@@ -168,7 +169,7 @@ export class PassengerMap extends React.Component {
         this.displayRoute();
         this.setState({ passengerAddress: address, currentRouteIndex: 0 }, this.changePickUpPoint);
       }).catch();
-      }
+  }
 
   onMeetupAddressChange(newAddress) {
     if (newAddress) {
@@ -183,19 +184,24 @@ export class PassengerMap extends React.Component {
   }
 
   handleNoteUpdate(note) {
-this.setState({note});
+    this.setState({ note });
   }
 
-getRideByRoute(){
-    api.get("Ride/RidesByRoute/" +  this.state.routes[this.state.currentRouteIndex].routeId).then(res => {
+  showRoutesDrivers() {
+    this.getRidesByRoute();
+    this.setState({ showDrivers: true });
+  }
+
+  getRidesByRoute() {
+    api.get("Ride/RidesByRoute/" + this.state.routes[this.state.currentRouteIndex].routeId).then(res => {
       if (res.status === 200 && res.data !== "") {
-        this.setState({ currentRides: res.data});
+        this.setState({ currentRides: res.data, showDrivers: true });
       }
     }).catch((error) => {
       this.showSnackBar("Failed to load rides", 2)
     });
-  
-}
+
+  }
 
   getAllRoutes(address, direction) {
     if (address) {
@@ -223,7 +229,7 @@ getRideByRoute(){
       const request = {
         RideId: ride.rideId,
         DriverEmail: ride.driverEmail,
-        RequestNote:this.state.note,
+        RequestNote: this.state.note,
         Address: {
           Longitude: this.state.passengerAddress.longitude,
           Latitude: this.state.passengerAddress.latitude
@@ -234,10 +240,10 @@ getRideByRoute(){
 
       api.post(`RideRequest`, request).then(response => {
         let rides = [...this.state.currentRides];
-let index = rides.indexOf(ride);
-rides[index].requested = true;
+        let index = rides.indexOf(ride);
+        rides[index].requested = true;
 
-this.setState({currentRides:rides});
+        this.setState({ currentRides: rides });
         this.showSnackBar("Ride requested!", 0)
 
       })
@@ -269,27 +275,64 @@ this.setState({currentRides:rides});
     return (
       <div>
         <div id="map"></div>
-        <div className="passengerForm">
-          <PassengerRouteSelection
-            direction={this.state.direction}
-            initialAddress={OfficeAddresses[0]}
-            users={this.state.users}
-            onDriverSelection={(email) => { this.onDriverSelection(email) }}
-            onAutosuggestBlur={(resetRoutes) => { this.onAutosuggestBlur(resetRoutes) }}
-            displayName={addressToString(this.state.passengerAddress)}
-            onChange={(address, direction) => this.getAllRoutes(address, direction)}
-            onMeetupAddressChange={address => this.onMeetupAddressChange(address)}
-          />
-          {this.state.showDriver && this.state.routes.length > 0 ? (
-            <DriverRoutesSugestionsModal
-              rides={this.state.currentRides}
-              onRegister={ride => this.handleRegister(ride)}
-              handleNoteUpdate={(note) => { this.handleNoteUpdate(note) }}
-              showDrivers = {this.getRideByRoute.bind(this)}
-            />
-          ) : (
-              <div></div>
-            )}
+        <div className="passengerForm max-width-element">
+          <Grid
+            alignItems="flex-start"
+            justify="center"
+            container
+          >
+            <Grid item xs={8}
+              container
+              alignItems="center"
+              justify="center"
+            >
+              <Button variant="contained" className="show-drivers" onClick={() => { this.setState({ showFilters: !this.state.showFilters }) }}>
+                {this.state.showFilters ? "Hide filters" : "Show filters"}
+              </Button>
+              {
+                this.state.routes.length > 0 ?
+                  <Button variant="contained" className="show-drivers" onClick={() => { this.showRoutesDrivers() }}>
+                    Route's drivers
+                </Button>
+                  : <div></div>
+              }
+            </Grid>
+            <Grid item xs={8}
+              container
+              alignItems="center"
+              justify="center"
+            >
+              {
+                this.state.showFilters ?
+                  <PassengerRouteSelection
+                    className="max-width-element"
+                    direction={this.state.direction}
+                    initialAddress={OfficeAddresses[0]}
+                    users={this.state.users}
+                    onDriverSelection={(email) => { this.onDriverSelection(email) }}
+                    onAutosuggestBlur={(resetRoutes) => { this.onAutosuggestBlur(resetRoutes) }}
+                    displayName={addressToString(this.state.passengerAddress)}
+                    onChange={(address, direction) => this.getAllRoutes(address, direction)}
+                    onMeetupAddressChange={address => this.onMeetupAddressChange(address)}
+                  />
+                  :
+                  <div></div>
+              }
+            </Grid>
+            {this.state.showDrivers && this.state.routes.length > 0 ? (
+              <DriverRoutesSugestionsModal
+                rides={this.state.currentRides}
+                onRegister={ride => this.handleRegister(ride)}
+                handleNoteUpdate={(note) => { this.handleNoteUpdate(note) }}
+                closeModal={() => { this.setState({ showDrivers: false }) }}
+                showDrivers={this.state.showDrivers}
+
+              />
+            ) : (
+                <div></div>
+              )}
+
+          </Grid>
         </div>
         {this.state.routes.length > 1
           ? <Grid className="navigation-buttons">

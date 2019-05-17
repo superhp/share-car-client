@@ -17,7 +17,6 @@ button.ap-input-icon {
   position: relative;
   left: 0;
   top: 20px;
-  width: 100%;
   z-index: 999;
 }
 
@@ -62,9 +61,7 @@ input.center-location {
   display: flex;
   justify-content: space-evenly;
 }
-/* .from-to-container {
-  height: 100px;
-} */
+
 .centerElement input {
   flex: 0 0 100%;
 }

@@ -14,12 +14,15 @@ button:focus {
 .drivers-sugestion-modal {
   margin-top: 15px;
 }
+.drivers-sugestion-close-icon {
+  position:absolute;
+  right:0;
+  z-index:10;
+}
 
 .drivers-list-root {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  overflow: hidden;
+  max-height: 75vh;
+  overflow-y: scroll;
   background-color: white;
 }
 
