@@ -128,6 +128,13 @@ button.continue-button {
   color: white!important;
 }
 
+.register-button-disabled {
+  background-color: #0a2239!important;
+  color: white!important;
+  opacity: 0.5;
+}
+
+
 .register-button:hover {
   background-color: #10365a!important;
 }

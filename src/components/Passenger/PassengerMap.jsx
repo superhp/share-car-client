@@ -230,13 +230,14 @@ getRideByRoute(){
         }
       };
 
-let routes = [...this.state.routes];
-let index = routes[this.state.currentRouteIndex].rides.indexOf(ride);
-routes[this.state.currentRouteIndex].rides[index].requested = true;
 
-this.setState({routes});
 
       api.post(`RideRequest`, request).then(response => {
+        let rides = [...this.state.currentRides];
+let index = rides.indexOf(ride);
+rides[index].requested = true;
+
+this.setState({currentRides:rides});
         this.showSnackBar("Ride requested!", 0)
 
       })

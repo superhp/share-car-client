@@ -6,42 +6,44 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import "../../../styles/genericStyles.css";
 import "../../../styles/testmap.css";
+export class DriverRouteSuggestionsItem extends React.Component {
 
-export const DriverRouteSuggestionsItem = props => (
-    <ListItem className="drivers-list">
-        <ListItemText
-            primary={<span>{props.ride.driverFirstName} {props.ride.driverLastName}</span>}
-            secondary={
-                <React.Fragment>
-                    {props.ride.rideDateTime !== null ?
-                        <span>
-                            <Typography component="span" style={{ display: 'inline' }} color="textPrimary">
-                                Time: &nbsp;
+    render() {
+        return (
+            <ListItem className="drivers-list">
+                <ListItemText
+                    primary={<span>{this.props.ride.driverFirstName} {this.props.ride.driverLastName}</span>}
+                    secondary={
+                        <React.Fragment>
+                            {this.props.ride.rideDateTime !== null ?
+                                <span>
+                                    <Typography component="span" style={{ display: 'inline' }} color="textPrimary">
+                                        Time: &nbsp;
                             </Typography>
-                            {props.ride.rideDateTime.split("T").join(" ")}
-                            <br />
-                        </span>
-                        : ""}
-                    {props.ride.driverPhone !== null ?
-                        <span>
-                            <Typography component="span" style={{ display: 'inline' }} color="textPrimary">
-                                Phone: &nbsp;
+                                    {this.props.ride.rideDateTime.split("T").join(" ")}
+                                    <br />
+                                </span>
+                                : ""}
+                            {this.props.ride.driverPhone !== null ?
+                                <span>
+                                    <Typography component="span" style={{ display: 'inline' }} color="textPrimary">
+                                        Phone: &nbsp;
                             </Typography>
-                            {props.ride.driverPhone}
-                        </span>
-                        : ""}
-                </React.Fragment>
-            }
-        />
-        <Button
-            color="primary"
-            variant="contained"
-            className="register-button"
-            onClick={() => props.onRegister()}
-        >
-            Register
+                                    {this.props.ride.driverPhone}
+                                </span>
+                                : ""}
+                        </React.Fragment>
+                    }
+                />
+                <Button
+                    variant="contained"
+                    className={this.props.ride.requested ? "register-button-disabled" : "register-button"}
+                    onClick={() => this.props.onRegister()}
+                    disabled={this.props.ride.requested}
+                >
+                    Register
         </Button>
-    </ListItem>
-);
-
-
+            </ListItem>
+        );
+    }
+}
