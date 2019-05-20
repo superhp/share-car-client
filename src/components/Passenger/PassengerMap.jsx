@@ -27,6 +27,7 @@ import Media from "react-media";
 import NavigateNext from "@material-ui/icons/NavigateNext";
 import NavigateBefore from "@material-ui/icons/NavigateBefore";
 import Button from "@material-ui/core/Button";
+import { CircularProgress } from "@material-ui/core";
 
 export class PassengerMap extends React.Component {
 
@@ -207,7 +208,7 @@ export class PassengerMap extends React.Component {
   getAllRoutes(address, direction) {
     if (address) {
       let routeDto;
-      this.setState({ direction: direction });
+      this.setState({ direction: direction, loading:true });
       if (direction === "to")
         routeDto = { ToAddress: address };
       else
@@ -216,12 +217,13 @@ export class PassengerMap extends React.Component {
         if (res.status === 200 && res.data !== "") {
 
         if(this.state.selectedDriver){
-          this.setState({ routes: res.data, fetchedRoutes: res.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, () => {this.onDriverSelection(this.state.selectedDriver)});
+          this.setState({ loading:false, routes: res.data, fetchedRoutes: res.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, () => {this.onDriverSelection(this.state.selectedDriver)});
         }else{
-          this.setState({ routes: res.data, fetchedRoutes: res.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, this.displayRoute);
+          this.setState({ loading:false, routes: res.data, fetchedRoutes: res.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, this.displayRoute);
         }
       }
       }).catch((error) => {
+        this.setState({loading:false});
         this.showSnackBar("Failed to load routes", 2)
       });
     }
@@ -279,6 +281,13 @@ export class PassengerMap extends React.Component {
 
   render() {
     return (
+      <div>
+
+      {this.state.loading ?
+        <div className="progress-circle">
+            <CircularProgress />
+        </div>
+        :
       <div>
         <div id="map"></div>
         <div className="passengerForm max-width-element">
@@ -397,7 +406,9 @@ export class PassengerMap extends React.Component {
           variant={this.state.snackBarVariant}
         />
       </div>
-    );
+      }
+      </div>
+      );
   }
 }
 export default PassengerMap;

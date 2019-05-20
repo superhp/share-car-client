@@ -106,10 +106,13 @@ class RidesScheduler extends React.Component {
       if (res.status === 200) {
         this.showSnackBar("Rides successfully created!", 0);
       }
-    }).catch(() => {
-      this.showSnackBar("Failed to create rides", 2);
-
-    });
+    }).catch((error) => {
+      if (error.response && error.response.status === 409) {
+        this.showSnackBar(error.response.data, 2)
+    }
+    else {
+        this.showSnackBar("Failed to create rides", 2)
+    }    });
   }
 
   showSnackBar(message, variant) {

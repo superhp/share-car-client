@@ -36,7 +36,7 @@ export class Rides extends React.Component {
             snackBarVariant: SnackbarVariants[variant]
         });
         setTimeout(
-            function() {
+            function () {
                 this.setState({ snackBarClicked: false });
             }.bind(this),
             3000
@@ -68,6 +68,7 @@ export class Rides extends React.Component {
     }
 
     getDriversRides() {
+        this.setState({loading:true})
         api.get("Ride")
             .then(response => {
                 if (response.status === 200) {
@@ -86,10 +87,11 @@ export class Rides extends React.Component {
                         }
                     }
                     this.setState({ rides: rides, requests: requests, passengers: passengers, loading: false });
- 
+
                 }
             })
             .catch((error) => {
+                this.setState({ loading: false });
                 this.showSnackBar("Failed to load rides", 2)
             });
     }
@@ -109,11 +111,9 @@ export class Rides extends React.Component {
             RideId: rideId,
             DriverEmail: driverEmail
         };
-
         api.put("/RideRequest", data).then(res => {
             if (res.status === 200) {
                 if (response === 1) {
-                    this.showSnackBar("Request accepted", 0)
                     var request = this.state.requests.find(x => x.rideRequestId === rideRequestId);
                     this.setState({
                         passengers: [...this.state.passengers, {
@@ -125,8 +125,9 @@ export class Rides extends React.Component {
                             route: request.route,
                             rideId: request.rideId,
                         }],
-                        clickedRequest: true,
+
                     });
+                    this.showSnackBar("Request accepted", 0)
 
                 } else {
                     this.showSnackBar("Request denied", 0)
@@ -165,7 +166,7 @@ export class Rides extends React.Component {
                         rides={this.state.rides}
                         requests={this.state.requests}
                         passengers={this.state.passengers}
-                        showSnackBar={(message, variant) => {this.showSnackBar(message,variant)}}
+                        showSnackBar={(message, variant) => { this.showSnackBar(message, variant) }}
                     />
                 }
                 <SnackBars
