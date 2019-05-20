@@ -85,9 +85,6 @@ export class DriverMap extends React.Component {
           return;
         } else {
           let address = fromLocationIqResponse(response);
-          address.longitude = longitude;
-          address.latitude = latitude;
-
           if (this.state.isRouteToOffice) {
             this.addNewRoutePoint(address);
           } else {

@@ -27,7 +27,6 @@ class SimpleMenu extends React.Component {
   };
   
 componentDidMount(nextProps){
-  console.log(this.props)
   if(this.props.dataset && this.props.dataset.length > 0 && !this.state.currentItem){
     this.setState({currentItem: this.props.dataset[0].label})
   }
