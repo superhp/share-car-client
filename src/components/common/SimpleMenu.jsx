@@ -39,6 +39,9 @@ componentDidMount(nextProps){
     if (this.anchorEl.contains(event.target)) {
       return;
     }
+    if(!index){
+      index = this.state.index;
+    }
     this.setState({ open: false, currentItem: this.props.dataset[index].label, index:index });
     this.props.handleSelection(this.props.dataset[index].value);
   };

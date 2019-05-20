@@ -45,7 +45,8 @@ export class PassengerMap extends React.Component {
     snackBarClicked: false,
     snackBarVariant: null,
     showFilters: true,
-    showDrivers: false
+    showDrivers: false,
+    selectedDriver: null
   }
 
   componentDidMount() {
@@ -72,6 +73,7 @@ export class PassengerMap extends React.Component {
       snackBarVariant: null,
       showFilters: true,
       showDrivers: false,
+      selectedDriver: null
     });
     this.getAllRoutes(OfficeAddresses[0], this.state.direction);
     this.getUsers();
@@ -88,9 +90,13 @@ export class PassengerMap extends React.Component {
   }
 
   onDriverSelection(email) {
+    
     let routes = [...this.state.fetchedRoutes];
-    routes = routes.filter(x => x.rides.filter(y => y.driverEmail === email).length > 0)
-    this.setState({ routes, currentRouteIndex: 0 }, this.displayRoute);
+    routes = routes.filter(x => x.drivers.includes(email));
+    if (routes.length === 0) {
+      this.showSnackBar("Selected driver doesn't have rides", 2);
+    }
+    this.setState({ selectedDriver: email, routes, currentRouteIndex: 0 }, this.displayRoute);
   }
 
   onAutosuggestBlur(resetRoutes) {
@@ -145,16 +151,13 @@ export class PassengerMap extends React.Component {
     }
   }
 
-  changePickUpPoint() {
-    if (this.state.pickUpPointFeature) {
-      this.vectorSource.removeFeature(this.state.pickUpPointFeature);
-    }
+  setPickUpPointFeature() {
+
     const { passengerAddress } = this.state;
     if (passengerAddress) {
       const { longitude, latitude } = passengerAddress;
       let feature = createPointFeature(longitude, latitude);
-      this.setState({ pickUpPointFeature: feature })
-      this.vectorSource.addFeature(feature);
+      this.setState({ pickUpPointFeature: feature }, this.displayRoute);
     }
   }
 
@@ -165,9 +168,8 @@ export class PassengerMap extends React.Component {
         const address = fromLocationIqResponse(response);
         address.longitude = longitude;
         address.latitude = latitude;
-        sortRoutes(address, this.state.routes);
-        this.displayRoute();
-        this.setState({ passengerAddress: address, currentRouteIndex: 0 }, this.changePickUpPoint);
+        var sortedRoutes = sortRoutes(address, this.state.routes);
+        this.setState({ routes: sortedRoutes, passengerAddress: address, currentRouteIndex: 0 }, this.setPickUpPointFeature)
       }).catch();
   }
 
@@ -175,7 +177,7 @@ export class PassengerMap extends React.Component {
     if (newAddress) {
       var address = addressToString(newAddress);
       if (address) {
-        this.setState({ passengerAddress: newAddress }, this.changePickUpPoint);
+        this.setState({ passengerAddress: newAddress }, this.setPickUpPointFeature);
         if (newAddress) {
           centerMap(newAddress.longitude, newAddress.latitude, this.map);
         }
@@ -200,7 +202,6 @@ export class PassengerMap extends React.Component {
     }).catch((error) => {
       this.showSnackBar("Failed to load rides", 2)
     });
-
   }
 
   getAllRoutes(address, direction) {
@@ -213,8 +214,13 @@ export class PassengerMap extends React.Component {
         routeDto = { FromAddress: address };
       api.post("Ride/routes", routeDto).then(res => {
         if (res.status === 200 && res.data !== "") {
+
+        if(this.state.selectedDriver){
+          this.setState({ routes: res.data, fetchedRoutes: res.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, () => {this.onDriverSelection(this.state.selectedDriver)});
+        }else{
           this.setState({ routes: res.data, fetchedRoutes: res.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, this.displayRoute);
         }
+      }
       }).catch((error) => {
         this.showSnackBar("Failed to load routes", 2)
       });
@@ -223,7 +229,7 @@ export class PassengerMap extends React.Component {
 
   handleRegister(ride) {
     if (!this.state.passengerAddress) {
-      this.showSnackBar("Choose your pick up point", 2)
+      this.showSnackBar(this.state.direction === "from" ? "Choose your destination point" : "Choose your pick up point", 2)
     }
     else {
       const request = {
@@ -310,6 +316,7 @@ export class PassengerMap extends React.Component {
                     initialAddress={OfficeAddresses[0]}
                     users={this.state.users}
                     onDriverSelection={(email) => { this.onDriverSelection(email) }}
+                    onDriverUnselection={() => { this.setState({ selectedDriver: null }) }}
                     onAutosuggestBlur={(resetRoutes) => { this.onAutosuggestBlur(resetRoutes) }}
                     displayName={addressToString(this.state.passengerAddress)}
                     onChange={(address, direction) => this.getAllRoutes(address, direction)}

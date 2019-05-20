@@ -24,7 +24,7 @@ export class PassengerRouteSelection extends React.Component {
         value: '',
         users: [],
         suggestions: [],
-        offices: []
+        driverSelected: false
     }
 
     componentDidMount() {
@@ -32,6 +32,7 @@ export class PassengerRouteSelection extends React.Component {
             if (this.autosuggestRef.current) {
                 if (e.target !== this.autosuggestRef.current.input && document.activeElement === this.autosuggestRef.current.input) {
                     this.autosuggestRef.current.input.blur();
+
                     this.onBlur();
                 }
             }
@@ -48,6 +49,10 @@ export class PassengerRouteSelection extends React.Component {
             } else {
                 this.props.onAutosuggestBlur(false);
             }
+        }
+        if (!this.state.driverSelected && this.state.value) {
+                this.autosuggestRef.current.input.className = "react-autosuggest__input invalid-input";
+                this.props.onDriverUnselection();
         }
     }
 
@@ -67,13 +72,16 @@ export class PassengerRouteSelection extends React.Component {
         }
         const regex = new RegExp('^' + escapedValue, 'i');
         const suggestions = this.state.users.filter(x => regex.test(x.name));
+
         return suggestions;
     }
 
 
     onChange = (event, { newValue, method }) => {
+
         this.setState({
-            value: newValue
+            value: newValue,
+            driverSelected: false
         });
     };
 
@@ -92,6 +100,10 @@ export class PassengerRouteSelection extends React.Component {
     onSuggestionsFetchRequested = ({ value }) => {
         this.setState({
             suggestions: this.getSuggestions(value)
+        }, () => {
+            if (this.state.suggestions.length === 0) {
+                this.autosuggestRef.current.input.className = "react-autosuggest__input invalid-input";
+            }
         });
     };
 
@@ -103,6 +115,7 @@ export class PassengerRouteSelection extends React.Component {
     };
 
     onSuggestionSelected = (event, { suggestion }) => {
+        this.setState({ driverSelected: true });
         this.props.onDriverSelection(suggestion.email);
     };
 
@@ -115,7 +128,7 @@ export class PassengerRouteSelection extends React.Component {
         const { value, suggestions } = this.state;
 
         const inputProps = {
-            placeholder: 'Type a driver\'s name',
+            placeholder: 'Type driver\'s name',
             value,
             onChange: this.onChange,
             onBlur: this.onBlur
@@ -123,31 +136,31 @@ export class PassengerRouteSelection extends React.Component {
         return (
             <div>
 
-                    <Grid item xs={12}>
+                <Grid item xs={12}>
                     <Grid item xs={12}
-                            container
-                            alignItems="center"
-                            justify="center"
-                        >
-                            <AddressInput
-                                displayName={this.props.displayName}
-                                placeholder={this.state.direction == "to" ? "Your pick up point" : "Your destination point"}
-                                onChange={(suggestion) => this.props.onMeetupAddressChange(fromAlgoliaAddress(suggestion))}
-                            />
-                        </Grid>
-                        <Grid item xs={12}
+                        container
+                        alignItems="center"
+                        justify="center"
+                    >
+                        <AddressInput
+                            displayName={this.props.displayName}
+                            placeholder={this.state.direction == "to" ? "Your pick up point" : "Your destination point"}
+                            onChange={(suggestion) => this.props.onMeetupAddressChange(fromAlgoliaAddress(suggestion))}
+                        />
+                    </Grid>
+                    <Grid item xs={12}
                         container justify="center">
-                            <SimpleMenu
-                                dataset={[{ label: "From", value: "from" }, { label: "To", value: "to" }]}
-                                handleSelection={(direction) => { this.handleFilterringChange(this.state.address, direction) }}
-                            />
-                            <SimpleMenu
-                                dataset={OfficeAddressesMenu}
-                                handleSelection={(address) => { this.handleFilterringChange(address, this.state.direction) }}
-                            />
+                        <SimpleMenu
+                            dataset={[{ label: "From", value: "from" }, { label: "To", value: "to" }]}
+                            handleSelection={(direction) => { this.handleFilterringChange(this.state.address, direction) }}
+                        />
+                        <SimpleMenu
+                            dataset={OfficeAddressesMenu}
+                            handleSelection={(address) => { this.handleFilterringChange(address, this.state.direction) }}
+                        />
 
-                        </Grid>
-                        <Grid item xs={12}
+                    </Grid>
+                    <Grid item xs={12}
                         container justify="center">
 
                         <Autosuggest
@@ -160,7 +173,7 @@ export class PassengerRouteSelection extends React.Component {
                             inputProps={inputProps}
                             ref={this.autosuggestRef}
                         />
-                </Grid>
+                    </Grid>
                 </Grid>
             </div>
         );
