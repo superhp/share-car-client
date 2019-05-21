@@ -35,6 +35,9 @@ export const coordinatesToLocation = (latitude, longitude) => {
         return response.json();
       })
       .then(function (json) {
+        if(json.address.country !== "Lietuva"){
+          reject();
+        }
         resolve(json);
       }).catch((error)=>{reject(error)});
   });

@@ -29,7 +29,7 @@ function TimePickers(props) {
         onBlur={e => {
           props.onTimeSet(e.target.value);
         }}
-        defaultValue="07:00"
+        defaultValue="08:00"
         className={classes.textField}
         InputLabelProps={{
           shrink: true

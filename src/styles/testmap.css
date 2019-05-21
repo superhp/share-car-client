@@ -17,7 +17,6 @@ button.ap-input-icon {
   position: relative;
   left: 0;
   top: 20px;
-  width: 100%;
   z-index: 999;
 }
 
@@ -62,9 +61,7 @@ input.center-location {
   display: flex;
   justify-content: space-evenly;
 }
-/* .from-to-container {
-  height: 100px;
-} */
+
 .centerElement input {
   flex: 0 0 100%;
 }
@@ -127,6 +124,13 @@ button.continue-button {
   background-color: #0a2239!important;
   color: white!important;
 }
+
+.register-button-disabled {
+  background-color: #0a2239!important;
+  color: white!important;
+  opacity: 0.5;
+}
+
 
 .register-button:hover {
   background-color: #10365a!important;

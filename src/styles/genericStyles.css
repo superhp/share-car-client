@@ -10,6 +10,9 @@
     margin-bottom: 5px;
   }
 }
+.invalid-input {
+  background-color: #ffdddd;
+}
 
 @media only screen and (min-width: 699px) {
 	.list-buttons {
@@ -27,6 +30,9 @@ button:focus {
   outline:0!important;
 }
 
+.max-width-element{
+  width:100%;
+}
 
 .generic {
   display: flex;

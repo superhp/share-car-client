@@ -30,8 +30,9 @@ export class PassengerRideRequestsList extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        if(nextProps.refech){
         this.showPassengerRequests();
-
+        }
     }
 
     showSnackBar(message, variant) {
@@ -84,8 +85,8 @@ export class PassengerRideRequestsList extends React.Component {
     }
 
     showPassengerRequests() {
-        api
-            .get("RideRequest/passenger")
+        this.setState({loading:true});
+        api.get("RideRequest/passenger")
             .then(response => {
                 if (response.data !== "") {
                     this.setState({ requests: response.data, loading: false });
@@ -105,6 +106,7 @@ export class PassengerRideRequestsList extends React.Component {
                 }
             })
             .catch((error) => {
+                this.setState({loading:false});
                 this.showSnackBar("Failed to load requests", 2)
             });
     }

@@ -15,6 +15,8 @@ export class AddressInput extends React.Component {
         var places = require('../../../node_modules/places.js');
         this.placesAutocomplete = places({
             container: this.algoliaRef.current.autocomplete.autocomplete[0],
+            language: 'lt',
+            countries: ['lt'],
         });
         this.placesAutocomplete.setVal(this.props.displayName ? this.props.displayName : "");
     }
@@ -32,15 +34,21 @@ export class AddressInput extends React.Component {
         return (
             <div className="form-group-map">
                 <AlgoliaPlaces
+                    options={{
+                        language: 'lt',
+                        countries: ['lt']
+                    }}
                     onChange={({ query, rawAnswer, suggestion, suggestionIndex }) => this.props.onChange(suggestion, this.props.index)}
+
                     onBlur={() => {
-                        if(this.placesAutocomplete.autocomplete[0].value === "" && this.props.displayName){
+                        if (this.placesAutocomplete.autocomplete[0].value === "" && this.props.displayName) {
                             this.placesAutocomplete.setVal(this.props.displayName);
                         }
                     }}
                     onClear={() => this.props.onChange(null)}
                     ref={this.algoliaRef}
                     placeholder={this.props.placeholder}
+
                 />
                 {
                     this.props.deletable ?

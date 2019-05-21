@@ -15,8 +15,12 @@ import { PendingRequests } from "./PendingRequests";
 
 let moment = require("moment");
 
-const style = {
+const standardStyle = {
   margin: "1em 0",
+}
+const finishedStyle = {
+  margin: "1em 0",
+  opacity:0.5
 }
 
 export class DriversRidesList extends React.Component {
@@ -36,7 +40,7 @@ export class DriversRidesList extends React.Component {
     return (
       <Grid container>
         {this.props.rides.length > 0 ? this.props.rides.map((ride, index) => (
-          <Grid style={style} key={index} item xs={12}>
+          <Grid style={ride.finished ? finishedStyle :standardStyle} key={index} item xs={12}>
             <Card className="rides-card generic-card">
               <Grid container className="active-rides-card-container">
                 <Grid item xs={8}>
@@ -74,6 +78,8 @@ export class DriversRidesList extends React.Component {
                     View
                           <InfoIcon />
                   </Button>
+                  {ride.finished ? <div></div>
+                  :
                   <Button
                     size="small"
                     onClick={() => {
@@ -86,6 +92,7 @@ export class DriversRidesList extends React.Component {
                     Delete
                           <DeleteIcon />
                   </Button>
+                  }
                 </Grid>
               </Grid>
             </Card>

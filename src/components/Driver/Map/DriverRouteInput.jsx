@@ -16,7 +16,7 @@ import StarBorder from '@material-ui/icons/StarBorder';
 
 import { AddressInput } from "../../common/AddressInput";
 import { fromAlgoliaAddress } from "../../../utils/addressUtils";
-
+import { OfficeAddressesMenu } from "../../../utils/AddressData";
 import "../../../styles/testmap.css";
 import SimpleMenu from "../../common/SimpleMenu";
 
@@ -38,7 +38,7 @@ export class DriverRouteInput extends React.Component {
                         <ListItemIcon>
                             <InboxIcon />
                         </ListItemIcon>
-                        <ListItemText inset primary="Route points" />
+                        <ListItemText inset primary={this.state.open ? "Collapse" : "Expand"} />
                         {this.state.open ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
                     <Collapse in={this.state.open} timeout="auto" unmountOnExit>
@@ -88,6 +88,7 @@ export class DriverRouteInput extends React.Component {
                         <ImportExport fontSize="medium" />
                     </Button>
                     <SimpleMenu
+                        dataset={OfficeAddressesMenu}
                         handleSelection={office => {
                             this.props.changeRoutePoint(office, -1);
                         }}

@@ -3,7 +3,7 @@ import * as React from "react";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import List from "@material-ui/core/List";
 import TextField from "@material-ui/core/TextField";
-
+import Close from "@material-ui/icons/Close";
 import { DriverRouteSuggestionsItem } from "./DriverRouteSuggestionsItem";
 
 import "../../../styles/driversRidesList.css";
@@ -12,6 +12,8 @@ export class DriverRoutesSugestions extends React.Component {
     render() {
         return (
             <div className="drivers-list-root">
+                <Close className="drivers-sugestion-close-icon" onClick={() => {this.props.closeModal()}}>
+                </Close>
                 <List
                     subheader={<ListSubheader component="div" className="drivers-list-header">Drivers for this route</ListSubheader>}
                 >

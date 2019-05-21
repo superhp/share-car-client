@@ -8,6 +8,7 @@ import MapComponent from "../../Maps/MapComponent";
 import ListItemText from "@material-ui/core/ListItemText";
 
 export default class RidePassengerCard extends React.Component {
+
     state = {
         show: false
     }

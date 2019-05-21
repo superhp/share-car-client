@@ -9,7 +9,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
 import { withStyles } from "@material-ui/core/styles";
 
-import { OfficeAddresses } from "../../utils/AddressData";
 
 const styles = theme => ({
   root: {
@@ -23,10 +22,15 @@ const styles = theme => ({
 class SimpleMenu extends React.Component {
   state = {
     open: false,
-    address: OfficeAddresses[0].street + OfficeAddresses[0].number,
+    currentItem:null,
     index: 0
   };
-
+  
+componentDidMount(nextProps){
+  if(this.props.dataset && this.props.dataset.length > 0 && !this.state.currentItem){
+    this.setState({currentItem: this.props.dataset[0].label})
+  }
+}
   handleToggle = () => {
     this.setState({ open: !this.state.open });
   };
@@ -36,12 +40,10 @@ class SimpleMenu extends React.Component {
       return;
     }
     if(!index){
-      this.setState({open:false});
-      this.props.handleSelection(OfficeAddresses[this.state.index]);
-      return;
+      index = this.state.index;
     }
-    this.setState({ open: false, address: OfficeAddresses[index].street + OfficeAddresses[index].number, index:index });
-    this.props.handleSelection(OfficeAddresses[index]);
+    this.setState({ open: false, currentItem: this.props.dataset[index].label, index:index });
+    this.props.handleSelection(this.props.dataset[index].value);
   };
 
   render() {
@@ -61,7 +63,7 @@ class SimpleMenu extends React.Component {
             aria-haspopup="true"
             onClick={this.handleToggle}
           >
-          {this.state.address}
+          {this.state.currentItem}
           </Button>
           <Popper
             className="list-of-items"
@@ -80,13 +82,13 @@ class SimpleMenu extends React.Component {
                 <Paper style={{ zIndex: 999999 }}>
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <MenuList style={{ zIndex: 999999 }}>
-                      {OfficeAddresses.map((element, index) => (
+                      {this.props.dataset.map((element, index) => (
                         <MenuItem
                           key={index}
                           style={{ zIndex: 999999 }}
                           onClick={e => this.handleClose(e, index)}
                         >
-                          {element.number} {element.street} {element.city}
+                          {element.label}
                         </MenuItem>
                       ))}
                     </MenuList>
