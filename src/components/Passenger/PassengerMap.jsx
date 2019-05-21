@@ -47,7 +47,8 @@ export class PassengerMap extends React.Component {
     snackBarVariant: null,
     showFilters: true,
     showDrivers: false,
-    selectedDriver: null
+    selectedDriver: null,
+    loading: true
   }
 
   componentDidMount() {
@@ -74,7 +75,9 @@ export class PassengerMap extends React.Component {
       snackBarVariant: null,
       showFilters: true,
       showDrivers: false,
-      selectedDriver: null
+      selectedDriver: null,
+      loading: true
+
     });
     this.getAllRoutes(OfficeAddresses[0], this.state.direction);
     this.getUsers();
@@ -91,7 +94,7 @@ export class PassengerMap extends React.Component {
   }
 
   onDriverSelection(email) {
-    
+
     let routes = [...this.state.fetchedRoutes];
     routes = routes.filter(x => x.drivers.includes(email));
     if (routes.length === 0) {
@@ -208,7 +211,7 @@ export class PassengerMap extends React.Component {
   getAllRoutes(address, direction) {
     if (address) {
       let routeDto;
-      this.setState({ direction: direction, loading:true });
+      this.setState({ direction: direction, loading: true });
       if (direction === "to")
         routeDto = { ToAddress: address };
       else
@@ -216,14 +219,14 @@ export class PassengerMap extends React.Component {
       api.post("Ride/routes", routeDto).then(res => {
         if (res.status === 200 && res.data !== "") {
 
-        if(this.state.selectedDriver){
-          this.setState({ loading:false, routes: res.data, fetchedRoutes: res.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, () => {this.onDriverSelection(this.state.selectedDriver)});
-        }else{
-          this.setState({ loading:false, routes: res.data, fetchedRoutes: res.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, this.displayRoute);
+          if (this.state.selectedDriver) {
+            this.setState({ loading: false, routes: res.data, fetchedRoutes: res.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, () => { this.onDriverSelection(this.state.selectedDriver) });
+          } else {
+            this.setState({ loading: false, routes: res.data, fetchedRoutes: res.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, this.displayRoute);
+          }
         }
-      }
       }).catch((error) => {
-        this.setState({loading:false});
+        this.setState({ loading: false });
         this.showSnackBar("Failed to load routes", 2)
       });
     }
@@ -281,134 +284,125 @@ export class PassengerMap extends React.Component {
 
   render() {
     return (
-      <div>
-
-      {this.state.loading ?
-        <div className="progress-circle">
-            <CircularProgress />
-        </div>
-        :
-      <div>
-        <div id="map"></div>
-        <div className="passengerForm max-width-element">
-          <Grid
-            alignItems="flex-start"
-            justify="center"
-            container
-          >
-            <Grid item xs={8}
-              container
-              alignItems="center"
-              justify="center"
-            >
-              <Button variant="contained" className="show-drivers" onClick={() => { this.setState({ showFilters: !this.state.showFilters }) }}>
-                {this.state.showFilters ? "Hide filters" : "Show filters"}
-              </Button>
-              {
-                this.state.routes.length > 0 ?
-                  <Button variant="contained" className="show-drivers" onClick={() => { this.showRoutesDrivers() }}>
-                    Route's drivers
+          <div>
+            <div id="map"></div>
+            <div className="passengerForm max-width-element">
+              <Grid
+                alignItems="flex-start"
+                justify="center"
+                container
+              >
+                <Grid item xs={8}
+                  container
+                  alignItems="center"
+                  justify="center"
+                >
+                  <Button variant="contained" className="show-drivers" onClick={() => { this.setState({ showFilters: !this.state.showFilters }) }}>
+                    {this.state.showFilters ? "Hide filters" : "Show filters"}
+                  </Button>
+                  {
+                    this.state.routes.length > 0 ?
+                      <Button variant="contained" className="show-drivers" onClick={() => { this.showRoutesDrivers() }}>
+                        Route's drivers
                 </Button>
-                  : <div></div>
-              }
-            </Grid>
-            <Grid item xs={8}
-              container
-              alignItems="center"
-              justify="center"
-            >
-              {
-                this.state.showFilters ?
-                  <PassengerRouteSelection
-                    className="max-width-element"
-                    direction={this.state.direction}
-                    initialAddress={OfficeAddresses[0]}
-                    users={this.state.users}
-                    onDriverSelection={(email) => { this.onDriverSelection(email) }}
-                    onDriverUnselection={() => { this.setState({ selectedDriver: null }) }}
-                    onAutosuggestBlur={(resetRoutes) => { this.onAutosuggestBlur(resetRoutes) }}
-                    displayName={addressToString(this.state.passengerAddress)}
-                    onChange={(address, direction) => this.getAllRoutes(address, direction)}
-                    onMeetupAddressChange={address => this.onMeetupAddressChange(address)}
-                  />
-                  :
-                  <div></div>
-              }
-            </Grid>
-            {this.state.showDrivers && this.state.routes.length > 0 ? (
-              <DriverRoutesSugestionsModal
-                rides={this.state.currentRides}
-                onRegister={ride => this.handleRegister(ride)}
-                handleNoteUpdate={(note) => { this.handleNoteUpdate(note) }}
-                closeModal={() => { this.setState({ showDrivers: false }) }}
-                showDrivers={this.state.showDrivers}
+                      : <div></div>
+                  }
+                </Grid>
+                <Grid item xs={8}
+                  container
+                  alignItems="center"
+                  justify="center"
+                >
+                  {
+                    this.state.showFilters ?
+                      <PassengerRouteSelection
+                        className="max-width-element"
+                        direction={this.state.direction}
+                        initialAddress={OfficeAddresses[0]}
+                        users={this.state.users}
+                        onDriverSelection={(email) => { this.onDriverSelection(email) }}
+                        onDriverUnselection={() => { this.setState({ selectedDriver: null }) }}
+                        onAutosuggestBlur={(resetRoutes) => { this.onAutosuggestBlur(resetRoutes) }}
+                        displayName={addressToString(this.state.passengerAddress)}
+                        onChange={(address, direction) => this.getAllRoutes(address, direction)}
+                        onMeetupAddressChange={address => this.onMeetupAddressChange(address)}
+                      />
+                      :
+                      <div></div>
+                  }
+                </Grid>
+                {this.state.showDrivers && this.state.routes.length > 0 ? (
+                  <DriverRoutesSugestionsModal
+                    rides={this.state.currentRides}
+                    onRegister={ride => this.handleRegister(ride)}
+                    handleNoteUpdate={(note) => { this.handleNoteUpdate(note) }}
+                    closeModal={() => { this.setState({ showDrivers: false }) }}
+                    showDrivers={this.state.showDrivers}
 
-              />
-            ) : (
-                <div></div>
-              )}
+                  />
+                ) : (
+                    <div></div>
+                  )}
 
-          </Grid>
-        </div>
-        {this.state.routes.length > 1
-          ? <Grid className="navigation-buttons">
-            <Media query="(min-width: 714px)">
-              {matches => matches ?
-                <div>
-                  <PassengerNavigationButton
-                    onClick={() => this.setState({
-                      currentRouteIndex: (this.state.currentRouteIndex - 1 + this.state.routes.length) % this.state.routes.length
-                    },
-                      this.displayRoute
-                    )}
-                    text="View Previous Route"
-                  />
-                  <PassengerNavigationButton
-                    onClick={() => this.setState({
-                      currentRouteIndex: (this.state.currentRouteIndex + 1) % this.state.routes.length
-                    },
-                      this.displayRoute
-                    )}
-                    text="View Next Route"
-                  />
-                </div>
-                : <div>
-                  <Button
-                    variant="contained"
-                    className="next-button"
-                    onClick={() => this.setState({
-                      currentRouteIndex: (this.state.currentRouteIndex - 1 + this.state.routes.length) % this.state.routes.length
-                    },
-                      this.displayRoute
-                    )}
-                  >
-                    <NavigateBefore fontSize="large" />
-                  </Button>
-                  <Button
-                    variant="contained"
-                    className="next-button"
-                    onClick={() => this.setState({
-                      currentRouteIndex: (this.state.currentRouteIndex + 1) % this.state.routes.length
-                    },
-                      this.displayRoute
-                    )}
-                  >
-                    <NavigateNext fontSize="large" />
-                  </Button>
-                </div>}
-            </Media>
-          </Grid>
-          : <div />
-        }
-        <SnackBars
-          message={this.state.snackBarMessage}
-          snackBarClicked={this.state.snackBarClicked}
-          variant={this.state.snackBarVariant}
-        />
-      </div>
-      }
-      </div>
-      );
+              </Grid>
+            </div>
+            {this.state.routes.length > 1
+              ? <Grid className="navigation-buttons">
+                <Media query="(min-width: 714px)">
+                  {matches => matches ?
+                    <div>
+                      <PassengerNavigationButton
+                        onClick={() => this.setState({
+                          currentRouteIndex: (this.state.currentRouteIndex - 1 + this.state.routes.length) % this.state.routes.length
+                        },
+                          this.displayRoute
+                        )}
+                        text="View Previous Route"
+                      />
+                      <PassengerNavigationButton
+                        onClick={() => this.setState({
+                          currentRouteIndex: (this.state.currentRouteIndex + 1) % this.state.routes.length
+                        },
+                          this.displayRoute
+                        )}
+                        text="View Next Route"
+                      />
+                    </div>
+                    : <div>
+                      <Button
+                        variant="contained"
+                        className="next-button"
+                        onClick={() => this.setState({
+                          currentRouteIndex: (this.state.currentRouteIndex - 1 + this.state.routes.length) % this.state.routes.length
+                        },
+                          this.displayRoute
+                        )}
+                      >
+                        <NavigateBefore fontSize="large" />
+                      </Button>
+                      <Button
+                        variant="contained"
+                        className="next-button"
+                        onClick={() => this.setState({
+                          currentRouteIndex: (this.state.currentRouteIndex + 1) % this.state.routes.length
+                        },
+                          this.displayRoute
+                        )}
+                      >
+                        <NavigateNext fontSize="large" />
+                      </Button>
+                    </div>}
+                </Media>
+              </Grid>
+              : <div />
+            }
+            <SnackBars
+              message={this.state.snackBarMessage}
+              snackBarClicked={this.state.snackBarClicked}
+              variant={this.state.snackBarVariant}
+            />
+          </div>
+            );
   }
 }
 export default PassengerMap;
