@@ -48,7 +48,8 @@ export class PassengerMap extends React.Component {
     showFilters: true,
     showDrivers: false,
     selectedDriver: null,
-    loading: true
+    loading: true,
+    driverInput:null
   }
 
   componentDidMount() {
@@ -76,7 +77,8 @@ export class PassengerMap extends React.Component {
       showFilters: true,
       showDrivers: false,
       selectedDriver: null,
-      loading: true
+      loading: true,
+      driverInput:null
 
     });
     this.getAllRoutes(OfficeAddresses[0], this.state.direction);
@@ -98,7 +100,11 @@ export class PassengerMap extends React.Component {
     let routes = [...this.state.fetchedRoutes];
     routes = routes.filter(x => x.drivers.includes(email));
     if (routes.length === 0) {
+      if(this.state.selectedDriver){
       this.showSnackBar("Selected driver doesn't have rides", 2);
+      }else{
+        this.showSnackBar("Choose an existing driver", 2);
+      }
     }
     this.setState({ selectedDriver: email, routes, currentRouteIndex: 0 }, this.displayRoute);
   }
@@ -219,7 +225,7 @@ export class PassengerMap extends React.Component {
       api.post("Ride/routes", routeDto).then(res => {
         if (res.status === 200 && res.data !== "") {
 
-          if (this.state.selectedDriver) {
+          if (this.state.selectedDriver || this.state.driverInput) {
             this.setState({ loading: false, routes: res.data, fetchedRoutes: res.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, () => { this.onDriverSelection(this.state.selectedDriver) });
           } else {
             this.setState({ loading: false, routes: res.data, fetchedRoutes: res.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, this.displayRoute);
@@ -320,6 +326,7 @@ export class PassengerMap extends React.Component {
                         direction={this.state.direction}
                         initialAddress={OfficeAddresses[0]}
                         users={this.state.users}
+                        onDriverInput={(driverInput) => {this.setState({driverInput: driverInput})}}
                         onDriverSelection={(email) => { this.onDriverSelection(email) }}
                         onDriverUnselection={() => { this.setState({ selectedDriver: null }) }}
                         onAutosuggestBlur={(resetRoutes) => { this.onAutosuggestBlur(resetRoutes) }}
