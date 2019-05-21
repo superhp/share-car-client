@@ -30,9 +30,7 @@ export class PassengerRideRequestsList extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.refech){
         this.showPassengerRequests();
-        }
     }
 
     showSnackBar(message, variant) {

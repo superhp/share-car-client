@@ -5,7 +5,7 @@ import TextField from "@material-ui/core/TextField";
 
 import "../../styles/newRideForm.css";
 var time = null;
-
+export const defaultTime = "08:00";
 const styles = theme => ({
   container: {
     display: "flex",
@@ -29,7 +29,7 @@ function TimePickers(props) {
         onBlur={e => {
           props.onTimeSet(e.target.value);
         }}
-        defaultValue="08:00"
+        defaultValue={defaultTime}
         className={classes.textField}
         InputLabelProps={{
           shrink: true

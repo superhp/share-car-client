@@ -1,7 +1,7 @@
 import * as React from "react";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-
+import Moment from "react-moment";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import "../../../styles/genericStyles.css";
@@ -20,7 +20,7 @@ export class DriverRouteSuggestionsItem extends React.Component {
                                     <Typography component="span" style={{ display: 'inline' }} color="textPrimary">
                                         Time: &nbsp;
                             </Typography>
-                                    {this.props.ride.rideDateTime.split("T").join(" ")}
+                            <Moment date={this.props.ride.rideDateTime} format="MM-DD HH:mm" />                                    <br />
                                     <br />
                                 </span>
                                 : ""}

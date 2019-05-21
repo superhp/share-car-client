@@ -20,7 +20,7 @@ const styles = {
 class RidesScheduler extends React.Component {
   state = {
     selectedDates: [],
-    time: "07:00",
+    time: null,
     snackBarClicked: false,
     note: ""
   };
@@ -98,6 +98,7 @@ class RidesScheduler extends React.Component {
         "  " +
         this.state.time
     };
+
     return ride;
   }
 

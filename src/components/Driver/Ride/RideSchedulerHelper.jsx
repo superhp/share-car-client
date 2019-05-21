@@ -9,8 +9,8 @@ import Slide from "@material-ui/core/Slide";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import DialogTitle from "@material-ui/core/DialogTitle";
-
 import TimePickers from "../../common/TimePickers";
+import {defaultTime} from "../../common/TimePickers";
 import TextField from "@material-ui/core/TextField";
 
 import "../../../styles/newRideForm.css";
@@ -25,6 +25,10 @@ class RideSchedulerHelper extends React.Component {
     state = {
         open: true,
     };
+
+componentDidMount(){
+    this.props.handleTime(defaultTime);
+}
 
     handleClose = () => {
         this.setState({ open: false });
