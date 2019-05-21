@@ -82,7 +82,8 @@ export class PassengerRouteSelection extends React.Component {
         this.setState({
             value: newValue,
             driverSelected: false
-        });
+        }); 
+        this.props.onDriverInput(newValue);
     };
 
     getSuggestionValue = suggestion => {
