@@ -23,7 +23,6 @@ class SimpleMenu extends React.Component {
   state = {
     open: false,
     currentItem:null,
-    index: 0
   };
   
 componentDidMount(nextProps){
@@ -35,15 +34,13 @@ componentDidMount(nextProps){
     this.setState({ open: !this.state.open });
   };
 
-  handleClose = (event, index) => {
+  handleClose = (event, element) => {
     if (this.anchorEl.contains(event.target)) {
       return;
     }
-    if(!index){
-      index = this.state.index;
-    }
-    this.setState({ open: false, currentItem: this.props.dataset[index].label, index:index });
-    this.props.handleSelection(this.props.dataset[index].value);
+
+    this.setState({ open: false, currentItem: element.label });
+    this.props.handleSelection(element.value);
   };
 
   render() {
@@ -86,7 +83,7 @@ componentDidMount(nextProps){
                         <MenuItem
                           key={index}
                           style={{ zIndex: 999999 }}
-                          onClick={e => this.handleClose(e, index)}
+                          onClick={e => this.handleClose(e, element)}
                         >
                           {element.label}
                         </MenuItem>
