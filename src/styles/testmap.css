@@ -29,10 +29,6 @@ button:focus {
   bottom: 12%;
 }
 
-.algolia-input {
-  justify-self: center;
-  margin-top: 20px;
-}
 .paper-background {
   padding: 0.2em;
 }
@@ -68,13 +64,6 @@ input.center-location {
 #map div {
   border: none !important;
 }
-
-.form-group-map {
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 5px;
-}
-
 .route-creation-input-buttons {
   display: flex;
   flex-direction: row;
@@ -102,13 +91,11 @@ div.map-input-selection input.location-select {
   z-index: 999;
 } 
 
-div.displayRoutes {
+div.routes {
   display: flex;
   flex-direction: column;
   position: absolute;
   z-index: 1;
-  margin-top: 10px;
-  margin-left: 10px;
 }
 
 button.continue-button {
