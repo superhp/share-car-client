@@ -17,6 +17,10 @@ button:focus {
 
 @media only screen and (max-width: 713px) {
     .secondary-header {
-        justify-content: center;
+      
     }
+}
+
+header-button span {
+    width: 40px;
 }

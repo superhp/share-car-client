@@ -4,33 +4,25 @@ import Grid from "@material-ui/core/Grid";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import { Link } from "react-router-dom";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import PowerIcon from "@material-ui/icons/PowerSettingsNew";
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import { makeStyles } from '@material-ui/core/styles';
 
 import "../../styles/secondaryHeader.css";
 
 export const SecondaryHeader = props => (
-    <Grid className="secondary-header" container>
-        <Button
-            className="header-button"
-            size="large"
-            onClick={() => props.refetch()}
-
-        >
-            <RefreshIcon fontSize="large" />
-        </Button>
-        <Link to={props.isDriver ?  "/driver/profile" : "/passenger/profile"}>
-            <Button 
-                className="header-button profile"
-                size="large"
-            >
-                <AccountCircleIcon />
-            </Button>
-        </Link>
+    
+        
         <Button 
             className="header-button"
             size="large"
             onClick={() => props.logout()}
         >
-            Logout
+            <PowerIcon />
         </Button>
-    </Grid>
 );

@@ -25,12 +25,21 @@
   font-size: large;
 }
 
-.heading-small-device {
-  text-align: center;
+.header-small-device {
+    text-align: center;
+}
+
+.header-test {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.header-test .header-text {
+    flex-basis: 50%;
 }
 
 .header-big-device {
-  padding-left: 66%;
+    display: flex;
 }
 
 .content {

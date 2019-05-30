@@ -54,39 +54,16 @@ class Layout extends React.Component<LayoutProps, MyProfileState> {
                 position="static"
                 className="generic-container-color"
               >
-                <Media query="(max-width: 713px)">
-                  {matches => matches ? 
-                    <div>
-                      <Grid item xs={12} className="header-text heading-small-device">
-                        <Typography variant="title" color="inherit">
-                          {LinksToHeadings[this.props.location.pathname]}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12}>
+                <Toolbar className="header-test">
+                    <Typography variant="title" color="inherit" className="header-text">
+                      {LinksToHeadings[this.props.location.pathname]}
+                    </Typography>
                         <SecondaryHeader 
                           logout={() => this.logout()} 
                           refetch={() => this.refetch()}
                           isDriver={this.props.location.pathname.includes("driver") ? true : false}
-                          className="secondary-header-small-device"
                         />
-                      </Grid>
-                    </div>
-                    : <Toolbar>
-                          <Grid item xs={12} sm={7}>
-                            <Typography variant="title" color="inherit" className="header-big-device">
-                              {LinksToHeadings[this.props.location.pathname]}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={12} sm={5}>
-                            <SecondaryHeader 
-                              logout={() => this.logout()} 
-                              refetch={() => this.refetch()}
-                              isDriver={this.props.location.pathname.includes("driver") ? true : false}
-                            />
-                          </Grid>
-                      </Toolbar>
-                    }
-                </Media>
+                </Toolbar>
               </AppBar>
           </Grid>
           {this.props.children}
