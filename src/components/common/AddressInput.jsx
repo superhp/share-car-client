@@ -2,7 +2,7 @@ import * as React from "react";
 import AlgoliaPlaces from "algolia-places-react";
 import Close from "@material-ui/icons/Close";
 
-import "../../styles/genericStyles.css";
+import "../../styles/locationSelection.css";
 
 export class AddressInput extends React.Component {
     constructor(props) {
@@ -32,7 +32,7 @@ export class AddressInput extends React.Component {
     render() {
 
         return (
-            <div className="form-group-map">
+            <div className="algolia-input">
                 <AlgoliaPlaces
                     options={{
                         language: 'lt',
