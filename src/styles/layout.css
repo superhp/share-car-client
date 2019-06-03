@@ -25,12 +25,23 @@
   font-size: large;
 }
 
-.heading-small-device {
+.header-small-device {
   text-align: center;
 }
 
-.header-big-device {
-  padding-left: 66%;
+.top-header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.top-header > div {
+  display: flex;
+  flex-basis: 10%;
+  justify-content: flex-end;
+}
+
+.top-header .top-header-text {
+  flex-basis: 80%;
 }
 
 .content {
@@ -42,7 +53,7 @@
 }
 
 button:focus {
-  outline:0!important;
+  outline: 0 !important;
 }
 
 @keyframes app-logo-spin {

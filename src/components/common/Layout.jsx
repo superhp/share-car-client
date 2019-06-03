@@ -7,13 +7,14 @@ import Toolbar from "@material-ui/core/Toolbar";
 
 import UserService from "../../services/userService";
 import AuthenticationService from "../../services/authenticationService";
+
 import NavBar from "./NavBar";
 import { LinksToHeadings } from "../LinkDictionary";
 import history from "../../helpers/history";
 
 import "../../styles/layout.css";
 import "../../styles/genericStyles.css";
-import { SecondaryHeader } from "./SecondaryHeader";
+import MenuListHeader from "./MenuListHeader";
 import Media from "react-media";
 
 type LayoutProps = {
@@ -21,7 +22,7 @@ type LayoutProps = {
 };
 
 class Layout extends React.Component<LayoutProps, MyProfileState> {
-  state : UserProfileData = { loading: true, user: null};
+  state: UserProfileData = { loading: true, user: null };
   userService = new UserService();
   authService = new AuthenticationService();
 
@@ -31,6 +32,7 @@ class Layout extends React.Component<LayoutProps, MyProfileState> {
 
   updateLoggedInUser = (user: UserProfileData) => {
     this.setState({ user: user });
+    console.log(this.state.user);
   };
 
   logout = () => {
@@ -50,44 +52,28 @@ class Layout extends React.Component<LayoutProps, MyProfileState> {
       <div className="app">
         <div className="content">
           <Grid container justify="center">
-              <AppBar
-                position="static"
-                className="generic-container-color"
-              >
-                <Media query="(max-width: 713px)">
-                  {matches => matches ? 
-                    <div>
-                      <Grid item xs={12} className="header-text heading-small-device">
-                        <Typography variant="title" color="inherit">
-                          {LinksToHeadings[this.props.location.pathname]}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <SecondaryHeader 
-                          logout={() => this.logout()} 
-                          refetch={() => this.refetch()}
-                          isDriver={this.props.location.pathname.includes("driver") ? true : false}
-                          className="secondary-header-small-device"
-                        />
-                      </Grid>
-                    </div>
-                    : <Toolbar>
-                          <Grid item xs={12} sm={7}>
-                            <Typography variant="title" color="inherit" className="header-big-device">
-                              {LinksToHeadings[this.props.location.pathname]}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={12} sm={5}>
-                            <SecondaryHeader 
-                              logout={() => this.logout()} 
-                              refetch={() => this.refetch()}
-                              isDriver={this.props.location.pathname.includes("driver") ? true : false}
-                            />
-                          </Grid>
-                      </Toolbar>
+            <AppBar position="static" className="generic-container-color">
+              <Toolbar className="top-header">
+                <div />
+                <div className="top-header-text">
+                  <Typography variant="title" color="inherit">
+                    {LinksToHeadings[this.props.location.pathname]}
+                  </Typography>
+                </div>
+                <div>
+                  <MenuListHeader
+                    user={this.state.user}
+                    logout={() => this.logout()}
+                    refetch={() => this.refetch()}
+                    isDriver={
+                      this.props.location.pathname.includes("driver")
+                        ? true
+                        : false
                     }
-                </Media>
-              </AppBar>
+                  />
+                </div>
+              </Toolbar>
+            </AppBar>
           </Grid>
           {this.props.children}
           {this.props.location.pathname.includes("driver") ? (
