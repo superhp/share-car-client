@@ -7,13 +7,14 @@ import Toolbar from "@material-ui/core/Toolbar";
 
 import UserService from "../../services/userService";
 import AuthenticationService from "../../services/authenticationService";
+
 import NavBar from "./NavBar";
 import { LinksToHeadings } from "../LinkDictionary";
 import history from "../../helpers/history";
 
 import "../../styles/layout.css";
 import "../../styles/genericStyles.css";
-import { SecondaryHeader } from "./SecondaryHeader";
+import MenuListHeader from "./MenuListHeader";
 import Media from "react-media";
 
 type LayoutProps = {
@@ -30,8 +31,9 @@ class Layout extends React.Component<LayoutProps, MyProfileState> {
   }
 
   updateLoggedInUser = (user: UserProfileData) => {
-    this.setState({ user: user });
-  };
+      this.setState({ user: user });
+      console.log(this.state.user);
+};
 
   logout = () => {
     this.authService.logout(this.userLoggedOut);
@@ -54,15 +56,16 @@ class Layout extends React.Component<LayoutProps, MyProfileState> {
                 position="static"
                 className="generic-container-color"
               >
-                <Toolbar className="header-test">
-                    <Typography variant="title" color="inherit" className="header-text">
+                <Toolbar className="top-header">
+                    <Typography variant="title" color="inherit" className="top-header-text">
                       {LinksToHeadings[this.props.location.pathname]}
                     </Typography>
-                        <SecondaryHeader 
-                          logout={() => this.logout()} 
-                          refetch={() => this.refetch()}
-                          isDriver={this.props.location.pathname.includes("driver") ? true : false}
-                        />
+                            <MenuListHeader
+                                user={this.state.user}
+                              logout={() => this.logout()} 
+                              refetch={() => this.refetch()}
+                              isDriver={this.props.location.pathname.includes("driver") ? true : false}
+                            />
                 </Toolbar>
               </AppBar>
           </Grid>

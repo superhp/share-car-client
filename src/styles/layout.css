@@ -29,18 +29,15 @@
     text-align: center;
 }
 
-.header-test {
+.top-header {
     display: flex;
     justify-content: flex-end;
 }
 
-.header-test .header-text {
-    flex-basis: 50%;
-}
+    .top-header .top-header-text {
+        flex-basis: 50%;
+    }
 
-.header-big-device {
-    display: flex;
-}
 
 .content {
   display: flex;

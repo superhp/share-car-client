@@ -2,12 +2,12 @@ button:focus {
     outline:0!important;
 }
 
-.secondary-header .header-button{
+.menu-list-header .header-button{
     background-color: transparent;
     color: white;
 }
 
-.secondary-header {
+.menu-list-header {
     justify-content: flex-end;
 }
 
@@ -21,6 +21,3 @@ button:focus {
     }
 }
 
-header-button span {
-    width: 40px;
-}
