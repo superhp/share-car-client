@@ -22,7 +22,7 @@ type LayoutProps = {
 };
 
 class Layout extends React.Component<LayoutProps, MyProfileState> {
-  state : UserProfileData = { loading: true, user: null};
+  state: UserProfileData = { loading: true, user: null };
   userService = new UserService();
   authService = new AuthenticationService();
 
@@ -31,9 +31,9 @@ class Layout extends React.Component<LayoutProps, MyProfileState> {
   }
 
   updateLoggedInUser = (user: UserProfileData) => {
-      this.setState({ user: user });
-      console.log(this.state.user);
-};
+    this.setState({ user: user });
+    console.log(this.state.user);
+  };
 
   logout = () => {
     this.authService.logout(this.userLoggedOut);
@@ -52,27 +52,28 @@ class Layout extends React.Component<LayoutProps, MyProfileState> {
       <div className="app">
         <div className="content">
           <Grid container justify="center">
-              <AppBar
-                position="static"
-                className="generic-container-color"
-              >
-                        <Toolbar className="top-header">
-                            <div></div>
-                            <div className="top-header-text">
-                        <Typography variant="title" color="inherit" >
-                            {LinksToHeadings[this.props.location.pathname]}
-                        </Typography>
-                            </div>
-                        <div>
-                    <MenuListHeader
-                                user={this.state.user}
-                              logout={() => this.logout()} 
-                              refetch={() => this.refetch()}
-                              isDriver={this.props.location.pathname.includes("driver") ? true : false}
-                                />
-                        </div>
-                </Toolbar>
-              </AppBar>
+            <AppBar position="static" className="generic-container-color">
+              <Toolbar className="top-header">
+                <div />
+                <div className="top-header-text">
+                  <Typography variant="title" color="inherit">
+                    {LinksToHeadings[this.props.location.pathname]}
+                  </Typography>
+                </div>
+                <div>
+                  <MenuListHeader
+                    user={this.state.user}
+                    logout={() => this.logout()}
+                    refetch={() => this.refetch()}
+                    isDriver={
+                      this.props.location.pathname.includes("driver")
+                        ? true
+                        : false
+                    }
+                  />
+                </div>
+              </Toolbar>
+            </AppBar>
           </Grid>
           {this.props.children}
           {this.props.location.pathname.includes("driver") ? (

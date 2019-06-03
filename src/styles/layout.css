@@ -26,24 +26,23 @@
 }
 
 .header-small-device {
-    text-align: center;
+  text-align: center;
 }
 
 .top-header {
-    display: flex;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
 }
 
-    .top-header > div {
-        display: flex;
-        flex-basis: 10%;
-        justify-content: flex-end;
-    }
+.top-header > div {
+  display: flex;
+  flex-basis: 10%;
+  justify-content: flex-end;
+}
 
-    .top-header .top-header-text {
-        flex-basis: 80%;
-    }
-
+.top-header .top-header-text {
+  flex-basis: 80%;
+}
 
 .content {
   display: flex;
@@ -54,7 +53,7 @@
 }
 
 button:focus {
-  outline:0!important;
+  outline: 0 !important;
 }
 
 @keyframes app-logo-spin {
