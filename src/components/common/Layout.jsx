@@ -56,16 +56,21 @@ class Layout extends React.Component<LayoutProps, MyProfileState> {
                 position="static"
                 className="generic-container-color"
               >
-                <Toolbar className="top-header">
-                    <Typography variant="title" color="inherit" className="top-header-text">
-                      {LinksToHeadings[this.props.location.pathname]}
-                    </Typography>
-                            <MenuListHeader
+                        <Toolbar className="top-header">
+                            <div></div>
+                            <div className="top-header-text">
+                        <Typography variant="title" color="inherit" >
+                            {LinksToHeadings[this.props.location.pathname]}
+                        </Typography>
+                            </div>
+                        <div>
+                    <MenuListHeader
                                 user={this.state.user}
                               logout={() => this.logout()} 
                               refetch={() => this.refetch()}
                               isDriver={this.props.location.pathname.includes("driver") ? true : false}
-                            />
+                                />
+                        </div>
                 </Toolbar>
               </AppBar>
           </Grid>

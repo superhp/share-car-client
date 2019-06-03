@@ -2,13 +2,19 @@ button:focus {
     outline:0!important;
 }
 
+.menu-list-header {
+    justify-content: flex-end;
+}
+
 .menu-list-header .header-button{
     background-color: transparent;
     color: white;
+    padding: 0;
+    min-width: 0;
 }
 
-.menu-list-header {
-    justify-content: flex-end;
+.menu-list-header .menu-header-popper {
+    left: -10;
 }
 
 .profile {
