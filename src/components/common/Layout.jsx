@@ -54,17 +54,13 @@ class Layout extends React.Component<LayoutProps, MyProfileState> {
           <Grid container justify="center">
             <AppBar position="static" className="generic-container-color">
               <Toolbar className="top-header">
-                <div />
-                <div className="top-header-text">
+                <Grid item xs="12" sm="2" />
+                <Grid item xs="12" sm="8" className="top-header-text">
                   <Typography variant="title" color="inherit">
-                    {
-                      LinksToHeadings[
-                        this.props.location.pathname.toLowerCase()
-                      ]
-                    }
+                    {LinksToHeadings[this.props.location.pathname]}
                   </Typography>
-                </div>
-                <div>
+                </Grid>
+                <Grid item xs="12" sm="2">
                   <MenuListHeader
                     user={this.state.user}
                     logout={() => this.logout()}
@@ -75,7 +71,7 @@ class Layout extends React.Component<LayoutProps, MyProfileState> {
                         : false
                     }
                   />
-                </div>
+                </Grid>
               </Toolbar>
             </AppBar>
           </Grid>
