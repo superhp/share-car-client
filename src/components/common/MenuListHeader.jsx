@@ -89,6 +89,24 @@ class MenuListHeader extends React.Component {
                     >
                       Profile
                     </MenuItem>
+                    <MenuItem
+                      component={Link}
+                      to="/"
+                      onClick={this.handleClose}
+                    >
+                      Change Role
+                    </MenuItem>
+                    <MenuItem
+                      component={Link}
+                      to={
+                        this.props.isDriver
+                          ? "/driver/manual"
+                          : "/passenger/manual"
+                      }
+                      onClick={this.handleClose}
+                    >
+                      Manual
+                    </MenuItem>
                     <MenuItem onClick={this.logOut}>Logout</MenuItem>
                   </MenuList>
                 </ClickAwayListener>

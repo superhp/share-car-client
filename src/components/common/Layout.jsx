@@ -57,7 +57,11 @@ class Layout extends React.Component<LayoutProps, MyProfileState> {
                 <div />
                 <div className="top-header-text">
                   <Typography variant="title" color="inherit">
-                    {LinksToHeadings[this.props.location.pathname]}
+                    {
+                      LinksToHeadings[
+                        this.props.location.pathname.toLowerCase()
+                      ]
+                    }
                   </Typography>
                 </div>
                 <div>
