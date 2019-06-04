@@ -11,6 +11,8 @@ import Popper from "@material-ui/core/Popper";
 import MenuList from "@material-ui/core/MenuList";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import "../../styles/MenuHeader.css";
+import driverLogo from "../../images/driver_icon.png";
+import passengerLogo from "../../images/passenger.png";
 
 class MenuListHeader extends React.Component {
   state = {
@@ -18,7 +20,6 @@ class MenuListHeader extends React.Component {
   };
   constructor(props) {
     super(props);
-    this.setState({ anchorEl: null });
     this.handleClick = this.handleClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.logOut = this.logOut.bind(this);
@@ -39,15 +40,24 @@ class MenuListHeader extends React.Component {
 
   render() {
     const image =
-      this.props.user !== null && this.props.user.pictureUrl !== null ? (
-        <div>
-          {this.props.user.firstName}
-          <img className="thumbnail" src={this.props.user.pictureUrl} alt="" />
+      this.props.user !== null && this.props.user.user.pictureUrl !== "" ? (
+        <div className="profile">
+          <img
+            className="menu-thumbnail"
+            src={this.props.user.user.pictureUrl}
+            alt=""
+          />
         </div>
       ) : (
         <AccountCircleIcon />
       );
-
+    const role = (
+      <img
+        className="role menu-thumbnail"
+        src={this.props.isDriver ? driverLogo : passengerLogo}
+        alt=""
+      />
+    );
     return (
       <div className="menu-list-header">
         <Button
@@ -56,7 +66,8 @@ class MenuListHeader extends React.Component {
           aria-haspopup="true"
           onClick={this.handleClick}
         >
-          <AccountCircleIcon />
+          {role}
+          {image}
         </Button>
 
         <Popper
