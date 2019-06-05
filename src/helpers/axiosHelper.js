@@ -3,7 +3,7 @@ import axios from "axios";
 import history from "./history";
 
 const api = axios.create({
-  baseURL: 'http://localhost:53945/api/',//`https://cts-share-car-api.azurewebsites.net/api/`,
+  baseURL: 'https://cts-share-car-api.azurewebsites.net/api/',
   withCredentials: true
 });
 
