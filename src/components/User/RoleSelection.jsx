@@ -82,7 +82,7 @@ class RoleSelection extends Component<RoleSelectionState, MyProfileState> {
               </Link>
               <h2 className="role-selection">Driver</h2>
 
-              <Link to="/passenger/Requests" onClick={changeRole("passenger")}>
+              <Link to="/passenger/requests" onClick={changeRole("passenger")}>
                 <img className="role-image" src={passengerLogo} alt=""/>
               </Link>
               <h2 className="role-selection">Passenger</h2>
