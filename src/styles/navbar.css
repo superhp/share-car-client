@@ -3,7 +3,7 @@
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 62px;
+  height: 6%;
   display: flex;
   background-color: white;
   align-items: center;
@@ -11,6 +11,8 @@
 }
 
 .navBar-button {
+  
+  color: #e8e9eb;
   flex: 1;
   height: 100%;
   background-color: #0a2239;
@@ -18,13 +20,18 @@
   flex-direction: column;
   align-items: center;
 }
-a.navBar-button {
-  align-items: center;
+div.navBar-button {
   color: #e8e9eb;
+  align-items: center;
 }
 
 a.navBar-button:hover {
-  color: #e8e9eb;
+  color: #629ad0;
+  text-decoration: none;
+}
+
+.is-active {
+  color: #acc9e4;
   text-decoration: none;
 }
 
