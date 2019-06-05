@@ -16,9 +16,8 @@ const NavBar = props => {
       <Link className="navBar-button" role="button" to={status + "/map"}>
         <div className="button-container">
           <Map />
-          <Media query="(min-width: 714px)">
-            {matches => (matches ? <div className="">Routes map</div> : "")}
-          </Media>
+          
+          <div className="">Map</div>
         </div>
       </Link>
       <Link
@@ -28,15 +27,8 @@ const NavBar = props => {
       >
         <div className="button-container">
           <NoteAdd />
-          <Media query="(min-width: 714px)">
-            {matches =>
-              matches ? (
-                <div className="">{!props.isDriver ? "Requests" : "Rides"}</div>
-              ) : (
-                ""
-              )
-            }
-          </Media>
+          
+          <div className="">{!props.isDriver ? "My Requests" : "My Rides"}</div>
         </div>
       </Link>
     </div>

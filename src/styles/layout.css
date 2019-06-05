@@ -11,10 +11,7 @@
 }
 
 .app-header {
-  /* background-color: #222; */
-  height: 150px;
-  padding: 20px;
-  color: white;
+  position: fixed;
 }
 
 .app-title {
@@ -23,6 +20,9 @@
 
 .app-intro {
   font-size: large;
+}
+.app-content {
+  padding-top: 64px;
 }
 
 .header-small-device {
