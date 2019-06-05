@@ -1,14 +1,14 @@
 export var LinksToHeadings = {
   "/": "Role Selection",
-  "/login": "Login Page",
-  "/passenger/Requests": "My Requests",
-  "/driver/profile": "My Profile",
-  "/passenger/profile": "My Profile",
-  "/driver/Map": "Route Creation",
-  "/passenger/Map": "View Drivers Routes",
-  "/driver/rides": "My Active Rides",
+  "/login": "Login",
+  "/passenger/requests": "Requests",
+  "/driver/profile": "Profile",
+  "/passenger/profile": "Profile",
+  "/driver/map": "Route Creation",
+  "/passenger/map": "Drivers Routes",
+  "/driver/rides": "Active Rides",
   "/driver/winnerBoard": "Monthly Leaders",
   "/passenger/winnerBoard": "Monthly Leaders",
-  "/driver/Manual": "Manual",
-  "/passenger/Manual" : "Manual"
+  "/driver/manual": "Manual",
+  "/passenger/manual" : "Manual"
 };

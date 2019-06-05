@@ -18,6 +18,7 @@ import {
 import { addressToString, fromLocationIqResponse } from "../../utils/addressUtils";
 
 import "./../../styles/testmap.css";
+import LocationSelection from "../Maps/LocationSelection";
 
 export class DriverMap extends React.Component {
   constructor(props) {
@@ -170,7 +171,10 @@ export class DriverMap extends React.Component {
 
       <div>
         {this.autocompleteInputs = []}
-        <div className="displayRoutes">
+        
+        <div className="routes">
+          <LocationSelection/>
+{/*
           <DriverRouteInput
             officeSelectionChange={(address, inputIndex, officeIndex) => this.officeSelectionChange(address, inputIndex, officeIndex)}
             changeRoutePoint={(address, index) => this.changeRoutePoint(address, index)}
@@ -178,7 +182,9 @@ export class DriverMap extends React.Component {
             routePoints={this.state.routePoints}
             removeRoutePoint={index => this.removeRoutePoint(index)}
             isRouteToOffice={this.state.isRouteToOffice}
-          />
+          />*/}
+
+
         </div>
         <div id="map"></div>
         {this.state.isRideSchedulerVisible ? (

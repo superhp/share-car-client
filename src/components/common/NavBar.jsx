@@ -13,56 +13,29 @@ const NavBar = props => {
   const status = props.isDriver ? "/driver" : "/passenger";
   return (
     <div className="navBar">
-      <Link className="navBar-button" role="button" to={status + "/Map"}>
+      <Link className="navBar-button" role="button" to={status + "/map"}>
         <div className="button-container">
           <Map />
           <Media query="(min-width: 714px)">
-            {matches => matches ? 
-              <div className="button-container">Routes map</div>
-            : ""}
+            {matches => (matches ? <div className="">Routes map</div> : "")}
           </Media>
         </div>
       </Link>
-      {!props.isDriver ? (
-        <Link className="navBar-button" role="button" to={status + "/Requests"}>
-          <div className="button-container">
-            <NoteAdd />
-            <Media query="(min-width: 714px)">
-              {matches => matches ? 
-                <div className="button-container">Requests</div>
-              : ""}
-            </Media>
-          </div>
-        </Link>
-      ) : (
-        <Link className="navBar-button" role="button" to={status + "/rides"}>
-          <div className="button-container">
-            <PlaylistAdd />
-            <Media query="(min-width: 714px)">
-              {matches => matches ? 
-                <div className="button-container">Rides</div>
-              : ""}
-            </Media>
-          </div>
-        </Link>
-      )}
-      <Link className="navBar-button" role="button" to="/">
+      <Link
+        className="navBar-button"
+        role="button"
+        to={status + (!props.isDriver ? "/requests" : "/rides")}
+      >
         <div className="button-container">
-          <Cached />
+          <NoteAdd />
           <Media query="(min-width: 714px)">
-              {matches => matches ? 
-                <div className="button-container">Change role</div>
-              : ""}
-          </Media>
-        </div>
-      </Link>
-      <Link className="navBar-button" role="button" to={status + "/Manual"}>
-        <div className="button-container">
-          <Book />
-          <Media query="(min-width: 714px)">
-              {matches => matches ? 
-                <div className="button-container">Manual</div>
-              : ""}
+            {matches =>
+              matches ? (
+                <div className="">{!props.isDriver ? "Requests" : "Rides"}</div>
+              ) : (
+                ""
+              )
+            }
           </Media>
         </div>
       </Link>

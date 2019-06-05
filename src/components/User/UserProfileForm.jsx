@@ -1,6 +1,5 @@
 import * as React from "react";
 
-import "../../styles/userProfile.css";
 import { UserPoints } from "./UserPoints";
 import { UserProfileFormField } from "./UserProfileFormField";
 import Button from "@material-ui/core/Button";
