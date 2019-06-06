@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import { OfficeAddresses } from "../../utils/AddressData";
 import RidesScheduler from "./Ride/RidesScheduler";
 import { DriverRouteInput } from "./Map/DriverRouteInput";
+import LocationSelection from "../Maps/LocationSelection";
 import {
   fromLonLatToMapCoords, fromMapCoordsToLonLat,
   getNearest, coordinatesToLocation,
@@ -19,6 +20,13 @@ import { addressToString, fromLocationIqResponse } from "../../utils/addressUtil
 
 import "./../../styles/testmap.css";
 import RouteSelection from "../Maps/RouteSelection";
+import RouteMap from "../Maps/RouteMap";
+
+const CurrentComponent = {
+  FullMap : 0,
+  LocationSelection : 1,
+  AddPointMap : 2,
+}
 
 export class DriverMap extends React.Component {
   constructor(props) {
@@ -33,6 +41,7 @@ export class DriverMap extends React.Component {
     routePoints: [],
     routePolylineFeature: null,
     currentOffice: OfficeAddresses[0],
+    currentComponent: CurrentComponent.FullMap,
   };
 
   componentDidMount() {
@@ -49,6 +58,7 @@ export class DriverMap extends React.Component {
       isRideSchedulerVisible: false,
       routeGeometry: null,
       routePoints: [],
+      currentComponent: CurrentComponent.FullMap,
       routePolylineFeature: null,
     }, () => {
       this.addNewRoutePoint(this.state.currentOffice)
@@ -166,10 +176,24 @@ export class DriverMap extends React.Component {
     return { map, vectorSource };
   }
 
+  selectLocation(location){
+    this.setState({currentComponent: CurrentComponent.FullMap},() => {
+    //  this.setState({ address }, this.setPickUpPointFeature)
+    this.initializeMap();
+    });
+  }
+
+ returnFromRouteMap(location){
+  this.setState({currentComponent:CurrentComponent.FullMap},this.initializeMap);
+ }
+
   render() {
     return (
 
       <div>
+        {
+          this.state.currentComponent === CurrentComponent.FullMap 
+    ?  <div>
         {this.autocompleteInputs = []}
         
         <div className="routes">
@@ -180,6 +204,7 @@ export class DriverMap extends React.Component {
                       routePoints={this.state.routePoints}
                       removeRoutePoint={index => this.removeRoutePoint(index)}
                       isRouteToOffice={this.state.isRouteToOffice}
+                      showLocationSelection={() => {this.setState({currentComponent : CurrentComponent.LocationSelection})}}
           />
 {/*
           <DriverRouteInput
@@ -194,6 +219,7 @@ export class DriverMap extends React.Component {
 
         </div>
         <div id="map"></div>
+{/*
         {this.state.isRideSchedulerVisible ? (
           <RidesScheduler routeInfo={{
             fromAddress: this.state.isRouteToOffice ? this.state.routePoints[this.state.routePoints.length - 1].address : this.state.routePoints[0].address,
@@ -208,8 +234,26 @@ export class DriverMap extends React.Component {
           onClick={() => this.setState({ isRideSchedulerVisible: !this.state.isRideSchedulerVisible })}
         >
           Continue
-        </Button>
+        </Button>*/}
+
+        
+</div>
+: <div>
+  {this.state.currentComponent === CurrentComponent.LocationSelection 
+  ? <LocationSelection
+   showRouteMap = {() => {this.setState({currentComponent:CurrentComponent.RouteMap})}}
+   selectLocation = {(location) => {this.selectLocation(location)}}
+   />
+  : <RouteMap
+  return = {(location) => {this.returnFromRouteMap(location)}}
+  />
+  }
+
+
+</div>
+        }
       </div>
+  
     );
   }
 }

@@ -14,8 +14,10 @@ import Place from "@material-ui/icons/Place";
 import Settings from "@material-ui/icons/Settings";
 import { formAlgoliaAddress } from "../../utils/addressUtils";
 import { OfficeAddressesMenu } from "../../utils/AddressData";
+import { Link } from "react-router-dom";
 
-export default class RouteSelection extends React.Component<{}> {
+
+export default class LocationSelection extends React.Component<{}> {
     state = {
         open: true,
         selectedAddress : null,
@@ -37,7 +39,7 @@ export default class RouteSelection extends React.Component<{}> {
                 </Grid>
                 <Grid item xs={12}container className="location-selection-element">
                     <Grid item xs={12}>
-                    <Card className="location-selection-element">
+                    <Card className="location-selection-element" onClick={() => {this.props.showRouteMap()}}>
                         <div className="location-icon">
                     <Place/>
                     </div>
@@ -68,7 +70,7 @@ export default class RouteSelection extends React.Component<{}> {
                 </Grid>
                 <Grid item xs={12}container className="location-selection-element">
                     <Grid item xs={12}>
-                    <Card className="location-selection-element">
+                    <Card className="location-selection-element" onClick={() =>{this.props.selectLocation(OfficeAddressesMenu[0].value)}}>
                     <div className="location-icon">
                         <Work/>
                         </div>
@@ -78,7 +80,7 @@ export default class RouteSelection extends React.Component<{}> {
                 </Grid>
                 <Grid item xs={12}container className="location-selection-element">
                     <Grid item xs={12}>
-                    <Card className="location-selection-element">
+                    <Card className="location-selection-element" onClick={() =>{this.props.selectLocation(OfficeAddressesMenu[1].value)}}>
                     <div className="location-icon">
                         <Work/>
                         </div>

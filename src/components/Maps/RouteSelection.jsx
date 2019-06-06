@@ -17,6 +17,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { formAlgoliaAddress } from "../../utils/addressUtils";
+import history from "../../helpers/history";
 
 export default class RouteSelection extends React.Component<{}> {
     state = {
@@ -45,13 +46,14 @@ export default class RouteSelection extends React.Component<{}> {
                         </Grid>
                     </Grid>
                     <Grid item xs={8} className="direction-inputs">
-                    <AddressInput
-                              key={this.props.routePoints[0]}
-                              index={0}
-                               deletable={false}
-                               removeRoutePoint={id => { this.props.removeRoutePoint(id) }}
-                               placeholder={this.props.isRouteToOffice ? "To location" : "From location"}
-                               onChange={(suggestion, index) => this.props.changeRoutePoint(formAlgoliaAddress(suggestion), index)}
+                        <AddressInput
+                            onClick={() => { this.props.showLocationSelection() }}
+                            key={this.props.routePoints[0]}
+                            index={0}
+                            deletable={false}
+                            removeRoutePoint={id => { this.props.removeRoutePoint(id) }}
+                            placeholder={this.props.isRouteToOffice ? "To location" : "From location"}
+                            onChange={(suggestion, index) => this.props.changeRoutePoint(formAlgoliaAddress(suggestion), index)}
                             displayName=""
                         />
                         {this.props.routePoints.length > 1
@@ -72,6 +74,7 @@ export default class RouteSelection extends React.Component<{}> {
                                                 ? <ListItem button className={this.props.nested}>
                                                     <ListItemIcon>
                                                         <AddressInput
+                                                            onClick={() => { this.props.showLocationSelection() }}
                                                             className="driver-route-input"
                                                             key={index}
                                                             index={index}
@@ -85,19 +88,19 @@ export default class RouteSelection extends React.Component<{}> {
                                                 </ListItem>
                                                 : null
                                         ))}
-
                                     </List>
                                 </Collapse>
                             </List>
                             : <div></div>
                         }
                         <AddressInput
-                               key={this.props.routePoints.length - 1}
-                               index={this.props.routePoints.length - 1}
-                               deletable={false}
-                              removeRoutePoint={id => { this.props.removeRoutePoint(id) }}
-                              placeholder={this.props.isRouteToOffice ? "To location" : "From location"}
-                              onChange={(suggestion, index) => this.props.changeRoutePoint(formAlgoliaAddress(suggestion), index)}
+                            onClick={() => { this.props.showLocationSelection() }}
+                            key={this.props.routePoints.length - 1}
+                            index={this.props.routePoints.length - 1}
+                            deletable={false}
+                            removeRoutePoint={id => { this.props.removeRoutePoint(id) }}
+                            placeholder={this.props.isRouteToOffice ? "To location" : "From location"}
+                            onChange={(suggestion, index) => this.props.changeRoutePoint(formAlgoliaAddress(suggestion), index)}
                             displayName=""
                         />
                     </Grid>
@@ -109,7 +112,7 @@ export default class RouteSelection extends React.Component<{}> {
                         </Grid>
                         <Grid item xs={12} className="clickable-element">
                             <div className="generic-button">
-                                <Add/>
+                                <Add />
                             </div>
                         </Grid>
                     </Grid>

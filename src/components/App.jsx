@@ -63,7 +63,7 @@ export default class App extends React.Component {
               )}
             />
             <Route
-              path="/:role(driver|passenger)/loc"
+              path="/:role(driver|passenger)/location"
               render={(props) => <LocationSelection {...props} refetch={this.state.refetch} />}
             />
             <Route

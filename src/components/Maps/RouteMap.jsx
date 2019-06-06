@@ -58,7 +58,7 @@ export default class RouteMap extends React.Component<{}> {
             const [longitude, latitude] = fromMapCoordsToLonLat(e.coordinate);
             this.handleMapClick(longitude, latitude);
           });
-          setTimeout(() => { this.map.updateSize(); }, 1000);
+          setTimeout(() => { this.map.updateSize(); }, 200);
           return { map, vectorSource };
     }
 
