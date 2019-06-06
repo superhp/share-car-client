@@ -42,7 +42,7 @@ class UserProfile extends Component<{}, UserProfileState, LayoutProps, MyProfile
   }
 
   updateUserProfile = (user: UserProfileData) => {
-    this.setState({ loading: false, user: user });
+      this.setState({ loading: false, user: user });
   };
 
   handleSubmit(e) {

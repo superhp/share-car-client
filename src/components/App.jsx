@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import { Route, Switch } from "react-router-dom";
 import { Router } from "react-router";
@@ -20,13 +19,11 @@ import RouteMap from "./Maps/RouteMap";
 export default class App extends React.Component {
   state = {
     refetch: false
-  }
+  };
 
   refetchData() {
-    this.setState({ refetch: !this.state.refetch })
+    this.setState({ refetch: !this.state.refetch });
   }
-
-
 
   render() {
     return (
@@ -35,32 +32,44 @@ export default class App extends React.Component {
           <Route path="/login" component={Login} />
           <Layout refetch={this.refetchData.bind(this)}>
             <Route exact path="/" component={RoleSelection} />
-            <Route path="/passenger/Requests" render={(props) => <Passenger {...props} refetch={this.state.refetch} />} />
+            <Route
+              path="/passenger/Requests"
+              render={props => (
+                <Passenger {...props} refetch={this.state.refetch} />
+              )}
+            />
 
             <Route
               path="/:role(driver|passenger)/profile"
-              render={(props) => <UserProfile {...props}  />}
+              render={props => <UserProfile {...props} />}
             />
 
             <Route path="/:role(driver|passenger)/Manual" component={Manual} />
 
-            <Route path="/:role(driver|passenger)/Map" render={(props) => <Map {...props} refetch={this.state.refetch} />} />
             <Route
-              path='/:role(driver|passenger)/rides'
-              render={(props) => <Rides {...props} refetch={this.state.refetch} />}
+              path="/:role(driver|passenger)/Map"
+              render={props => <Map {...props} refetch={this.state.refetch} />}
+            />
+            <Route
+              path="/:role(driver|passenger)/rides"
+              render={props => (
+                <Rides {...props} refetch={this.state.refetch} />
+              )}
             />
             <Route
               path="/:role(driver|passenger)/winnerBoard"
-              render={(props) => <WinnerBoard {...props} refetch={this.state.refetch} />}
-            />   
-             <Route
-            path="/:role(driver|passenger)/loc"
-            render={(props) => <LocationSelection {...props} refetch={this.state.refetch} />}
-          />
-                       <Route
-            path="/:role(driver|passenger)/rrr"
-            render={(props) => <RouteMap {...props} refetch={this.state.refetch} />}
-          />
+              render={props => (
+                <WinnerBoard {...props} refetch={this.state.refetch} />
+              )}
+            />
+            <Route
+              path="/:role(driver|passenger)/loc"
+              render={(props) => <LocationSelection {...props} refetch={this.state.refetch} />}
+            />
+            <Route
+              path="/:role(driver|passenger)/rrr"
+              render={(props) => <RouteMap {...props} refetch={this.state.refetch} />}
+            />
           </Layout>
         </Switch>
       </Router>

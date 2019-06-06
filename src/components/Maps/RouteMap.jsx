@@ -88,13 +88,15 @@ export default class RouteMap extends React.Component<{}> {
             <div>
                 <div className="navigation">
                     <div className="return">
-                    <div className="generic-button return-icon">
+                    <div className="generic-button return-icon" onClick={() => {this.props.return()}}>
                         <Clear />
                         </div>
                     </div>
                     <div className="label">Tap on the screen</div>
                     <div className="select">
-                    <div className={this.state.address ? "generic-button select-icon" : "generic-button select-icon disabled"}>
+                    <div className={this.state.address 
+                        ? "generic-button select-icon" 
+                        : "generic-button select-icon disabled"} onClick={() => {this.props.return(this.state.address)}}>
                         <Done />
                         </div>
                     </div>

@@ -1,0 +1,46 @@
+button:focus {
+  outline: 0 !important;
+}
+
+.menu-list-header {
+  justify-content: flex-end;
+}
+
+.menu-list-header .header-button {
+  background-color: transparent;
+  color: white;
+  padding: 0;
+  min-width: 0;
+}
+
+.menu-list-header .menu-header-popper {
+  left: -10;
+}
+
+.profile {
+  height: 100%;
+  width: 100%;
+}
+
+@media only screen and (max-width: 713px) {
+  .secondary-header {
+  }
+}
+
+.menu-thumbnail {
+  width: 49px;
+  height: 10%;
+  margin: 0 auto;
+  text-align: center;
+  display: block;
+  border-radius: 50%;
+}
+.menu-list-header .header-button .role {
+  position: absolute;
+  z-index: 0;
+  width: auto;
+  height: 22px;
+  right: -6px;
+  bottom: -6px;
+  background-color: mintcream;
+}
