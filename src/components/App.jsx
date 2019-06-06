@@ -9,11 +9,13 @@ import RoleSelection from "./User/RoleSelection";
 import Passenger from "./Passenger/Passenger";
 import UserProfile from "./User/UserProfile";
 import Rides from "./Driver/Ride/Rides";
+import LocationSelection from "./Maps/LocationSelection";
 import Manual from "./Manual";
 import WinnerBoard from "./Winner/WinnerBoard";
 import Map from "./Maps/Map";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css";
+import RouteMap from "./Maps/RouteMap";
 
 export default class App extends React.Component {
   state = {
@@ -50,7 +52,15 @@ export default class App extends React.Component {
             <Route
               path="/:role(driver|passenger)/winnerBoard"
               render={(props) => <WinnerBoard {...props} refetch={this.state.refetch} />}
-            />
+            />   
+             <Route
+            path="/:role(driver|passenger)/loc"
+            render={(props) => <LocationSelection {...props} refetch={this.state.refetch} />}
+          />
+                       <Route
+            path="/:role(driver|passenger)/rrr"
+            render={(props) => <RouteMap {...props} refetch={this.state.refetch} />}
+          />
           </Layout>
         </Switch>
       </Router>

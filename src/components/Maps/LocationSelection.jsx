@@ -1,71 +1,92 @@
 import * as React from "react";
 import { AddressInput } from "../common/AddressInput";
 import "../../styles/locationSelection.css";
+import "../../styles/genericStyles.css";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Cached from "@material-ui/icons/Cached";
 import Add from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
+import Home from "@material-ui/icons/Home";
+import Work from "@material-ui/icons/Work";
+import Place from "@material-ui/icons/Place";
+import Settings from "@material-ui/icons/Settings";
+import { formAlgoliaAddress } from "../../utils/addressUtils";
+import { OfficeAddressesMenu } from "../../utils/AddressData";
 
-export default class LocationSelection extends React.Component<{}> {
+export default class RouteSelection extends React.Component<{}> {
+    state = {
+        open: true,
+        selectedAddress : null,
+    };
 
     render() {
         return (
-            <Card className="location-selection-container">
-                <Grid container >
-
-                    <Grid item xs={2} container className="direction-label-container">
-                        <Grid item xs={12} className="direction-label-container">
-                            <div className="direction-label-element">
-                                <Typography component="p">
-                                    From
-                    </Typography>
-                            </div>
-                        </Grid>
-                        <Grid item xs={12} className="direction-label-container">
-                            <div className="direction-label-element" >
-                                <Typography className="direction-label" component="p">
-                                    To
-                    </Typography>
-                            </div>
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={8} className="direction-inputs">
-                        <AddressInput
-                            //  key={this.props.routePoints.length - 1}
-                            //  index={this.props.routePoints.length - 1}
-                            //   deletable={false}
-                            //    removeRoutePoint={id => { this.props.removeRoutePoint(id) }}
-                            //   placeholder={this.props.isRouteToOffice ? "To location" : "From location"}
-                            //   onChange={(suggestion, index) => this.props.changeRoutePoint(fromAlgoliaAddress(suggestion), index)}
-                            displayName=""
-                        />
-                        <AddressInput
-                            //   key={this.props.routePoints.length - 1}
-                            //   index={this.props.routePoints.length - 1}
-                            //   deletable={false}
-                            //  removeRoutePoint={id => { this.props.removeRoutePoint(id) }}
-                            //  placeholder={this.props.isRouteToOffice ? "To location" : "From location"}
-                            //  onChange={(suggestion, index) => this.props.changeRoutePoint(fromAlgoliaAddress(suggestion), index)}
-                            displayName=""
-                        />
-                    </Grid>
-                    <Grid item xs={2} container>
-                        <Grid item xs={12} className="clickable-element">
-                            <div className="clickable">
-                                <Cached />
-                            </div>
-                        </Grid>
-                        <Grid item xs={12} className="clickable-element">
-                            <div className="clickable">
-                                <Add />
-                            </div>
-                        </Grid>
-                    </Grid>
-
+            <Grid container item xs={12} >
+                <Grid item xs={12}  className="location-selection-element">
+                    <AddressInput
+                        //              key={this.props.routePoints.length - 1}
+                        //               index={this.props.routePoints.length - 1}
+                        //            deletable={false}
+                        //          removeRoutePoint={id => { this.props.removeRoutePoint(id) }}
+                        //        placeholder={this.props.isRouteToOffice ? "To location" : "From location"}
+                        //      onChange={(suggestion, index) => this.props.changeRoutePoint(formAlgoliaAddress(suggestion), index)}
+                        displayName=""
+                    />
                 </Grid>
-            </Card>
+                <Grid item xs={12}container className="location-selection-element">
+                    <Grid item xs={12}>
+                    <Card className="location-selection-element">
+                        <div className="location-icon">
+                    <Place/>
+                    </div>
+                    Select location on map
+                    </Card>
+                    </Grid>
+                </Grid>
+                <Grid item xs={12}container className="location-selection-element">
+                    <Grid item xs={12}>
+                    <Card className="location-selection-element">
+                        <div className="location-icon">
+                    <Home/>
+                    </div>
+                    {this.props.homeAddress
+                     ? this.props.homeAddress
+                     : "Select your home address"
+                    }
+                    {this.props.homeAddress
+                    ?
+                    <div className="generic-button settings">
+                    <Settings />
+                    </div>
+                    :
+                    <div></div>
+                    }
+                    </Card>
+                    </Grid>
+                </Grid>
+                <Grid item xs={12}container className="location-selection-element">
+                    <Grid item xs={12}>
+                    <Card className="location-selection-element">
+                    <div className="location-icon">
+                        <Work/>
+                        </div>
+                        {OfficeAddressesMenu[0].label}
+                    </Card>
+                    </Grid>
+                </Grid>
+                <Grid item xs={12}container className="location-selection-element">
+                    <Grid item xs={12}>
+                    <Card className="location-selection-element">
+                    <div className="location-icon">
+                        <Work/>
+                        </div>
+                        {OfficeAddressesMenu[1].label}
+                    </Card>
+                    </Grid>
+                </Grid>
+            </Grid>
         );
     }
 }

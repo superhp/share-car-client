@@ -2,7 +2,7 @@ import * as React from "react";
 import AlgoliaPlaces from "algolia-places-react";
 import Close from "@material-ui/icons/Close";
 
-import "../../styles/locationSelection.css";
+import "../../styles/routeSelection.css";
 
 export class AddressInput extends React.Component {
     constructor(props) {
