@@ -73,26 +73,13 @@ export default class RouteSelection extends React.Component<{}> {
                                             index + 1 < this.props.routePoints.length
                                                 ? <ListItem button className={this.props.nested}>
                                                     <ListItemIcon>
-                                                        {/* <AddressInput
-                                                            onClick={() => { this.props.showLocationSelection(index + 1) }}
-                                                            className="driver-route-input"
-                                                            key={index}
-                                                            index={index}
-                                                            deletable={true}
-                                                            removeRoutePoint={id => { this.props.removeRoutePoint(id) }}
-                                                            placeholder={this.props.isRouteToOffice ? "To location" : "From location"}
-                                                            onChange={(suggestion, index) => this.props.changeRoutePoint(formAlgoliaAddress(suggestion), index)}
-                                                            displayName={this.props.routePoints[index + 1].displayName}
-                                                        />*/}
-
-
                                                         <div
                                                             className={this.props.routePoints.length > 0 ? "location-input-container" : "location-input-container empty"}
                                                             onClick={() => { this.props.showLocationSelection(index, routePointType.intermediate) }}
                                                         >
                                                             {
                                                                 this.props.routePoints.length > 0 ?
-                                                                    this.props.routePoints[0].displayName : "Intermediate point"
+                                                                this.props.routePoints[0].displayName : "Intermediate point"
                                                             }
 
                                                         </div>
@@ -122,7 +109,7 @@ export default class RouteSelection extends React.Component<{}> {
                             </div>
                         </Grid>
                         <Grid item xs={12} className="clickable-element">
-                            <div className="generic-button">
+                            <div className={this.props.routePoints.length > 0 ? "generic-button" : "generic-button disabled"} onClick={this.props.routePoints.length > 0 ? () => {this.props.addNewRoutePoint()} : null}>
                                 <Add />
                             </div>
                         </Grid>

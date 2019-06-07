@@ -179,13 +179,25 @@ export class DriverMap extends React.Component {
           this.addNewRoutePoint(address, currentRoutePoint.index);
         }
       }
-
     });
   }
 
   showLocationSelection(routePointIndex, routePointType) {
     this.setState({ currentComponent: currentComponent.locationSelection, currentRoutePoint: { index: routePointIndex, routePointType: routePointType } })
   }
+
+addEmptyRoutePoint(){
+  if(this.state.routePoints.length > 1){
+  let points = [...this.state.routePoints];
+  points.splice(1, 0, {
+    address: null,
+    feature: null,
+    displayName: null,
+    routePointType: routePointType.intermediate
+  });
+  this.setState({ routePoints: points });
+}
+}
 
   render() {
     return (
@@ -202,6 +214,7 @@ export class DriverMap extends React.Component {
                   changeDirection={() => this.handleDirectionChange()}
                   routePoints={this.state.routePoints}
                   //  removeRoutePoint={index => this.removeRoutePoint(index)}
+                  addNewRoutePoint={() => this.addEmptyRoutePoint()}
                   isRouteToOffice={this.state.isRouteToOffice}
                   showLocationSelection={(routePointIndex, routePointType) => { this.showLocationSelection(routePointIndex, routePointType) }}
                 />
