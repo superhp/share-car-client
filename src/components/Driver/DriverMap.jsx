@@ -21,11 +21,13 @@ import { addressToString, fromLocationIqResponse } from "../../utils/addressUtil
 import "./../../styles/testmap.css";
 import RouteSelection from "../Maps/RouteSelection";
 import RouteMap from "../Maps/RouteMap";
+import { routePointType } from "../../utils/routePointTypes";
 
-const CurrentComponent = {
-  FullMap : 0,
-  LocationSelection : 1,
-  AddPointMap : 2,
+
+const currentComponent = {
+  fullMap: 0,
+  locationSelection: 1,
+  addPointMap: 2,
 }
 
 export class DriverMap extends React.Component {
@@ -41,15 +43,14 @@ export class DriverMap extends React.Component {
     routePoints: [],
     routePolylineFeature: null,
     currentOffice: OfficeAddresses[0],
-    currentComponent: CurrentComponent.FullMap,
+    currentRoutePoint: { index: 0, routePointType: routePointType.first },
+    currentComponent: currentComponent.FullMap,
   };
 
   componentDidMount() {
     const { map, vectorSource } = this.initializeMap();
     this.map = map;
     this.vectorSource = vectorSource;
-    this.addNewRoutePoint(OfficeAddresses[0])
-
   }
 
   componentWillReceiveProps(nextProps) {
@@ -58,97 +59,76 @@ export class DriverMap extends React.Component {
       isRideSchedulerVisible: false,
       routeGeometry: null,
       routePoints: [],
-      currentComponent: CurrentComponent.FullMap,
+      currentComponent: currentComponent.FullMap,
       routePolylineFeature: null,
-    }, () => {
-      this.addNewRoutePoint(this.state.currentOffice)
     });
   }
-
-  officeSelectionChange(address, inputFieldIndex) {
-    this.setState({ currentOffice: address });
-    this.changeRoutePoint(address, inputFieldIndex);
-  }
-
   // index => index of input field representing route point. Since First Route Point is office (and there is no input field for office) index must be incermented
   changeRoutePoint(address, index) {
     if (address) {
-      index++;
       const { longitude, latitude } = address
-      let routePoints = this.state.routePoints;
-      if (index >= routePoints.length) {
-        this.addNewRoutePoint(address);
-      } else {
-        this.vectorSource.removeFeature(routePoints[index].feature);
-        const feature = createPointFeature(longitude, latitude);
-        this.vectorSource.addFeature(feature);
-        routePoints[index] = { address: address, feature: feature, displayName: addressToString(address) }
-        this.setState({ routePoints: routePoints }, this.displayNewRoute);
+      let routePoints = [...this.state.routePoints];
+      const feature = createPointFeature(longitude, latitude);
+      this.vectorSource.addFeature(feature);
+      routePoints[index] = {
+        address: address,
+        feature: feature,
+        displayName: addressToString(address),
+        routePointType: this.state.currentRoutePoint.routePointType
       }
+      this.setState({ routePoints: routePoints }, () => { this.updateMap() });
+      // }
     }
   }
-
-  handleMapClick(longitude, latitude) {
-    return getNearest(longitude, latitude)
-      .then(([long, lat]) => coordinatesToLocation(lat, long))
-      .then(response => {
-        if (!response.address) {
-          return;
-        } else {
-          let address = fromLocationIqResponse(response);
-          if (this.state.isRouteToOffice) {
-            this.addNewRoutePoint(address);
-          } else {
-            this.addNewRoutePoint(address);
-          }
-        }
-      }).catch(error => { });
-  }
-
-  addNewRoutePoint(address) {
+  addNewRoutePoint(address, index) {
+    index++;
     const { longitude, latitude } = address;
     const feature = createPointFeature(longitude, latitude);
-    this.vectorSource.addFeature(feature);
-    this.setState({ routePoints: [...this.state.routePoints, { address: address, feature: feature, displayName: addressToString(address) }] }, () => {
-      if (this.state.routePoints.length > 1) {
-        this.displayNewRoute();
-      }
+    //  this.vectorSource.addFeature(feature);
+    let points = [...this.state.routePoints];
+    points.splice(index, 0, {
+      address: address,
+      feature: feature,
+      displayName: addressToString(address),
+      routePointType: this.state.currentRoutePoint.routePointType
     });
+
+    this.setState({ routePoints: points }, () => { this.updateMap() });
   }
 
-  displayNewRoute() {
-    let points = this.state.routePoints.map(a => a.address);
-    if (points.length === 1) {
-      if (this.state.routePolylineFeature) {
-        this.vectorSource.removeFeature(this.state.routePolylineFeature);
-        this.setState({ routePolylineFeature: null });
-      }
-    } else {
+  updateMap() {
+    const { routePoints } = this.state;
+
+    const points = routePoints.map(a => a.address);
+    routePoints.forEach(x => {
+      const { longitude, latitude } = x.address;
+      const feature = createPointFeature(longitude, latitude);
+      this.vectorSource.addFeature(feature);
+    });
+
+    if (points.length > 1) {
       createRoute(points, this.state.isRouteToOffice)
         .then(geometry => {
-          if (this.state.routePolylineFeature) {
-            this.vectorSource.removeFeature(this.state.routePolylineFeature);
-          }
-          const newRouteFeature = createRouteFeature(geometry)
-          this.vectorSource.addFeature(newRouteFeature);
-          this.setState({ routeGeometry: geometry, routePolylineFeature: newRouteFeature });
+          const routeFeature = createRouteFeature(geometry)
+          this.vectorSource.addFeature(routeFeature);
+          this.setState({ routeGeometry: geometry });
         });
     }
   }
 
+
   // index => index of input field representing route point. Since First Route Point is office (and there is no input field for office) index must be incermented
   removeRoutePoint(index) {
-    let routePoints = this.state.routePoints;
+    let routePoints = [...this.state.routePoints];
 
-    this.vectorSource.removeFeature(this.state.routePoints[index + 1].feature);
-
+    this.vectorSource.clear();
     routePoints.splice(index + 1, 1);
-    this.setState({ routePoints: routePoints }, this.displayNewRoute);
+    this.setState({ routePoints: routePoints }, () => { this.updateMap() });
   }
 
-  handleDirectionChange() {
-    this.setState({ isRouteToOffice: !this.state.isRouteToOffice }, this.displayNewRoute);
-  }
+  // handleDirectionChange() {
+  //   this.setState({ isRouteToOffice: !this.state.isRouteToOffice }, this.displayNewRoute);
+  //}
 
   initializeMap() {
     const vectorSource = new SourceVector();
@@ -167,59 +147,69 @@ export class DriverMap extends React.Component {
         zoom: 13
       })
     });
-    map.on("click", e => {
-      const [longitude, latitude] = fromMapCoordsToLonLat(e.coordinate);
-      this.handleMapClick(longitude, latitude);
-    });
+
     setTimeout(() => { this.map.updateSize(); }, 200);
 
     return { map, vectorSource };
   }
 
-  selectLocation(location){
-    this.setState({currentComponent: CurrentComponent.FullMap},() => {
-    //  this.setState({ address }, this.setPickUpPointFeature)
-    this.initializeMap();
+  selectLocation(address) {
+    this.setState({ currentComponent: currentComponent.FullMap }, () => {
+      const { routePoints, currentRoutePoint } = this.state;
+      const { map, vectorSource } = this.initializeMap();
+      this.map = map;
+      this.vectorSource = vectorSource;
+
+      if (currentRoutePoint.routePointType === routePointType.first) {
+        if (routePoints.length > 0 && routePoints[0].routePointType === routePointType.first) {
+          this.changeRoutePoint(address, currentRoutePoint.index);
+        } else {
+          this.addNewRoutePoint(address, currentRoutePoint.index);
+        }
+      } else if (currentRoutePoint.routePointType === routePointType.last) {
+        if (routePoints.length > 0 && routePoints[routePoints.length - 1].routePointType === routePointType.last) {
+          this.changeRoutePoint(address, currentRoutePoint.index);
+        } else {
+          this.addNewRoutePoint(address, currentRoutePoint.index);
+        }
+      } else {
+        if (routePoints[currentRoutePoint.index].routePointType === routePointType.intermediate) {
+          this.changeRoutePoint(address, currentRoutePoint.index);
+        } else {
+          this.addNewRoutePoint(address, currentRoutePoint.index);
+        }
+      }
+
     });
   }
 
- returnFromRouteMap(location){
-  this.setState({currentComponent:CurrentComponent.FullMap},this.initializeMap);
- }
+  showLocationSelection(routePointIndex, routePointType) {
+    this.setState({ currentComponent: currentComponent.locationSelection, currentRoutePoint: { index: routePointIndex, routePointType: routePointType } })
+  }
 
   render() {
     return (
 
       <div>
         {
-          this.state.currentComponent === CurrentComponent.FullMap 
-    ?  <div>
-        {this.autocompleteInputs = []}
-        
-        <div className="routes">
-          <RouteSelection
-                      officeSelectionChange={(address, inputIndex, officeIndex) => this.officeSelectionChange(address, inputIndex, officeIndex)}
-                      changeRoutePoint={(address, index) => this.changeRoutePoint(address, index)}
-                      changeDirection={() => this.handleDirectionChange()}
-                      routePoints={this.state.routePoints}
-                      removeRoutePoint={index => this.removeRoutePoint(index)}
-                      isRouteToOffice={this.state.isRouteToOffice}
-                      showLocationSelection={() => {this.setState({currentComponent : CurrentComponent.LocationSelection})}}
-          />
-{/*
-          <DriverRouteInput
-            officeSelectionChange={(address, inputIndex, officeIndex) => this.officeSelectionChange(address, inputIndex, officeIndex)}
-            changeRoutePoint={(address, index) => this.changeRoutePoint(address, index)}
-            changeDirection={() => this.handleDirectionChange()}
-            routePoints={this.state.routePoints}
-            removeRoutePoint={index => this.removeRoutePoint(index)}
-            isRouteToOffice={this.state.isRouteToOffice}
-          />*/}
+          this.state.currentComponent === currentComponent.FullMap
+            ? <div>
+              {this.autocompleteInputs = []}
 
-
-        </div>
-        <div id="map"></div>
-{/*
+              <div className="routes">
+                <RouteSelection
+                  officeSelectionChange={(address, inputIndex, officeIndex) => this.officeSelectionChange(address, inputIndex, officeIndex)}
+                  changeDirection={() => this.handleDirectionChange()}
+                  routePoints={this.state.routePoints}
+                  //  removeRoutePoint={index => this.removeRoutePoint(index)}
+                  isRouteToOffice={this.state.isRouteToOffice}
+                  showLocationSelection={(routePointIndex, routePointType) => { this.showLocationSelection(routePointIndex, routePointType) }}
+                />
+                
+       
+              </div>
+              <div id="map"></div>
+              {/*
         {this.state.isRideSchedulerVisible ? (
           <RidesScheduler routeInfo={{
             fromAddress: this.state.isRouteToOffice ? this.state.routePoints[this.state.routePoints.length - 1].address : this.state.routePoints[0].address,
@@ -236,24 +226,25 @@ export class DriverMap extends React.Component {
           Continue
         </Button>*/}
 
-        
-</div>
-: <div>
-  {this.state.currentComponent === CurrentComponent.LocationSelection 
-  ? <LocationSelection
-   showRouteMap = {() => {this.setState({currentComponent:CurrentComponent.RouteMap})}}
-   selectLocation = {(location) => {this.selectLocation(location)}}
-   />
-  : <RouteMap
-  return = {(location) => {this.returnFromRouteMap(location)}}
-  />
-  }
+
+            </div>
+            : <div>
+              {this.state.currentComponent === currentComponent.locationSelection
+                ? <LocationSelection
+                  showRouteMap={() => { this.setState({ currentComponent: currentComponent.addPointMap }) }}
+                  selectLocation={(address) => { this.selectLocation(address) }}
+                  currentRotuePoint={this.state.currentRoutePoint}
+                />
+                : <RouteMap
+                  return={(address) => { this.selectLocation(address) }}
+                />
+              }
 
 
-</div>
+            </div>
         }
       </div>
-  
+
     );
   }
 }

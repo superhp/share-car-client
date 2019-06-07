@@ -18,6 +18,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { formAlgoliaAddress } from "../../utils/addressUtils";
 import history from "../../helpers/history";
+import { routePointType } from "../../utils/routePointTypes";
 
 export default class RouteSelection extends React.Component<{}> {
     state = {
@@ -46,17 +47,16 @@ export default class RouteSelection extends React.Component<{}> {
                         </Grid>
                     </Grid>
                     <Grid item xs={8} className="direction-inputs">
-                        <AddressInput
-                            onClick={() => { this.props.showLocationSelection() }}
-                            key={this.props.routePoints[0]}
-                            index={0}
-                            deletable={false}
-                            removeRoutePoint={id => { this.props.removeRoutePoint(id) }}
-                            placeholder={this.props.isRouteToOffice ? "To location" : "From location"}
-                            onChange={(suggestion, index) => this.props.changeRoutePoint(formAlgoliaAddress(suggestion), index)}
-                            displayName=""
-                        />
-                        {this.props.routePoints.length > 1
+                        <div
+                            className={this.props.routePoints.length > 0 ? "location-input-container" : "location-input-container empty"}
+                            onClick={() => { this.props.showLocationSelection(0, routePointType.first) }}
+                        >
+                            {this.props.routePoints.length > 0 ?
+                                this.props.routePoints[0].displayName :
+                                this.props.isRouteToOffice ? "From location" : "To location"}
+
+                        </div>
+                        {this.props.routePoints.length > 2
                             ? <List
                                 component="nav"
                             >
@@ -73,8 +73,8 @@ export default class RouteSelection extends React.Component<{}> {
                                             index + 1 < this.props.routePoints.length
                                                 ? <ListItem button className={this.props.nested}>
                                                     <ListItemIcon>
-                                                        <AddressInput
-                                                            onClick={() => { this.props.showLocationSelection() }}
+                                                        {/* <AddressInput
+                                                            onClick={() => { this.props.showLocationSelection(index + 1) }}
                                                             className="driver-route-input"
                                                             key={index}
                                                             index={index}
@@ -83,7 +83,19 @@ export default class RouteSelection extends React.Component<{}> {
                                                             placeholder={this.props.isRouteToOffice ? "To location" : "From location"}
                                                             onChange={(suggestion, index) => this.props.changeRoutePoint(formAlgoliaAddress(suggestion), index)}
                                                             displayName={this.props.routePoints[index + 1].displayName}
-                                                        />
+                                                        />*/}
+
+
+                                                        <div
+                                                            className={this.props.routePoints.length > 0 ? "location-input-container" : "location-input-container empty"}
+                                                            onClick={() => { this.props.showLocationSelection(index, routePointType.intermediate) }}
+                                                        >
+                                                            {
+                                                                this.props.routePoints.length > 0 ?
+                                                                    this.props.routePoints[0].displayName : "Intermediate point"
+                                                            }
+
+                                                        </div>
                                                     </ListItemIcon>
                                                 </ListItem>
                                                 : null
@@ -93,16 +105,15 @@ export default class RouteSelection extends React.Component<{}> {
                             </List>
                             : <div></div>
                         }
-                        <AddressInput
-                            onClick={() => { this.props.showLocationSelection() }}
-                            key={this.props.routePoints.length - 1}
-                            index={this.props.routePoints.length - 1}
-                            deletable={false}
-                            removeRoutePoint={id => { this.props.removeRoutePoint(id) }}
-                            placeholder={this.props.isRouteToOffice ? "To location" : "From location"}
-                            onChange={(suggestion, index) => this.props.changeRoutePoint(formAlgoliaAddress(suggestion), index)}
-                            displayName=""
-                        />
+                        <div
+                            className={this.props.routePoints.length > 1 ? "location-input-container" : "location-input-container empty"}
+                            onClick={() => { this.props.showLocationSelection(this.props.routePoints.length - 1, routePointType.last) }}
+                        >
+                            {this.props.routePoints.length > 0 ?
+                                this.props.routePoints[0].displayName :
+                                this.props.isRouteToOffice ? "To location" : "From location"}
+                        </div>
+
                     </Grid>
                     <Grid item xs={2} container>
                         <Grid item xs={12} className="clickable-element">

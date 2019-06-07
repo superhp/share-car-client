@@ -28,13 +28,14 @@ export default class LocationSelection extends React.Component<{}> {
             <Grid container item xs={12} >
                 <Grid item xs={12}  className="location-selection-element">
                     <AddressInput
-                        //              key={this.props.routePoints.length - 1}
-                        //               index={this.props.routePoints.length - 1}
-                        //            deletable={false}
-                        //          removeRoutePoint={id => { this.props.removeRoutePoint(id) }}
-                        //        placeholder={this.props.isRouteToOffice ? "To location" : "From location"}
-                        //      onChange={(suggestion, index) => this.props.changeRoutePoint(formAlgoliaAddress(suggestion), index)}
+                        key={this.props.currentRoutePoint}
+                        index={this.props.currentRoutePoint}
+                        deletable={false}
+                        removeRoutePoint={id => { this.props.removeRoutePoint(id) }}
+                        placeholder={this.props.isRouteToOffice ? "To location" : "From location"}
+                        onChange={(suggestion, index) => {this.props.selectLocation(suggestion)}}
                         displayName=""
+                        onClick={()=>{console.log("SDF")}}
                     />
                 </Grid>
                 <Grid item xs={12}container className="location-selection-element">
