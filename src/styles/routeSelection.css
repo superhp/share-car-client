@@ -14,7 +14,9 @@
         justify-content: center;
         align-content: center;
         }
-
+.invisible{
+    visibility:hidden;
+}
         .algolia-input {
             margin: 5px;
           }
@@ -23,6 +25,8 @@
             display:flex;
             justify-content: flex-end;
             align-items: center;
+            padding-top: 2px;
+            padding-bottom: 2px;
         }       
            .direction-label-element{
             height: 50%;
@@ -47,6 +51,8 @@
     box-sizing: border-box;
     background-color: white;
     padding-left: 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
 
 .empty{

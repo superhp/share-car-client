@@ -24,12 +24,10 @@ export default class RouteSelection extends React.Component<{}> {
     state = {
         open: true,
     };
-
     render() {
         return (
             <Card className="location-selection-container">
                 <Grid container item xs={12} >
-
                     <Grid item xs={2} container className="direction-label-container">
                         <Grid item xs={12} className="direction-label-container">
                             <div className="direction-label-element">
@@ -38,7 +36,22 @@ export default class RouteSelection extends React.Component<{}> {
                     </Typography>
                             </div>
                         </Grid>
+
+                        {this.props.routePoints.map((element, index) => (
+                            element.routePointType === routePointType.intermediate
+                            ?
+                                <Grid item xs={12} className="direction-label-container">
+                                    <div className="direction-label-element" >
+                                        <Typography className="direction-label invisible" component="p">
+                                            Q
+                    </Typography></div>
+                                </Grid>
+
+
+                                : null
+                        ))}
                         <Grid item xs={12} className="direction-label-container">
+
                             <div className="direction-label-element" >
                                 <Typography className="direction-label" component="p">
                                     To
@@ -54,9 +67,8 @@ export default class RouteSelection extends React.Component<{}> {
                             {this.props.routePoints.length > 0 ?
                                 this.props.routePoints[0].displayName :
                                 this.props.isRouteToOffice ? "From location" : "To location"}
-
                         </div>
-                        {this.props.routePoints.length > 2
+                        {/*this.props.routePoints.length > 2
                             ? <List
                                 component="nav"
                             >
@@ -68,37 +80,48 @@ export default class RouteSelection extends React.Component<{}> {
                                     {this.state.open ? <ExpandLess /> : <ExpandMore />}
                                 </ListItem>
                                 <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-                                    <List component="div" disablePadding>
-                                        {this.props.routePoints.map((element, index) => (
-                                            index + 1 < this.props.routePoints.length
-                                                ? <ListItem button className={this.props.nested}>
-                                                    <ListItemIcon>
-                                                        <div
-                                                            className={this.props.routePoints.length > 0 ? "location-input-container" : "location-input-container empty"}
-                                                            onClick={() => { this.props.showLocationSelection(index, routePointType.intermediate) }}
-                                                        >
-                                                            {
-                                                                this.props.routePoints.length > 0 ?
-                                                                this.props.routePoints[0].displayName : "Intermediate point"
-                                                            }
+                        <List component="div" disablePadding>*/}
+                        {this.props.routePoints.map((element, index) => (
+                    
 
-                                                        </div>
-                                                    </ListItemIcon>
-                                                </ListItem>
-                                                : null
-                                        ))}
+                            element.routePointType === routePointType.intermediate
+                                ? //<ListItem button className={this.props.nested}>
+                                // <ListItemIcon>
+                                <div
+                                    className={this.props.routePoints[index].displayName
+                                        ? "location-input-container"
+                                        : "location-input-container empty"}
+                                    onClick={() => { this.props.showLocationSelection(index, routePointType.intermediate) }}
+                                >
+                                    {
+                                        this.props.routePoints[index].displayName
+                                            ? this.props.routePoints[index].displayName
+                                            : "Intermediate point"
+                                    }
+                                </div>
+                                //  </ListItemIcon>
+                                // </ListItem>
+                                : null
+                        ))}{/*
                                     </List>
                                 </Collapse>
                             </List>
                             : <div></div>
-                        }
+                                        */}
                         <div
-                            className={this.props.routePoints.length > 1 ? "location-input-container" : "location-input-container empty"}
+                            className={this.props.routePoints.length > 0 &&
+                                this.props.routePoints[this.props.routePoints.length - 1].routePointType === routePointType.last
+                                ? "location-input-container"
+                                : "location-input-container empty"}
                             onClick={() => { this.props.showLocationSelection(this.props.routePoints.length - 1, routePointType.last) }}
                         >
-                            {this.props.routePoints.length > 0 ?
-                                this.props.routePoints[0].displayName :
-                                this.props.isRouteToOffice ? "To location" : "From location"}
+                            {
+                                this.props.routePoints.length > 0 &&
+                                    this.props.routePoints[this.props.routePoints.length - 1].routePointType === routePointType.last
+                                    ?
+                                    this.props.routePoints[this.props.routePoints.length - 1].displayName
+                                    :
+                                    this.props.isRouteToOffice ? "To location" : "From location"}
                         </div>
 
                     </Grid>
@@ -108,8 +131,18 @@ export default class RouteSelection extends React.Component<{}> {
                                 <Cached />
                             </div>
                         </Grid>
+                        {this.props.routePoints.map((element, index) => (
+                            element.routePointType === routePointType.intermediate
+                            ?
+                                <Grid item xs={12} className="clickable-element invisible">
+                                    <div className={this.props.routePoints.length > 0 ? "generic-button" : "generic-button disabled"} onClick={this.props.routePoints.length > 0 ? () => { this.props.addNewRoutePoint() } : null}>
+                                        <Add />
+                                    </div>
+                                </Grid>
+                                : null
+                        ))}
                         <Grid item xs={12} className="clickable-element">
-                            <div className={this.props.routePoints.length > 0 ? "generic-button" : "generic-button disabled"} onClick={this.props.routePoints.length > 0 ? () => {this.props.addNewRoutePoint()} : null}>
+                            <div className={this.props.routePoints.length > 0 ? "generic-button" : "generic-button disabled"} onClick={this.props.routePoints.length > 0 ? () => { this.props.addNewRoutePoint() } : null}>
                                 <Add />
                             </div>
                         </Grid>

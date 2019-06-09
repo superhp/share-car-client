@@ -99,11 +99,13 @@ export class DriverMap extends React.Component {
   updateMap() {
     const { routePoints } = this.state;
 
-    const points = routePoints.map(a => a.address);
+    const points = routePoints.filter(x => x.address).map(x => x.address);
     routePoints.forEach(x => {
+      if(x.address){
       const { longitude, latitude } = x.address;
       const feature = createPointFeature(longitude, latitude);
       this.vectorSource.addFeature(feature);
+      }
     });
 
     if (points.length > 1) {
@@ -186,18 +188,18 @@ export class DriverMap extends React.Component {
     this.setState({ currentComponent: currentComponent.locationSelection, currentRoutePoint: { index: routePointIndex, routePointType: routePointType } })
   }
 
-addEmptyRoutePoint(){
-  if(this.state.routePoints.length > 1){
-  let points = [...this.state.routePoints];
-  points.splice(1, 0, {
-    address: null,
-    feature: null,
-    displayName: null,
-    routePointType: routePointType.intermediate
-  });
-  this.setState({ routePoints: points });
-}
-}
+  addEmptyRoutePoint() {
+    if (this.state.routePoints.length > 0) {
+      let points = [...this.state.routePoints];
+      points.splice(1, 0, {
+        address: null,
+        feature: null,
+        displayName: null,
+        routePointType: routePointType.intermediate
+      });
+      this.setState({ routePoints: points });
+    }
+  }
 
   render() {
     return (
@@ -218,8 +220,8 @@ addEmptyRoutePoint(){
                   isRouteToOffice={this.state.isRouteToOffice}
                   showLocationSelection={(routePointIndex, routePointType) => { this.showLocationSelection(routePointIndex, routePointType) }}
                 />
-                
-       
+
+
               </div>
               <div id="map"></div>
               {/*
