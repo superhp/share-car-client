@@ -91,7 +91,7 @@ fi
 # 3. express 
 cd "$DEPLOYMENT_TARGET"
 echo "Installing Express"
-eval npm install -g express
+eval npm install express
 
 ##################################################################################################################################
 echo "Finished successfully."
