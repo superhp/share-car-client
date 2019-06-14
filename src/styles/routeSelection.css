@@ -19,6 +19,8 @@
 }
         .algolia-input {
             margin: 5px;
+            width: 100%;
+            z-index:9;
           }
           .direction-label-container{
             position:relative;

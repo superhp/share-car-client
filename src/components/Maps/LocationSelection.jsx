@@ -20,73 +20,76 @@ import { Link } from "react-router-dom";
 export default class LocationSelection extends React.Component<{}> {
     state = {
         open: true,
-        selectedAddress : null,
+        selectedAddress: null,
+        currentRoutePoint: this.props.currentRoutePoint,
     };
 
     render() {
         return (
             <Grid container item xs={12} >
-                <Grid item xs={12}  className="location-selection-element">
-                    <AddressInput
-                        key={this.props.currentRoutePoint}
-                        index={this.props.currentRoutePoint}
-                        deletable={false}
-                        removeRoutePoint={id => { this.props.removeRoutePoint(id) }}
-                        placeholder={this.props.isRouteToOffice ? "To location" : "From location"}
-                        onChange={(suggestion, index) => {this.props.selectLocation(suggestion)}}
-                        displayName=""
-                        onClick={()=>{console.log("SDF")}}
-                    />
+                <Grid item xs={12} container className="location-selection-element">
+                    <Grid item xs={12} >
+                        <Card className="location-selection-element address-input">
+                            <AddressInput
+                                deletable={false}
+                                removeRoutePoint={id => { this.props.removeRoutePoint(id) }}
+                                placeholder={this.props.isRouteToOffice ? "To location" : "From location"}
+                                onChange={(suggestion, index) => { this.props.selectLocation(formAlgoliaAddress(suggestion)) }}
+                                displayName={this.props.currentRoutePoint ? this.props.currentRoutePoint.displayName : ""}
+                                onClick={() => { }}
+                            />
+                        </Card>
+                    </Grid>
                 </Grid>
-                <Grid item xs={12}container className="location-selection-element">
+                <Grid item xs={12} container className="location-selection-element">
                     <Grid item xs={12}>
-                    <Card className="location-selection-element" onClick={() => {this.props.showRouteMap()}}>
-                        <div className="location-icon">
-                    <Place/>
-                    </div>
-                    Select location on map
+                        <Card className="location-selection-element" onClick={() => { this.props.showRouteMap() }}>
+                            <div className="location-icon">
+                                <Place />
+                            </div>
+                            Select location on map
                     </Card>
                     </Grid>
                 </Grid>
-                <Grid item xs={12}container className="location-selection-element">
+                <Grid item xs={12} container className="location-selection-element">
                     <Grid item xs={12}>
-                    <Card className="location-selection-element">
-                        <div className="location-icon">
-                    <Home/>
-                    </div>
-                    {this.props.homeAddress
-                     ? this.props.homeAddress
-                     : "Select your home address"
-                    }
-                    {this.props.homeAddress
-                    ?
-                    <div className="generic-button settings">
-                    <Settings />
-                    </div>
-                    :
-                    <div></div>
-                    }
-                    </Card>
+                        <Card className="location-selection-element">
+                            <div className="location-icon">
+                                <Home />
+                            </div>
+                            {this.props.homeAddress
+                                ? this.props.homeAddress
+                                : "Select your home address"
+                            }
+                            {this.props.homeAddress
+                                ?
+                                <div className="generic-button settings">
+                                    <Settings />
+                                </div>
+                                :
+                                <div></div>
+                            }
+                        </Card>
                     </Grid>
                 </Grid>
-                <Grid item xs={12}container className="location-selection-element">
+                <Grid item xs={12} container className="location-selection-element">
                     <Grid item xs={12}>
-                    <Card className="location-selection-element" onClick={() =>{this.props.selectLocation(OfficeAddressesMenu[0].value)}}>
-                    <div className="location-icon">
-                        <Work/>
-                        </div>
-                        {OfficeAddressesMenu[0].label}
-                    </Card>
+                        <Card className="location-selection-element" onClick={() => { this.props.selectLocation(OfficeAddressesMenu[0].value) }}>
+                            <div className="location-icon">
+                                <Work />
+                            </div>
+                            {OfficeAddressesMenu[0].label}
+                        </Card>
                     </Grid>
                 </Grid>
-                <Grid item xs={12}container className="location-selection-element">
+                <Grid item xs={12} container className="location-selection-element">
                     <Grid item xs={12}>
-                    <Card className="location-selection-element" onClick={() =>{this.props.selectLocation(OfficeAddressesMenu[1].value)}}>
-                    <div className="location-icon">
-                        <Work/>
-                        </div>
-                        {OfficeAddressesMenu[1].label}
-                    </Card>
+                        <Card className="location-selection-element" onClick={() => { this.props.selectLocation(OfficeAddressesMenu[1].value) }}>
+                            <div className="location-icon">
+                                <Work />
+                            </div>
+                            {OfficeAddressesMenu[1].label}
+                        </Card>
                     </Grid>
                 </Grid>
             </Grid>

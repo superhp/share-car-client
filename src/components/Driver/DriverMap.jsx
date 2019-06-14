@@ -43,7 +43,7 @@ export class DriverMap extends React.Component {
     routePoints: [],
     routePolylineFeature: null,
     currentOffice: OfficeAddresses[0],
-    currentRoutePoint: { index: 0, routePointType: routePointType.first },
+    currentRoutePoint: { index: 0, routePointType: routePointType.first, displayName: null },
     currentComponent: currentComponent.FullMap,
   };
 
@@ -101,13 +101,12 @@ export class DriverMap extends React.Component {
 
     const points = routePoints.filter(x => x.address).map(x => x.address);
     routePoints.forEach(x => {
-      if(x.address){
-      const { longitude, latitude } = x.address;
-      const feature = createPointFeature(longitude, latitude);
-      this.vectorSource.addFeature(feature);
+      if (x.address) {
+        const { longitude, latitude } = x.address;
+        const feature = createPointFeature(longitude, latitude);
+        this.vectorSource.addFeature(feature);
       }
     });
-
     if (points.length > 1) {
       createRoute(points, this.state.isRouteToOffice)
         .then(geometry => {
@@ -185,7 +184,16 @@ export class DriverMap extends React.Component {
   }
 
   showLocationSelection(routePointIndex, routePointType) {
-    this.setState({ currentComponent: currentComponent.locationSelection, currentRoutePoint: { index: routePointIndex, routePointType: routePointType } })
+
+    const { routePoints } = this.state;
+    this.setState({
+      currentComponent: currentComponent.locationSelection,
+      currentRoutePoint: {
+        index: routePointIndex,
+        routePointType: routePointType,
+        displayName: routePoints[routePointIndex] ? routePoints[routePointIndex].displayName : null
+      }
+    })
   }
 
   addEmptyRoutePoint() {
@@ -248,9 +256,13 @@ export class DriverMap extends React.Component {
                 ? <LocationSelection
                   showRouteMap={() => { this.setState({ currentComponent: currentComponent.addPointMap }) }}
                   selectLocation={(address) => { this.selectLocation(address) }}
-                  currentRotuePoint={this.state.currentRoutePoint}
+                  currentRoutePoint={this.state.currentRoutePoint}
                 />
                 : <RouteMap
+                  routePoints={this.state.routePoints}
+                  routePointIndex={this.state.currentRoutePoint.index}
+                  routePointsType={this.state.currentRoutePoint.routePointType}
+                  isRouteToOffice={true}
                   return={(address) => { this.selectLocation(address) }}
                 />
               }
