@@ -25,10 +25,10 @@ export default class RouteSelection extends React.Component<{}> {
         open: true,
     };
 
-    canCreateIntermediatPoint() {
-        const{routePoints} = this.props;
+    doRoutePointsExist() {
+        const { routePoints } = this.props;
         if (routePoints.length > 0) {
-            if (routePoints.find(x => !x.address)) {
+            if (routePoints.filter(x => !x.displayName).length === routePoints.length) {
                 return false;
             }
             return true;
@@ -37,6 +37,7 @@ export default class RouteSelection extends React.Component<{}> {
     }
 
     render() {
+        const routePoints = this.props.routePoints;
         return (
             <Card className="location-selection-container">
                 <Grid container item xs={12} >
@@ -45,11 +46,10 @@ export default class RouteSelection extends React.Component<{}> {
                             <div className="direction-label-element">
                                 <Typography component="p">
                                     From
-                    </Typography>
+                                </Typography>
                             </div>
                         </Grid>
-
-                        {this.props.routePoints.map((element, index) => (
+                        {routePoints.map((element, index) => (
                             element.routePointType === routePointType.intermediate
                                 ?
                                 <Grid item xs={12} className="direction-label-container">
@@ -67,94 +67,84 @@ export default class RouteSelection extends React.Component<{}> {
                             <div className="direction-label-element" >
                                 <Typography className="direction-label" component="p">
                                     To
-                    </Typography>
+                                </Typography>
                             </div>
                         </Grid>
                     </Grid>
+
+
+
                     <Grid item xs={8} className="direction-inputs">
                         <div
-                            className={this.props.routePoints.length > 0 ? "location-input-container" : "location-input-container empty"}
+                            className={routePoints[0].displayName ? "location-input-container" : "location-input-container empty"}
                             onClick={() => { this.props.showLocationSelection(0, routePointType.first) }}
                         >
-                            {this.props.routePoints.length > 0 ?
-                                this.props.routePoints[0].displayName :
-                                this.props.isRouteToOffice ? "From location" : "To location"}
+                            {
+                                routePoints[0].displayName
+                                    ? routePoints[0].displayName
+                                    : "From location"
+                            }
                         </div>
-                        {/*this.props.routePoints.length > 2
-                            ? <List
-                                component="nav"
-                            >
-                                <ListItem button onClick={this.handleClick}>
-                                    <ListItemIcon>
-                                        <InboxIcon />
-                                    </ListItemIcon>
-                                    <ListItemText inset primary={this.state.open ? "Collapse" : "Expand"} />
-                                    {this.state.open ? <ExpandLess /> : <ExpandMore />}
-                                </ListItem>
-                                <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>*/}
-                        {this.props.routePoints.map((element, index) => (
 
-
+                        {routePoints.map((element, index) => (
                             element.routePointType === routePointType.intermediate
-                                ? //<ListItem button className={this.props.nested}>
-                                // <ListItemIcon>
-                                <div
-                                    className={this.props.routePoints[index].displayName
+                                ? <div
+                                    className={routePoints[index].displayName
                                         ? "location-input-container"
                                         : "location-input-container empty"}
                                     onClick={() => { this.props.showLocationSelection(index, routePointType.intermediate) }}
                                 >
                                     {
-                                        this.props.routePoints[index].displayName
-                                            ? this.props.routePoints[index].displayName
+                                        routePoints[index].displayName
+                                            ? routePoints[index].displayName
                                             : "Intermediate point"
                                     }
                                 </div>
-                                //  </ListItemIcon>
-                                // </ListItem>
                                 : null
-                        ))}{/*
-                                    </List>
-                                </Collapse>
-                            </List>
-                            : <div></div>
-                                        */}
+                        ))}
                         <div
-                            className={this.props.routePoints.length > 0 &&
-                                this.props.routePoints[this.props.routePoints.length - 1].routePointType === routePointType.last
+                            className={routePoints.length > 0 &&
+                                routePoints[routePoints.length - 1].displayName
                                 ? "location-input-container"
                                 : "location-input-container empty"}
-                            onClick={() => { this.props.showLocationSelection(this.props.routePoints.length - 1, routePointType.last) }}
+                            onClick={() => { this.props.showLocationSelection(routePoints.length - 1, routePoints[routePoints.length - 1].routePointType.last) }}
                         >
                             {
-                                this.props.routePoints.length > 0 &&
-                                    this.props.routePoints[this.props.routePoints.length - 1].routePointType === routePointType.last
-                                    ?
-                                    this.props.routePoints[this.props.routePoints.length - 1].displayName
-                                    :
-                                    this.props.isRouteToOffice ? "To location" : "From location"}
+                                routePoints[routePoints.length - 1].displayName
+                                    ? routePoints[routePoints.length - 1].displayName
+                                    : "To location"
+                            }
                         </div>
 
                     </Grid>
+
+
+
                     <Grid item xs={2} container>
                         <Grid item xs={12} className="clickable-element">
-                            <div className="generic-button">
+                            <div
+                                className={this.doRoutePointsExist() ? "generic-button" : "generic-button disabled"}
+                                onClick={this.doRoutePointsExist() ? () => { this.props.changeDirection() } : null}
+                            >
                                 <Cached />
                             </div>
                         </Grid>
-                        {this.props.routePoints.map((element, index) => (
+                        {routePoints.map((element, index) => (
                             element.routePointType === routePointType.intermediate
                                 ?
                                 <Grid item xs={12} className="clickable-element invisible">
-                                    <div className={this.props.routePoints.length > 0 ? "generic-button" : "generic-button disabled"} onClick={this.props.routePoints.length > 0 ? () => { this.props.addNewRoutePoint() } : null}>
+                                    <div className="generic-button">
                                         <Add />
                                     </div>
                                 </Grid>
                                 : null
+
                         ))}
                         <Grid item xs={12} className="clickable-element">
-                            <div className={this.canCreateIntermediatPoint() ? "generic-button" : "generic-button disabled"} onClick={this.canCreateIntermediatPoint() ? () => { this.props.addNewRoutePoint() } : null}>
+                            <div
+                                className={this.doRoutePointsExist() ? "generic-button" : "generic-button disabled"}
+                                onClick={this.doRoutePointsExist() ? () => { this.props.addNewRoutePoint() } : null}
+                            >
                                 <Add />
                             </div>
                         </Grid>

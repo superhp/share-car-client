@@ -23,9 +23,7 @@ export default class LocationSelection extends React.Component<{}> {
         selectedAddress: null,
         currentRoutePoint: this.props.currentRoutePoint,
     };
-componentDidMount(){
-    console.log(this.props)
-}
+
     render() {
         return (
             <Grid container item xs={12} >

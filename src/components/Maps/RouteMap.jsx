@@ -131,7 +131,7 @@ export default class RouteMap extends React.Component<{}> {
             this.vectorSource.removeFeature(routeFeature);
         }
         if (points.length > 1) {
-            createRoute(points, this.props.isRouteToOffice)
+            createRoute(points)
                 .then(geometry => {
                     const routeFeature = createRouteFeature(geometry)
                     this.vectorSource.addFeature(routeFeature);

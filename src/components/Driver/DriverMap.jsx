@@ -40,10 +40,20 @@ export class DriverMap extends React.Component {
 
   state = {
     isRideSchedulerVisible: false,
-    isRouteToOffice: true,
+    direction: true,
     routeGeometry: null, // only needed to prevent duplicate calls for RidesScheduler
-    routePoints: [],
-    routePolylineFeature: null,
+    routePoints: [{
+      address: null,
+      feature: null,
+      displayName: null,
+      routePointType: routePointType.first
+    },
+    {
+      address: null,
+      feature: null,
+      displayName: null,
+      routePointType: routePointType.last
+    }],
     currentOffice: OfficeAddresses[0],
     currentRoutePoint: { index: 0, routePointType: routePointType.first, displayName: null },
     currentComponent: currentComponent.FullMap,
@@ -79,7 +89,6 @@ export class DriverMap extends React.Component {
       routeGeometry: null,
       routePoints: [],
       currentComponent: currentComponent.FullMap,
-      routePolylineFeature: null,
       homeAddressSelection: false,
       homeAddress: null,
       snackBarClicked: false,
@@ -101,7 +110,7 @@ export class DriverMap extends React.Component {
         displayName: addressToString(address),
         routePointType: this.state.currentRoutePoint.routePointType
       }
-      this.setState({ routePoints: routePoints }, () => { this.updateMap() });
+      this.setState({ routePoints: routePoints }, () => this.updateMap());
     }
   }
   addNewRoutePoint(address, index) {
@@ -116,13 +125,13 @@ export class DriverMap extends React.Component {
       routePointType: this.state.currentRoutePoint.routePointType
     });
 
-    this.setState({ routePoints: points }, () => { this.updateMap() });
+    this.setState({ routePoints: points }, () => this.updateMap());
   }
 
   updateMap() {
     const { routePoints } = this.state;
-
     const points = routePoints.filter(x => x.address).map(x => x.address);
+    this.vectorSource.clear();
     routePoints.forEach(x => {
       if (x.address) {
         const { longitude, latitude } = x.address;
@@ -131,15 +140,14 @@ export class DriverMap extends React.Component {
       }
     });
     if (points.length > 1) {
-      createRoute(points, this.state.isRouteToOffice)
+      createRoute(points, this.state.direction)
         .then(geometry => {
-          const routeFeature = createRouteFeature(geometry)
+          const routeFeature = createRouteFeature(geometry);
           this.vectorSource.addFeature(routeFeature);
           this.setState({ routeGeometry: geometry });
         });
     }
   }
-
 
   // index => index of input field representing route point. Since First Route Point is office (and there is no input field for office) index must be incermented
   removeRoutePoint(index) {
@@ -147,12 +155,23 @@ export class DriverMap extends React.Component {
 
     this.vectorSource.clear();
     routePoints.splice(index + 1, 1);
-    this.setState({ routePoints: routePoints }, () => { this.updateMap() });
+    this.setState({ routePoints: routePoints }, () => this.updateMap());
   }
 
-  // handleDirectionChange() {
-  //   this.setState({ isRouteToOffice: !this.state.isRouteToOffice }, this.displayNewRoute);
-  //}
+  changeDirection() {
+    let routePoints = [...this.state.routePoints];
+    let revertedPoints = [];
+    for (let i = routePoints.length - 1; i >= 0; i--) {
+      if (routePoints[i].routePointType === routePointType.last) {
+        routePoints[i].routePointType = routePointType.first
+      }
+      if (routePoints[i].routePointType === routePointType.first) {
+        routePoints[i].routePointType = routePointType.last
+      }
+      revertedPoints.push(routePoints[i]);
+    }
+    this.setState({ routePoints: revertedPoints, direction: !this.state.direction }, () => this.updateMap());
+  }
 
   initializeMap() {
     const vectorSource = new SourceVector();
@@ -183,7 +202,7 @@ export class DriverMap extends React.Component {
         address: address,
         displayName: addressToString(address)
       }
-        this.setState({ currentComponent: currentComponent.locationSelection, homeAddress: stateAddress, homeAddressSelection: false });
+      this.setState({ currentComponent: currentComponent.locationSelection, homeAddress: stateAddress, homeAddressSelection: false });
     }).catch(() => {
       showSnackBar("Failed to set home address", 2, this);
       this.setState({ currentComponent: currentComponent.locationSelection, homeAddressSelection: false });
@@ -261,11 +280,11 @@ export class DriverMap extends React.Component {
               <div className="routes">
                 <RouteSelection
                   officeSelectionChange={(address, inputIndex, officeIndex) => this.officeSelectionChange(address, inputIndex, officeIndex)}
-                  changeDirection={() => this.handleDirectionChange()}
+                  changeDirection={() => this.changeDirection()}
                   routePoints={this.state.routePoints}
                   //  removeRoutePoint={index => this.removeRoutePoint(index)}
                   addNewRoutePoint={() => this.addEmptyRoutePoint()}
-                  isRouteToOffice={this.state.isRouteToOffice}
+                  direction={this.state.direction}
                   showLocationSelection={(routePointIndex, routePointType) => { this.showLocationSelection(routePointIndex, routePointType) }}
                 />
 
@@ -275,8 +294,8 @@ export class DriverMap extends React.Component {
               {/*
         {this.state.isRideSchedulerVisible ? (
           <RidesScheduler routeInfo={{
-            fromAddress: this.state.isRouteToOffice ? this.state.routePoints[this.state.routePoints.length - 1].address : this.state.routePoints[0].address,
-            toAddress: this.state.isRouteToOffice ? this.state.routePoints[0].address : this.state.routePoints[this.state.routePoints.length - 1].address,
+            fromAddress: this.state.direction ? this.state.routePoints[this.state.routePoints.length - 1].address : this.state.routePoints[0].address,
+            toAddress: this.state.direction ? this.state.routePoints[0].address : this.state.routePoints[this.state.routePoints.length - 1].address,
             routeGeometry: this.state.routeGeometry
           }} />
         ) : null}
@@ -305,14 +324,14 @@ export class DriverMap extends React.Component {
                     routePoints={[this.state.homeAddress]}
                     routePointIndex={0}
                     routePointsType={routePointType.first}
-                    isRouteToOffice={true}
+                    direction={this.state.direction}
                     return={(address) => { this.updateHomeAddress(address) }}
                   />
                   : <RouteMap
                     routePoints={this.state.routePoints}
                     routePointIndex={this.state.currentRoutePoint.index}
                     routePointsType={this.state.currentRoutePoint.routePointType}
-                    isRouteToOffice={true}
+                    direction={this.state.direction}
                     return={(address) => { this.selectLocation(address) }}
                   />
               }
