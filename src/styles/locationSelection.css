@@ -8,6 +8,7 @@
 
 .settings{
     margin-left:auto;
+    z-index : 99;
 }
 
 .clickable{

@@ -23,7 +23,9 @@ export default class LocationSelection extends React.Component<{}> {
         selectedAddress: null,
         currentRoutePoint: this.props.currentRoutePoint,
     };
-
+componentDidMount(){
+    console.log(this.props)
+}
     render() {
         return (
             <Grid container item xs={12} >
@@ -43,7 +45,8 @@ export default class LocationSelection extends React.Component<{}> {
                 </Grid>
                 <Grid item xs={12} container className="location-selection-element">
                     <Grid item xs={12}>
-                        <Card className="location-selection-element" onClick={() => { this.props.showRouteMap() }}>
+                        <Card className="location-selection-element"
+                            onClick={() => { this.props.showRouteMap() }}>
                             <div className="location-icon">
                                 <Place />
                             </div>
@@ -53,17 +56,19 @@ export default class LocationSelection extends React.Component<{}> {
                 </Grid>
                 <Grid item xs={12} container className="location-selection-element">
                     <Grid item xs={12}>
-                        <Card className="location-selection-element">
+                        <Card className="location-selection-element"
+                            onClick={() => {this.props.homeAddress ? this.props.selectLocation(this.props.homeAddress.address) : this.props.selectHomeAddress() }}
+                        >
                             <div className="location-icon">
                                 <Home />
                             </div>
                             {this.props.homeAddress
-                                ? this.props.homeAddress
+                                ? this.props.homeAddress.displayName
                                 : "Select your home address"
                             }
                             {this.props.homeAddress
                                 ?
-                                <div className="generic-button settings">
+                                <div className="generic-button settings" onClick={(e) => { e.stopPropagation(); this.props.selectHomeAddress()}}>
                                     <Settings />
                                 </div>
                                 :
@@ -74,7 +79,8 @@ export default class LocationSelection extends React.Component<{}> {
                 </Grid>
                 <Grid item xs={12} container className="location-selection-element">
                     <Grid item xs={12}>
-                        <Card className="location-selection-element" onClick={() => { this.props.selectLocation(OfficeAddressesMenu[0].value) }}>
+                        <Card className="location-selection-element"
+                            onClick={() => { this.props.selectLocation(OfficeAddressesMenu[0].value) }}>
                             <div className="location-icon">
                                 <Work />
                             </div>
@@ -84,7 +90,8 @@ export default class LocationSelection extends React.Component<{}> {
                 </Grid>
                 <Grid item xs={12} container className="location-selection-element">
                     <Grid item xs={12}>
-                        <Card className="location-selection-element" onClick={() => { this.props.selectLocation(OfficeAddressesMenu[1].value) }}>
+                        <Card className="location-selection-element"
+                            onClick={() => { this.props.selectLocation(OfficeAddressesMenu[1].value) }}>
                             <div className="location-icon">
                                 <Work />
                             </div>

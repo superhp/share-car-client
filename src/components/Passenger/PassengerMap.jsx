@@ -21,13 +21,13 @@ import { OfficeAddresses } from "../../utils/AddressData";
 import "./../../styles/genericStyles.css";
 import "../../styles/testmap.css";
 import SnackBars from "../common/Snackbars";
-import { SnackbarVariants } from "../common/SnackbarVariants";
 import DriverRoutesSugestionsModal from "./Route/DriverRoutesSugestionsModal";
 import Media from "react-media";
 import NavigateNext from "@material-ui/icons/NavigateNext";
 import NavigateBefore from "@material-ui/icons/NavigateBefore";
 import Button from "@material-ui/core/Button";
 import { CircularProgress } from "@material-ui/core";
+import { SnackbarVariants, showSnackBar } from "../../utils/SnackBarUtils";
 
 export class PassengerMap extends React.Component {
 
@@ -91,7 +91,7 @@ export class PassengerMap extends React.Component {
         this.setState({ users: response.data });
       })
       .catch((err) => {
-        this.showSnackBar("Something went wrong.", 2)
+        showSnackBar("Something went wrong.", 2, this)
       });
   }
 
@@ -101,9 +101,9 @@ export class PassengerMap extends React.Component {
     routes = routes.filter(x => x.drivers.includes(email));
     if (routes.length === 0) {
       if(this.state.selectedDriver){
-      this.showSnackBar("Selected driver doesn't have rides", 2);
+      showSnackBar("Selected driver doesn't have rides", 2, this);
       }else{
-        this.showSnackBar("Choose an existing driver", 2);
+        showSnackBar("Choose an existing driver", 2, this);
       }
     }
     this.setState({ selectedDriver: email, routes, currentRouteIndex: 0 }, this.displayRoute);
@@ -210,7 +210,7 @@ export class PassengerMap extends React.Component {
         this.setState({ currentRides: res.data, showDrivers: true });
       }
     }).catch((error) => {
-      this.showSnackBar("Failed to load rides", 2)
+      showSnackBar("Failed to load rides", 2, this)
     });
   }
 
@@ -233,14 +233,14 @@ export class PassengerMap extends React.Component {
         }
       }).catch((error) => {
         this.setState({ loading: false });
-        this.showSnackBar("Failed to load routes", 2)
+        showSnackBar("Failed to load routes", 2, this)
       });
     }
   }
 
   handleRegister(ride) {
     if (!this.state.passengerAddress) {
-      this.showSnackBar(this.state.direction === "from" ? "Choose your destination point" : "Choose your pick up point", 2)
+      showSnackBar(this.state.direction === "from" ? "Choose your destination point" : "Choose your pick up point", 2, this)
     }
     else {
       const request = {
@@ -261,14 +261,14 @@ export class PassengerMap extends React.Component {
         rides[index].requested = true;
 
         this.setState({ currentRides: rides });
-        this.showSnackBar("Ride requested!", 0)
+        showSnackBar("Ride requested!", 0, this)
 
       })
         .catch((error) => {
           if (error.response && error.response.status === 409) {
-            this.showSnackBar(error.response.data, 2)
+            showSnackBar(error.response.data, 2, this)
           } else {
-            this.showSnackBar("Failed to request ride", 2)
+            showSnackBar("Failed to request ride", 2, this)
           }
         });
     }

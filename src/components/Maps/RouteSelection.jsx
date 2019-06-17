@@ -24,6 +24,18 @@ export default class RouteSelection extends React.Component<{}> {
     state = {
         open: true,
     };
+
+    canCreateIntermediatPoint() {
+        const{routePoints} = this.props;
+        if (routePoints.length > 0) {
+            if (routePoints.find(x => !x.address)) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
     render() {
         return (
             <Card className="location-selection-container">
@@ -39,7 +51,7 @@ export default class RouteSelection extends React.Component<{}> {
 
                         {this.props.routePoints.map((element, index) => (
                             element.routePointType === routePointType.intermediate
-                            ?
+                                ?
                                 <Grid item xs={12} className="direction-label-container">
                                     <div className="direction-label-element" >
                                         <Typography className="direction-label invisible" component="p">
@@ -82,7 +94,7 @@ export default class RouteSelection extends React.Component<{}> {
                                 <Collapse in={this.state.open} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>*/}
                         {this.props.routePoints.map((element, index) => (
-                    
+
 
                             element.routePointType === routePointType.intermediate
                                 ? //<ListItem button className={this.props.nested}>
@@ -133,7 +145,7 @@ export default class RouteSelection extends React.Component<{}> {
                         </Grid>
                         {this.props.routePoints.map((element, index) => (
                             element.routePointType === routePointType.intermediate
-                            ?
+                                ?
                                 <Grid item xs={12} className="clickable-element invisible">
                                     <div className={this.props.routePoints.length > 0 ? "generic-button" : "generic-button disabled"} onClick={this.props.routePoints.length > 0 ? () => { this.props.addNewRoutePoint() } : null}>
                                         <Add />
@@ -142,7 +154,7 @@ export default class RouteSelection extends React.Component<{}> {
                                 : null
                         ))}
                         <Grid item xs={12} className="clickable-element">
-                            <div className={this.props.routePoints.length > 0 ? "generic-button" : "generic-button disabled"} onClick={this.props.routePoints.length > 0 ? () => { this.props.addNewRoutePoint() } : null}>
+                            <div className={this.canCreateIntermediatPoint() ? "generic-button" : "generic-button disabled"} onClick={this.canCreateIntermediatPoint() ? () => { this.props.addNewRoutePoint() } : null}>
                                 <Add />
                             </div>
                         </Grid>

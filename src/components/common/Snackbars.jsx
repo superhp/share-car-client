@@ -51,3 +51,4 @@ Snackbars.propTypes = {
 };
 
 export default withStyles(snackbarMargin)(Snackbars);
+

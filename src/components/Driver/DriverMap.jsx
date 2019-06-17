@@ -22,7 +22,9 @@ import "./../../styles/testmap.css";
 import RouteSelection from "../Maps/RouteSelection";
 import RouteMap from "../Maps/RouteMap";
 import { routePointType } from "../../utils/routePointTypes";
-
+import api from "../../helpers/axiosHelper";
+import SnackBars from "../common/Snackbars";
+import { SnackbarVariants, showSnackBar } from "../../utils/SnackBarUtils"
 
 const currentComponent = {
   fullMap: 0,
@@ -45,12 +47,29 @@ export class DriverMap extends React.Component {
     currentOffice: OfficeAddresses[0],
     currentRoutePoint: { index: 0, routePointType: routePointType.first, displayName: null },
     currentComponent: currentComponent.FullMap,
+    homeAddressSelection: false,
+    homeAddress: null,
+    snackBarClicked: false,
+    snackBarMessage: null,
+    snackBarVariant: null,
   };
 
   componentDidMount() {
     const { map, vectorSource } = this.initializeMap();
     this.map = map;
     this.vectorSource = vectorSource;
+    api.get(`User/homeAddress`).then(response => {
+      if (response.data !== null) {
+        let address = {
+          address: response.data,
+          displayName: addressToString(response.data),
+        };
+        this.setState({ homeAddress: address });
+      }
+    })
+      .catch(() => {
+        showSnackBar("Failed to get home address", 2, this);
+      });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -61,8 +80,14 @@ export class DriverMap extends React.Component {
       routePoints: [],
       currentComponent: currentComponent.FullMap,
       routePolylineFeature: null,
+      homeAddressSelection: false,
+      homeAddress: null,
+      snackBarClicked: false,
+      snackBarMessage: null,
+      snackBarVariant: null,
     });
   }
+
   // index => index of input field representing route point. Since First Route Point is office (and there is no input field for office) index must be incermented
   changeRoutePoint(address, index) {
     if (address) {
@@ -77,14 +102,12 @@ export class DriverMap extends React.Component {
         routePointType: this.state.currentRoutePoint.routePointType
       }
       this.setState({ routePoints: routePoints }, () => { this.updateMap() });
-      // }
     }
   }
   addNewRoutePoint(address, index) {
     index++;
     const { longitude, latitude } = address;
     const feature = createPointFeature(longitude, latitude);
-    //  this.vectorSource.addFeature(feature);
     let points = [...this.state.routePoints];
     points.splice(index, 0, {
       address: address,
@@ -154,13 +177,30 @@ export class DriverMap extends React.Component {
     return { map, vectorSource };
   }
 
+  updateHomeAddress(address) {
+    api.post(`User/updateHomeAddress`, address).then(response => {
+      let stateAddress = {
+        address: address,
+        displayName: addressToString(address)
+      }
+        this.setState({ currentComponent: currentComponent.locationSelection, homeAddress: stateAddress, homeAddressSelection: false });
+    }).catch(() => {
+      showSnackBar("Failed to set home address", 2, this);
+      this.setState({ currentComponent: currentComponent.locationSelection, homeAddressSelection: false });
+    });
+
+  }
+
   selectLocation(address) {
     this.setState({ currentComponent: currentComponent.FullMap }, () => {
       const { routePoints, currentRoutePoint } = this.state;
       const { map, vectorSource } = this.initializeMap();
       this.map = map;
       this.vectorSource = vectorSource;
-
+      if (!address) {
+        this.updateMap();
+        return;
+      }
       if (currentRoutePoint.routePointType === routePointType.first) {
         if (routePoints.length > 0 && routePoints[0].routePointType === routePointType.first) {
           this.changeRoutePoint(address, currentRoutePoint.index);
@@ -184,7 +224,6 @@ export class DriverMap extends React.Component {
   }
 
   showLocationSelection(routePointIndex, routePointType) {
-
     const { routePoints } = this.state;
     this.setState({
       currentComponent: currentComponent.locationSelection,
@@ -197,7 +236,8 @@ export class DriverMap extends React.Component {
   }
 
   addEmptyRoutePoint() {
-    if (this.state.routePoints.length > 0) {
+    const { routePoints } = this.state;
+    if (routePoints.length > 0) {
       let points = [...this.state.routePoints];
       points.splice(1, 0, {
         address: null,
@@ -255,21 +295,36 @@ export class DriverMap extends React.Component {
               {this.state.currentComponent === currentComponent.locationSelection
                 ? <LocationSelection
                   showRouteMap={() => { this.setState({ currentComponent: currentComponent.addPointMap }) }}
+                  selectHomeAddress={() => { this.setState({ currentComponent: currentComponent.addPointMap, homeAddressSelection: true }) }}
                   selectLocation={(address) => { this.selectLocation(address) }}
                   currentRoutePoint={this.state.currentRoutePoint}
+                  homeAddress={this.state.homeAddress}
                 />
-                : <RouteMap
-                  routePoints={this.state.routePoints}
-                  routePointIndex={this.state.currentRoutePoint.index}
-                  routePointsType={this.state.currentRoutePoint.routePointType}
-                  isRouteToOffice={true}
-                  return={(address) => { this.selectLocation(address) }}
-                />
+                : this.state.homeAddressSelection
+                  ? <RouteMap
+                    routePoints={[this.state.homeAddress]}
+                    routePointIndex={0}
+                    routePointsType={routePointType.first}
+                    isRouteToOffice={true}
+                    return={(address) => { this.updateHomeAddress(address) }}
+                  />
+                  : <RouteMap
+                    routePoints={this.state.routePoints}
+                    routePointIndex={this.state.currentRoutePoint.index}
+                    routePointsType={this.state.currentRoutePoint.routePointType}
+                    isRouteToOffice={true}
+                    return={(address) => { this.selectLocation(address) }}
+                  />
               }
 
 
             </div>
         }
+        <SnackBars
+          message={this.state.snackBarMessage}
+          snackBarClicked={this.state.snackBarClicked}
+          variant={this.state.snackBarVariant}
+        />
       </div>
 
     );

@@ -105,8 +105,7 @@ export default class RouteMap extends React.Component<{}> {
             feature: feature,
             displayName: addressToString(address),
             routePointType: this.props.routePointType
-        };
-
+        };    
         this.setState({ routePoints: points, editableFeature: feature }, () => { this.displayRoute() });
     }
 
@@ -118,7 +117,7 @@ export default class RouteMap extends React.Component<{}> {
                 const { longitude, latitude } = routePoints[i].address;
                 const feature = createPointFeature(longitude, latitude);
                 if (this.props.routePointIndex < this.props.routePoints.length && i === this.props.routePointIndex) {
-                 this.setState({editableFeature:feature});   
+                    this.setState({ editableFeature: feature });
                 }
                 this.vectorSource.addFeature(feature);
             }
@@ -140,6 +139,7 @@ export default class RouteMap extends React.Component<{}> {
                 });
         }
     }
+
 
     render() {
         return (
