@@ -6,7 +6,7 @@ import Radio from "@material-ui/core/Radio";
 import Autosuggest from 'react-autosuggest';
 import SimpleMenu from "../../common/SimpleMenu";
 import { AddressInput } from "../../common/AddressInput";
-import { fromAlgoliaAddress } from "../../../utils/addressUtils";
+import { formAlgoliaAddress } from "../../../utils/addressUtils";
 import { OfficeAddressesMenu } from "../../../utils/AddressData";
 import "./../../../styles/genericStyles.css";
 import "./../../../styles/driverAutoSuggest.css";
@@ -146,7 +146,7 @@ export class PassengerRouteSelection extends React.Component {
                         <AddressInput
                             displayName={this.props.displayName}
                             placeholder={this.state.direction == "to" ? "Your pick up point" : "Your destination point"}
-                            onChange={(suggestion) => this.props.onMeetupAddressChange(fromAlgoliaAddress(suggestion))}
+                            onChange={(suggestion) => this.props.onMeetupAddressChange(formAlgoliaAddress(suggestion))}
                         />
                     </Grid>
                     <Grid item xs={12}

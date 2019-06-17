@@ -2,7 +2,7 @@ import * as React from "react";
 import AlgoliaPlaces from "algolia-places-react";
 import Close from "@material-ui/icons/Close";
 
-import "../../styles/locationSelection.css";
+import "../../styles/routeSelection.css";
 
 export class AddressInput extends React.Component {
     constructor(props) {
@@ -39,13 +39,13 @@ export class AddressInput extends React.Component {
                         countries: ['lt']
                     }}
                     onChange={({ query, rawAnswer, suggestion, suggestionIndex }) => this.props.onChange(suggestion, this.props.index)}
-
+                    onClick = {() => {this.props.onClick()}}
                     onBlur={() => {
                         if (this.placesAutocomplete.autocomplete[0].value === "" && this.props.displayName) {
                             this.placesAutocomplete.setVal(this.props.displayName);
                         }
                     }}
-                    onClear={() => this.props.onChange(null)}
+                    //onClear={() => this.props.onChange(null)}
                     ref={this.algoliaRef}
                     placeholder={this.props.placeholder}
 

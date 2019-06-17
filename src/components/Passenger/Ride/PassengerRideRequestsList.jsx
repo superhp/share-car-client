@@ -5,7 +5,7 @@ import "../../../styles/riderequests.css";
 import "../../../styles/genericStyles.css";
 import api from "../../../helpers/axiosHelper";
 import SnackBars from "../../common/Snackbars";
-import { SnackbarVariants } from "../../common/SnackbarVariants";
+import { SnackbarVariants, showSnackBar } from "../../../utils/SnackBarUtils";
 import PassengerRideRequestCard from "../PassengerRideRequestCard";
 import { CircularProgress } from "@material-ui/core";
 
@@ -62,11 +62,11 @@ export class PassengerRideRequestsList extends React.Component {
             if (res.status === 200) {
                 requests[index].status = 4;
                 this.setState({ requests: requests });
-                this.showSnackBar("Request was canceled", 0);
+                showSnackBar("Request was canceled", 0, this);
             }
         })
             .catch(error => {
-                this.showSnackBar("Failed to cancel request", 2);
+                showSnackBar("Failed to cancel request", 2, this);
             });
 
     }
@@ -78,7 +78,7 @@ export class PassengerRideRequestsList extends React.Component {
         };
         api.post("RideRequest/updateNote", data).then()
         .catch(error => {
-                this.showSnackBar("Failed to update note", 2);
+                showSnackBar("Failed to update note", 2, this);
             });
     }
 
@@ -105,7 +105,7 @@ export class PassengerRideRequestsList extends React.Component {
             })
             .catch((error) => {
                 this.setState({loading:false});
-                this.showSnackBar("Failed to load requests", 2)
+                showSnackBar("Failed to load requests", 2, this)
             });
     }
 

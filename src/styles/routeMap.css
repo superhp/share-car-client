@@ -1,0 +1,39 @@
+.navigation{
+    display:flex;
+    height: 8vh;
+    width: 100%;
+}
+
+.label{
+    height: 100%;
+    width: 80%;
+    position:relative;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.select{
+    height: 100%;
+    width: 10%;
+    position:relative;
+    display:flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.return{
+    height: 100%;
+    width: 10%;
+    position:relative;
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.select-icon{
+    background-color: #9bff87;
+}
+.return-icon{
+    background-color: #f28286;
+}
+.disabled{
+    opacity:0.25;
+}

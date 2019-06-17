@@ -21,7 +21,7 @@ export const toReadableName = address =>{
     if (!address) return "";
     return `${address.street ?address.street : ""} ${address.number ? address.number : ""}`;
 }
-export const fromAlgoliaAddress = address => {
+export const formAlgoliaAddress = address => {
     if(!address) return null;
     let streetNumber = "";
     let street = address.name;

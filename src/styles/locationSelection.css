@@ -1,51 +1,38 @@
-.location-selection-container{
-    width: 100vw;
-    background-color: #f8f9fa !important;
-    }
-    .location-selection-container-extended{
-        width: 100vw;
-        height: 15vh;
-        background-color: #f8f9fa !important;
-        }
+.location-selection-element{
+    padding:2px;
+    justify-content: flex-start;
+    margin-left: 3%;    
+    margin-right: 3%;
+    color: black;
+}
 
-    .location-selection-element{
-        display:flex;
-        justify-content: center;
-        align-content: center;
-        }
+.settings{
+    margin-left:auto;
+    z-index : 99;
+}
 
-        .algolia-input {
-            margin: 5px;
-          }
-          .direction-label-container{
-            position:relative;
-            display:flex;
-            justify-content: flex-end;
-            align-items: center;
-        }       
-           .direction-label-element{
-            height: 50%;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-        }
+.clickable{
+    border: 1px solid #666;
+    padding: 2px;
+    box-shadow: 1px 1px #888888;
+    background-color: #fff;
+  /*  height: 36px;
+    width: 36px; */
+    border-radius: 30%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        .clickable-element{
-            position:relative;
-            display:flex;
-            justify-content: flex-start;
-            align-items: center;
-        }
-        .clickable-container{
-            height:100%;
-        }
-        .clickable{
-            border: 1px solid #666;
-            padding: 2px;
-            box-shadow: 1px 1px #888888;
-            background-color: #fff;
-            height: 36px;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-        }
+.location-icon{
+    padding: 2px;
+    background-color: #fff;
+    margin-right: 5px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.address-input{
+    overflow: visible !important;
+}

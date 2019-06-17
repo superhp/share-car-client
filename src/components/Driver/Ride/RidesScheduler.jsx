@@ -5,7 +5,7 @@ import "react-infinite-calendar/styles.css"; // only needs to be imported once
 import api from "../../../helpers/axiosHelper";
 import "../../common/TimePickers";
 import SnackBars from "../../common/Snackbars";
-import { SnackbarVariants } from "../../common/SnackbarVariants";
+import { SnackbarVariants, showSnackBar } from "../../../utils/SnackBarUtils";
 import RideSchedulerHelper from "./RideSchedulerHelper";
 
 const styles = {
@@ -105,14 +105,14 @@ class RidesScheduler extends React.Component {
   postRides(ridesToPost) {
     api.post("Ride", ridesToPost).then(res => {
       if (res.status === 200) {
-        this.showSnackBar("Rides successfully created!", 0);
+        showSnackBar("Rides successfully created!", 0, this);
       }
     }).catch((error) => {
       if (error.response && error.response.status === 409) {
-        this.showSnackBar(error.response.data, 2)
+        showSnackBar(error.response.data, 2, this)
     }
     else {
-        this.showSnackBar("Failed to create rides", 2)
+        showSnackBar("Failed to create rides", 2, this)
     }    });
   }
 

@@ -6,8 +6,8 @@ import { DriversRidesList } from "./DriversRidesList";
 
 import "../../../styles/genericStyles.css";
 import SnackBars from "../../common/Snackbars";
-import { SnackbarVariants } from "../../common/SnackbarVariants"
 import { CircularProgress } from "@material-ui/core";
+import { SnackbarVariants, showSnackBar } from "../../../utils/SnackBarUtils"
 
 export class Rides extends React.Component {
     state = {
@@ -53,10 +53,10 @@ export class Rides extends React.Component {
                     clicked: false,
                     selectedRideId: null
                 });
-                this.showSnackBar("Ride successfully deleted", 0);
+                showSnackBar("Ride successfully deleted", 0, this);
             }
         }).catch(() => {
-            this.showSnackBar("Failed to delete ride", 2);
+            showSnackBar("Failed to delete ride", 2, this);
         });
     }
 
@@ -92,7 +92,7 @@ export class Rides extends React.Component {
             })
             .catch((error) => {
                 this.setState({ loading: false });
-                this.showSnackBar("Failed to load rides", 2)
+                showSnackBar("Failed to load rides", 2, this)
             });
     }
 
@@ -127,10 +127,10 @@ export class Rides extends React.Component {
                         }],
 
                     });
-                    this.showSnackBar("Request accepted", 0)
+                    showSnackBar("Request accepted", 0, this)
 
                 } else {
-                    this.showSnackBar("Request denied", 0)
+                    showSnackBar("Request denied", 0, this)
                 }
                 this.setState({
                     clickedRequest: true,
@@ -141,10 +141,10 @@ export class Rides extends React.Component {
             }
         }).catch((error) => {
             if (error.response && error.response.status === 409) {
-                this.showSnackBar(error.response.data, 2)
+                showSnackBar(error.response.data, 2, this)
             }
             else {
-                this.showSnackBar("Failed to respond to request", 2)
+                showSnackBar("Failed to respond to request", 2, this)
             }
         });
     }
@@ -166,7 +166,7 @@ export class Rides extends React.Component {
                         rides={this.state.rides}
                         requests={this.state.requests}
                         passengers={this.state.passengers}
-                        showSnackBar={(message, variant) => { this.showSnackBar(message, variant) }}
+                        showSnackBar={(message, variant) => { showSnackBar(message, variant, this) }}
                     />
                 }
                 <SnackBars

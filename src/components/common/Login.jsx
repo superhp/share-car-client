@@ -9,7 +9,7 @@ import AuthenticationService from "../../services/authenticationService";
 import "../../styles/login.css";
 import logo from '../../images/shareCarLogo.png';
 import SnackBars from "../common/Snackbars";
-import { SnackbarVariants } from "../common/SnackbarVariants";
+import { SnackbarVariants, showSnackBar } from "../../utils/SnackBarUtils"
 
 class Login extends Component<{}> {
   authService: AuthenticationService = new AuthenticationService();
@@ -107,14 +107,14 @@ class Login extends Component<{}> {
             this.state.submitCode
               ? <VerificationCode
                 facebookEmail={this.state.facebookEmail} googleEmail={this.state.googleEmail}
-                showSnackBar={(message, variant) => { this.showSnackBar(message, variant) }}
+                showSnackBar={(message, variant) => { showSnackBar(message, variant, this) }}
               />
 
               : <CognizantEmail
                 facebookEmail={this.state.facebookEmail}
                 googleEmail={this.state.googleEmail}
                 emailSubmited={this.displayVerificationCodeComponent}
-                showSnackBar={(message, variant) => { this.showSnackBar(message, variant) }}
+                showSnackBar={(message, variant) => { showSnackBar(message, variant, this) }}
               />
           )
             :

@@ -4,7 +4,7 @@ import { withAlert } from "react-alert";
 import "typeface-roboto";
 
 import SnackBars from "../common/Snackbars";
-import { SnackbarVariants } from "../common/SnackbarVariants";
+import { SnackbarVariants, showSnackBar } from "../../utils/SnackBarUtils";
 import api from "../../helpers/axiosHelper";
 import UserService from "../../services/userService";
 import { UserProfileForm } from "./UserProfileForm";

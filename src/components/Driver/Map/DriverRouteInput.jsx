@@ -15,7 +15,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import StarBorder from '@material-ui/icons/StarBorder';
 
 import { AddressInput } from "../../common/AddressInput";
-import { fromAlgoliaAddress } from "../../../utils/addressUtils";
+import { formAlgoliaAddress } from "../../../utils/addressUtils";
 import { OfficeAddressesMenu } from "../../../utils/AddressData";
 import "../../../styles/testmap.css";
 import SimpleMenu from "../../common/SimpleMenu";
@@ -54,7 +54,7 @@ export class DriverRouteInput extends React.Component {
                                                 deletable={true}
                                                 removeRoutePoint={id => { this.props.removeRoutePoint(id) }}
                                                 placeholder={this.props.isRouteToOffice ? "To location" : "From location"}
-                                                onChange={(suggestion, index) => this.props.changeRoutePoint(fromAlgoliaAddress(suggestion), index)}
+                                                onChange={(suggestion, index) => this.props.changeRoutePoint(formAlgoliaAddress(suggestion), index)}
                                                 displayName={this.props.routePoints[index + 1].displayName}
                                             />
                                         </ListItemIcon>
@@ -72,7 +72,7 @@ export class DriverRouteInput extends React.Component {
                     deletable={false}
                     removeRoutePoint={id => { this.props.removeRoutePoint(id) }}
                     placeholder={this.props.isRouteToOffice ? "To location" : "From location"}
-                    onChange={(suggestion, index) => this.props.changeRoutePoint(fromAlgoliaAddress(suggestion), index)}
+                    onChange={(suggestion, index) => this.props.changeRoutePoint(formAlgoliaAddress(suggestion), index)}
                     displayName=""
 
                 />
