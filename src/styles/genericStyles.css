@@ -95,6 +95,10 @@ button:focus {
   align-items: center;
 }
 
+.generic-button:not(.disabled):hover {
+  background-color: #aaa;
+}
+
 .rides-delete-button {
   background-color: #f74428!important;
   color: white!important;

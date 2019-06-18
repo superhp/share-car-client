@@ -87,8 +87,18 @@ export class DriverMap extends React.Component {
     this.setState({
       isRideSchedulerVisible: false,
       routeGeometry: null,
-      routePoints: [],
-      currentComponent: currentComponent.FullMap,
+      routePoints: [{
+        address: null,
+        feature: null,
+        displayName: null,
+        routePointType: routePointType.first
+      },
+      {
+        address: null,
+        feature: null,
+        displayName: null,
+        routePointType: routePointType.last
+      }], currentComponent: currentComponent.FullMap,
       homeAddressSelection: false,
       homeAddress: null,
       snackBarClicked: false,
@@ -152,10 +162,13 @@ export class DriverMap extends React.Component {
   // index => index of input field representing route point. Since First Route Point is office (and there is no input field for office) index must be incermented
   removeRoutePoint(index) {
     let routePoints = [...this.state.routePoints];
-
-    this.vectorSource.clear();
-    routePoints.splice(index + 1, 1);
-    this.setState({ routePoints: routePoints }, () => this.updateMap());
+    let shouldRerender = routePoints[index].displayName !== null;
+    routePoints.splice(index, 1);
+    this.setState({ routePoints: routePoints }, () => {
+      if (shouldRerender) {
+        this.updateMap()
+      }
+    });
   }
 
   changeDirection() {
@@ -256,9 +269,10 @@ export class DriverMap extends React.Component {
 
   addEmptyRoutePoint() {
     const { routePoints } = this.state;
+
     if (routePoints.length > 0) {
-      let points = [...this.state.routePoints];
-      points.splice(1, 0, {
+      let points = [...routePoints];
+      points.splice(points.length - 1, 0, {
         address: null,
         feature: null,
         displayName: null,
@@ -268,9 +282,31 @@ export class DriverMap extends React.Component {
     }
   }
 
+  shouldShowError() {
+    const { routePoints } = this.state;
+
+    for (let i = 0; i < routePoints.length; i += routePoints.length - 1) {
+      if (!routePoints[i].displayName) {
+        return false;
+      } else if (OfficeAddresses.filter(x =>
+        x.longitude === routePoints[i].address.longitude &&
+        x.latitude === routePoints[i].address.latitude).length > 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  canCreateRide() {
+    const { routePoints } = this.state;
+    if (routePoints[0].displayName && routePoints[routePoints.length - 1].displayName && !this.shouldShowError()) {
+      return true;
+    }
+    return false;
+  }
+
   render() {
     return (
-
       <div>
         {
           this.state.currentComponent === currentComponent.FullMap
@@ -282,7 +318,7 @@ export class DriverMap extends React.Component {
                   officeSelectionChange={(address, inputIndex, officeIndex) => this.officeSelectionChange(address, inputIndex, officeIndex)}
                   changeDirection={() => this.changeDirection()}
                   routePoints={this.state.routePoints}
-                  //  removeRoutePoint={index => this.removeRoutePoint(index)}
+                  removeRoutePoint={index => this.removeRoutePoint(index)}
                   addNewRoutePoint={() => this.addEmptyRoutePoint()}
                   direction={this.state.direction}
                   showLocationSelection={(routePointIndex, routePointType) => { this.showLocationSelection(routePointIndex, routePointType) }}
@@ -291,22 +327,23 @@ export class DriverMap extends React.Component {
 
               </div>
               <div id="map"></div>
-              {/*
-        {this.state.isRideSchedulerVisible ? (
-          <RidesScheduler routeInfo={{
-            fromAddress: this.state.direction ? this.state.routePoints[this.state.routePoints.length - 1].address : this.state.routePoints[0].address,
-            toAddress: this.state.direction ? this.state.routePoints[0].address : this.state.routePoints[this.state.routePoints.length - 1].address,
-            routeGeometry: this.state.routeGeometry
-          }} />
-        ) : null}
-        <Button
-          disabled={this.state.routePoints.length < 2}
-          className="continue-button"
-          variant="contained"
-          onClick={() => this.setState({ isRideSchedulerVisible: !this.state.isRideSchedulerVisible })}
-        >
-          Continue
-        </Button>*/}
+
+              {this.state.isRideSchedulerVisible ? (
+                <RidesScheduler routeInfo={{
+                  fromAddress: this.state.direction ? this.state.routePoints[this.state.routePoints.length - 1].address : this.state.routePoints[0].address,
+                  toAddress: this.state.direction ? this.state.routePoints[0].address : this.state.routePoints[this.state.routePoints.length - 1].address,
+                  routeGeometry: this.state.routeGeometry
+                }} />
+              ) : null}
+
+              <Button
+                disabled={!this.canCreateRide()}
+                className="continue-button"
+                variant="contained"
+                onClick={() => this.setState({ isRideSchedulerVisible: !this.state.isRideSchedulerVisible })}
+              >
+                Continue
+        </Button>
 
 
             </div>
@@ -335,8 +372,6 @@ export class DriverMap extends React.Component {
                     return={(address) => { this.selectLocation(address) }}
                   />
               }
-
-
             </div>
         }
         <SnackBars
