@@ -70,3 +70,12 @@
     margin-left: 15px;
     width:100%;
 }
+
+.invalid{
+    border-color: red;
+    color:red !important;
+}
+
+.error-icon{
+    font-size: 18px !important;
+}

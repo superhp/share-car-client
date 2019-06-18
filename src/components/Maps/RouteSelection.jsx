@@ -4,6 +4,8 @@ import "../../styles/routeSelection.css";
 import "../../styles/genericStyles.css";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Cached from "@material-ui/icons/Cached";
+import Close from "@material-ui/icons/Close";
+import Error from "@material-ui/icons/Error";
 import Add from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
@@ -19,6 +21,8 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import { formAlgoliaAddress } from "../../utils/addressUtils";
 import history from "../../helpers/history";
 import { routePointType } from "../../utils/routePointTypes";
+import { OfficeAddresses } from "../../utils/AddressData";
+import Tooltip from '@material-ui/core/Tooltip';
 
 export default class RouteSelection extends React.Component<{}> {
     state = {
@@ -33,7 +37,44 @@ export default class RouteSelection extends React.Component<{}> {
             }
             return true;
         }
-        return false;
+    }
+
+canCreateNewRoutePoint(){
+    if(this.doRoutePointsExist()){
+        const { routePoints } = this.props;
+        if(routePoints.filter(x => !x.displayName && x.routePointType === routePointType.intermediate).length > 0){
+         return false;
+        }
+        return true;
+    }
+    return false;
+}
+
+    shouldShowError() {
+        const { routePoints } = this.props;
+
+        for (let i = 0; i < routePoints.length; i += routePoints.length - 1) {
+            if (!routePoints[i].displayName) {
+                return false;
+            } else if (OfficeAddresses.filter(x =>
+                x.longitude === routePoints[i].address.longitude &&
+                x.latitude === routePoints[i].address.latitude).length > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    inputFieldClassName(index) {
+        const { routePoints } = this.props;
+
+        if (routePoints[index].displayName) {
+            if (this.shouldShowError()) {
+                return "location-input-container invalid";
+            }
+            return "location-input-container";
+        }
+        return "location-input-container empty";
     }
 
     render() {
@@ -44,9 +85,16 @@ export default class RouteSelection extends React.Component<{}> {
                     <Grid item xs={2} container className="direction-label-container">
                         <Grid item xs={12} className="direction-label-container">
                             <div className="direction-label-element">
-                                <Typography component="p">
+                                <Typography component="p" className={this.shouldShowError() ? "invalid" : ""}>
                                     From
                                 </Typography>
+                                {
+                                    this.shouldShowError()
+                                        ? <Tooltip disableFocusListener title="Start or destination point must be Cognizant office">
+                                            <Error className="invalid error-icon" />
+                                        </Tooltip>
+                                        : null
+                                }
                             </div>
                         </Grid>
                         {routePoints.map((element, index) => (
@@ -65,19 +113,25 @@ export default class RouteSelection extends React.Component<{}> {
                         <Grid item xs={12} className="direction-label-container">
 
                             <div className="direction-label-element" >
-                                <Typography className="direction-label" component="p">
+                                <Typography component="p" className={this.shouldShowError() ? "invalid" : ""}>
                                     To
                                 </Typography>
+                                {
+                                    this.shouldShowError()
+                                        ? <Tooltip disableFocusListener title="Start or destination point must be Cognizant office">
+                                            <Error className="invalid error-icon" />
+                                        </Tooltip>
+                                        : null
+                                }
                             </div>
                         </Grid>
                     </Grid>
 
 
-
                     <Grid item xs={8} className="direction-inputs">
                         <div
-                            className={routePoints[0].displayName ? "location-input-container" : "location-input-container empty"}
-                            onClick={() => { this.props.showLocationSelection(0, routePointType.first) }}
+                            className={this.inputFieldClassName(0)}
+                            onClick={() => { this.props.showLocationSelection(0, routePoints[0].routePointType) }}
                         >
                             {
                                 routePoints[0].displayName
@@ -103,11 +157,8 @@ export default class RouteSelection extends React.Component<{}> {
                                 : null
                         ))}
                         <div
-                            className={routePoints.length > 0 &&
-                                routePoints[routePoints.length - 1].displayName
-                                ? "location-input-container"
-                                : "location-input-container empty"}
-                            onClick={() => { this.props.showLocationSelection(routePoints.length - 1, routePoints[routePoints.length - 1].routePointType.last) }}
+                            className={this.inputFieldClassName(routePoints.length - 1)}
+                            onClick={() => { this.props.showLocationSelection(routePoints.length - 1, routePoints[routePoints.length - 1].routePointType) }}
                         >
                             {
                                 routePoints[routePoints.length - 1].displayName
@@ -131,10 +182,9 @@ export default class RouteSelection extends React.Component<{}> {
                         </Grid>
                         {routePoints.map((element, index) => (
                             element.routePointType === routePointType.intermediate
-                                ?
-                                <Grid item xs={12} className="clickable-element invisible">
-                                    <div className="generic-button">
-                                        <Add />
+                                ? <Grid item xs={12} className="clickable-element">
+                                    <div className="generic-button" onClick={() => { this.props.removeRoutePoint(index) }}>
+                                        <Close />
                                     </div>
                                 </Grid>
                                 : null
@@ -142,8 +192,8 @@ export default class RouteSelection extends React.Component<{}> {
                         ))}
                         <Grid item xs={12} className="clickable-element">
                             <div
-                                className={this.doRoutePointsExist() ? "generic-button" : "generic-button disabled"}
-                                onClick={this.doRoutePointsExist() ? () => { this.props.addNewRoutePoint() } : null}
+                                className={this.canCreateNewRoutePoint() ? "generic-button" : "generic-button disabled"}
+                                onClick={this.canCreateNewRoutePoint() ? () => { this.props.addNewRoutePoint() } : null}
                             >
                                 <Add />
                             </div>
