@@ -7,6 +7,9 @@ import Cached from "@material-ui/icons/Cached";
 import Close from "@material-ui/icons/Close";
 import Error from "@material-ui/icons/Error";
 import Add from "@material-ui/icons/Add";
+import MoreVert from "@material-ui/icons/MoreVert";
+import UnfoldMore from "@material-ui/icons/UnfoldMore";
+import UnfoldLess from "@material-ui/icons/UnfoldLess";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
@@ -16,8 +19,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
 import { formAlgoliaAddress } from "../../utils/addressUtils";
 import history from "../../helpers/history";
 import { routePointType } from "../../utils/routePointTypes";
@@ -26,7 +27,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 export default class RouteSelection extends React.Component<{}> {
     state = {
-        open: true,
+        expanded: true,
     };
 
     doRoutePointsExist() {
@@ -39,16 +40,16 @@ export default class RouteSelection extends React.Component<{}> {
         }
     }
 
-canCreateNewRoutePoint(){
-    if(this.doRoutePointsExist()){
-        const { routePoints } = this.props;
-        if(routePoints.filter(x => !x.displayName && x.routePointType === routePointType.intermediate).length > 0){
-         return false;
+    canCreateNewRoutePoint() {
+        if (this.doRoutePointsExist()) {
+            const { routePoints } = this.props;
+            if (routePoints.filter(x => !x.displayName && x.routePointType === routePointType.intermediate).length > 0) {
+                return false;
+            }
+            return true;
         }
-        return true;
+        return false;
     }
-    return false;
-}
 
     shouldShowError() {
         const { routePoints } = this.props;
@@ -97,21 +98,48 @@ canCreateNewRoutePoint(){
                                 }
                             </div>
                         </Grid>
-                        {routePoints.map((element, index) => (
-                            element.routePointType === routePointType.intermediate
-                                ?
-                                <Grid item xs={12} className="direction-label-container">
-                                    <div className="direction-label-element" >
-                                        <Typography className="direction-label invisible" component="p">
-                                            Q
-                    </Typography></div>
-                                </Grid>
+                        {this.state.expanded
+                            ? routePoints.map((element, index) => (
+                                element.routePointType === routePointType.intermediate
+                                    ?
+                                    <Grid item xs={12} className="direction-label-container">
+                                        <div className="direction-label-element" >
+                                            <Typography className="invisible" component="p">
+                                                Q
+                                        </Typography>
+                                        </div>
+                                    </Grid>
 
 
-                                : null
-                        ))}
+                                    : null
+                            ))
+                            : <Grid item xs={12} className="direction-label-container invisible">
+                                <div className="direction-label-element" >
+                                    <Typography className="invisible" component="p">
+                                        Q
+                            </Typography>
+                                </div>
+                            </Grid>
+                        }
+                        <Grid item xs={12} className="expanding-element-container">
+                            <div className="expanding-element" >
+                                {routePoints.length > 2
+                                    ? (
+                                        this.state.expanded
+
+                                            ? <div className="generic-button">
+                                                <UnfoldLess onClick={() => { this.setState({ expanded: false }) }} />
+                                            </div>
+
+                                            : <div className="generic-button">
+                                                <UnfoldMore onClick={() => { this.setState({ expanded: true }) }} />
+                                            </div>
+                                    )
+                                    : null
+                                }
+                            </div>
+                        </Grid>
                         <Grid item xs={12} className="direction-label-container">
-
                             <div className="direction-label-element" >
                                 <Typography component="p" className={this.shouldShowError() ? "invalid" : ""}>
                                     To
@@ -139,23 +167,27 @@ canCreateNewRoutePoint(){
                                     : "From location"
                             }
                         </div>
-
-                        {routePoints.map((element, index) => (
-                            element.routePointType === routePointType.intermediate
-                                ? <div
-                                    className={routePoints[index].displayName
-                                        ? "location-input-container"
-                                        : "location-input-container empty"}
-                                    onClick={() => { this.props.showLocationSelection(index, routePointType.intermediate) }}
-                                >
-                                    {
-                                        routePoints[index].displayName
-                                            ? routePoints[index].displayName
-                                            : "Intermediate point"
-                                    }
-                                </div>
-                                : null
-                        ))}
+                        {this.state.expanded
+                            ? routePoints.map((element, index) => (
+                                element.routePointType === routePointType.intermediate
+                                    ? <div
+                                        className={routePoints[index].displayName
+                                            ? "location-input-container"
+                                            : "location-input-container empty"}
+                                        onClick={() => { this.props.showLocationSelection(index, routePointType.intermediate) }}
+                                    >
+                                        {
+                                            routePoints[index].displayName
+                                                ? routePoints[index].displayName
+                                                : "Intermediate point"
+                                        }
+                                    </div>
+                                    : null
+                            ))
+                            : <div className="fold-container">
+                                <MoreVert />
+                              </div>
+                        }
                         <div
                             className={this.inputFieldClassName(routePoints.length - 1)}
                             onClick={() => { this.props.showLocationSelection(routePoints.length - 1, routePoints[routePoints.length - 1].routePointType) }}
@@ -180,16 +212,23 @@ canCreateNewRoutePoint(){
                                 <Cached />
                             </div>
                         </Grid>
-                        {routePoints.map((element, index) => (
-                            element.routePointType === routePointType.intermediate
-                                ? <Grid item xs={12} className="clickable-element">
-                                    <div className="generic-button" onClick={() => { this.props.removeRoutePoint(index) }}>
-                                        <Close />
-                                    </div>
-                                </Grid>
-                                : null
+                        {this.state.expanded
+                            ? routePoints.map((element, index) => (
+                                element.routePointType === routePointType.intermediate
+                                    ? <Grid item xs={12} className="clickable-element">
+                                        <div className="generic-button" onClick={() => { this.props.removeRoutePoint(index) }}>
+                                            <Close />
+                                        </div>
+                                    </Grid>
+                                    : null
 
-                        ))}
+                            ))
+                            : <Grid item xs={12} className="clickable-element invisible">
+                                <div className="generic-button">
+                                    <Close />
+                                </div>
+                            </Grid>
+                        }
                         <Grid item xs={12} className="clickable-element">
                             <div
                                 className={this.canCreateNewRoutePoint() ? "generic-button" : "generic-button disabled"}

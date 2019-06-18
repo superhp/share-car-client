@@ -15,6 +15,7 @@ import Settings from "@material-ui/icons/Settings";
 import { formAlgoliaAddress } from "../../utils/addressUtils";
 import { OfficeAddressesMenu } from "../../utils/AddressData";
 import { Link } from "react-router-dom";
+import ArrowBack from "@material-ui/icons/ArrowBack";
 
 
 export default class LocationSelection extends React.Component<{}> {
@@ -30,6 +31,10 @@ export default class LocationSelection extends React.Component<{}> {
                 <Grid item xs={12} container className="location-selection-element">
                     <Grid item xs={12} >
                         <Card className="location-selection-element address-input">
+                            <div className="algolia-input-container">
+                            <div className="generic-button">
+                            <ArrowBack onClick={() => this.props.selectLocation()}/>
+                            </div>
                             <AddressInput
                                 deletable={false}
                                 removeRoutePoint={id => { this.props.removeRoutePoint(id) }}
@@ -38,6 +43,7 @@ export default class LocationSelection extends React.Component<{}> {
                                 displayName={this.props.currentRoutePoint ? this.props.currentRoutePoint.displayName : ""}
                                 onClick={() => { }}
                             />
+                            </div>
                         </Card>
                     </Grid>
                 </Grid>
