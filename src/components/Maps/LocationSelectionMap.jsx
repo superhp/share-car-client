@@ -9,7 +9,7 @@ import Feature from "ol/Feature";
 import Tile from "ol/layer/Tile";
 import Point from "ol/geom/Point";
 import OSM from "ol/source/OSM";
-import "../../styles/routeMap.css";
+import "../../styles/locationSelectionMap.css";
 import "../../styles/genericStyles.css";
 import Done from "@material-ui/icons/Done";
 import Clear from "@material-ui/icons/Clear";
@@ -20,7 +20,7 @@ import {
     createRouteFeature, createRoute
 } from "../../utils/mapUtils";
 
-export default class RouteMap extends React.Component<{}> {
+export default class LocationSelectionMap extends React.Component<{}> {
     constructor(props) {
         super(props);
         this.state = {
@@ -39,7 +39,9 @@ export default class RouteMap extends React.Component<{}> {
         this.map = map;
         this.vectorSource = vectorSource;
         this.displayRoutePoints();
+        if(this.props.driver){
         this.displayRoute();
+        }
     }
 
     initializeMap() {
@@ -106,7 +108,7 @@ export default class RouteMap extends React.Component<{}> {
             displayName: addressToString(address),
             routePointType: this.props.routePointType
         };    
-        this.setState({ routePoints: points, editableFeature: feature }, () => { this.displayRoute() });
+        this.setState({ routePoints: points, editableFeature: feature }, () => { if(this.props.driver){ this.displayRoute()} });
     }
 
     displayRoutePoints() {

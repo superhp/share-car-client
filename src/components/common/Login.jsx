@@ -70,20 +70,6 @@ class Login extends Component<{}> {
     });
   };
 
-  showSnackBar(message, variant) {
-    this.setState({
-      snackBarClicked: true,
-      snackBarMessage: message,
-      snackBarVariant: SnackbarVariants[variant]
-    });
-    setTimeout(
-      function () {
-        this.setState({ snackBarClicked: false });
-      }.bind(this),
-      3000
-    );
-  }
-
   render() {
     return (
       <div className="login-container">

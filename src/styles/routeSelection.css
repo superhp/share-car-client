@@ -1,11 +1,5 @@
-.location-selection-container {
+.route-selection-container {
     width: 100vw;
-    background-color: #f8f9fa !important;
-}
-
-.location-selection-container-extended {
-    width: 100vw;
-    height: 15vh;
     background-color: #f8f9fa !important;
 }
 
@@ -116,4 +110,26 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.bbb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hhh {
+    background-color: #fff;
+    height: 13px;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nnn {
+    background-color: black !important;
+    width: 75%;
+    height: 20%;
 }

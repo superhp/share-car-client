@@ -14,7 +14,7 @@ import WinnerBoard from "./Winner/WinnerBoard";
 import Map from "./Maps/Map";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css";
-import RouteMap from "./Maps/RouteMap";
+import LocationSelectionMap from "./Maps/LocationSelectionMap";
 
 export default class App extends React.Component {
   state = {
@@ -68,7 +68,7 @@ export default class App extends React.Component {
             />
             <Route
               path="/:role(driver|passenger)/rrr"
-              render={(props) => <RouteMap {...props} refetch={this.state.refetch} />}
+              render={(props) => <LocationSelectionMap {...props} refetch={this.state.refetch} />}
             />
           </Layout>
         </Switch>

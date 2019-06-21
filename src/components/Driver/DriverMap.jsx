@@ -20,7 +20,7 @@ import { addressToString, fromLocationIqResponse } from "../../utils/addressUtil
 
 import "./../../styles/testmap.css";
 import RouteSelection from "../Maps/RouteSelection";
-import RouteMap from "../Maps/RouteMap";
+import LocationSelectionMap from "../Maps/LocationSelectionMap";
 import { routePointType } from "../../utils/routePointTypes";
 import api from "../../helpers/axiosHelper";
 import SnackBars from "../common/Snackbars";
@@ -35,7 +35,6 @@ const currentComponent = {
 export class DriverMap extends React.Component {
   constructor(props) {
     super(props);
-    this.autocompleteInputs = [];
   }
 
   state = {
@@ -44,17 +43,14 @@ export class DriverMap extends React.Component {
     routeGeometry: null, // only needed to prevent duplicate calls for RidesScheduler
     routePoints: [{
       address: null,
-      feature: null,
       displayName: null,
       routePointType: routePointType.first
     },
     {
       address: null,
-      feature: null,
       displayName: null,
       routePointType: routePointType.last
     }],
-    currentOffice: OfficeAddresses[0],
     currentRoutePoint: { index: 0, routePointType: routePointType.first, displayName: null },
     currentComponent: currentComponent.FullMap,
     homeAddressSelection: false,
@@ -82,41 +78,13 @@ export class DriverMap extends React.Component {
       });
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.vectorSource.clear();
-    this.setState({
-      isRideSchedulerVisible: false,
-      routeGeometry: null,
-      routePoints: [{
-        address: null,
-        feature: null,
-        displayName: null,
-        routePointType: routePointType.first
-      },
-      {
-        address: null,
-        feature: null,
-        displayName: null,
-        routePointType: routePointType.last
-      }], currentComponent: currentComponent.FullMap,
-      homeAddressSelection: false,
-      homeAddress: null,
-      snackBarClicked: false,
-      snackBarMessage: null,
-      snackBarVariant: null,
-    });
-  }
-
   // index => index of input field representing route point. Since First Route Point is office (and there is no input field for office) index must be incermented
   changeRoutePoint(address, index) {
     if (address) {
       const { longitude, latitude } = address
       let routePoints = [...this.state.routePoints];
-      const feature = createPointFeature(longitude, latitude);
-      this.vectorSource.addFeature(feature);
       routePoints[index] = {
         address: address,
-        feature: feature,
         displayName: addressToString(address),
         routePointType: this.state.currentRoutePoint.routePointType
       }
@@ -126,11 +94,9 @@ export class DriverMap extends React.Component {
   addNewRoutePoint(address, index) {
     index++;
     const { longitude, latitude } = address;
-    const feature = createPointFeature(longitude, latitude);
     let points = [...this.state.routePoints];
     points.splice(index, 0, {
       address: address,
-      feature: feature,
       displayName: addressToString(address),
       routePointType: this.state.currentRoutePoint.routePointType
     });
@@ -274,7 +240,6 @@ export class DriverMap extends React.Component {
       let points = [...routePoints];
       points.splice(points.length - 1, 0, {
         address: null,
-        feature: null,
         displayName: null,
         routePointType: routePointType.intermediate
       });
@@ -311,10 +276,9 @@ export class DriverMap extends React.Component {
         {
           this.state.currentComponent === currentComponent.FullMap
             ? <div>
-              {this.autocompleteInputs = []}
-
               <div className="routes">
                 <RouteSelection
+                  driver={true}
                   officeSelectionChange={(address, inputIndex, officeIndex) => this.officeSelectionChange(address, inputIndex, officeIndex)}
                   changeDirection={() => this.changeDirection()}
                   routePoints={this.state.routePoints}
@@ -357,14 +321,16 @@ export class DriverMap extends React.Component {
                   homeAddress={this.state.homeAddress}
                 />
                 : this.state.homeAddressSelection
-                  ? <RouteMap
+                  ? <LocationSelectionMap
+                    driver={true}
                     routePoints={[this.state.homeAddress]}
                     routePointIndex={0}
                     routePointsType={routePointType.first}
                     direction={this.state.direction}
                     return={(address) => { this.updateHomeAddress(address) }}
                   />
-                  : <RouteMap
+                  : <LocationSelectionMap
+                    driver={true}
                     routePoints={this.state.routePoints}
                     routePointIndex={this.state.currentRoutePoint.index}
                     routePointsType={this.state.currentRoutePoint.routePointType}
@@ -380,7 +346,6 @@ export class DriverMap extends React.Component {
           variant={this.state.snackBarVariant}
         />
       </div>
-
     );
   }
 }

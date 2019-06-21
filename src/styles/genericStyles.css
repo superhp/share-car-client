@@ -83,13 +83,26 @@ button:focus {
     color: #e8e9eb;
 }
 
+.generic-btn-color {
+    background-color: #0A2239 !important;
+    color: #e8e9eb !important;
+}
+
+.generic-btn-color.disabled {
+    background-color: #0a2239!important;
+    color: white!important;
+    opacity: 0.5;
+}
+
+.generic-btn-color:hover {
+    background-color: #10365a!important;
+}
+
 .generic-button {
     border: 1px solid #666;
     padding: 2px;
     box-shadow: 1px 1px #888888;
     background-color: #fff;
-    /*  height: 36px;
-  width: 36px; */
     border-radius: 30%;
     margin-right: 5px;
     margin-left: 5px;

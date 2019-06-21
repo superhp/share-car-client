@@ -29,20 +29,6 @@ export class Rides extends React.Component {
         this.getDriversRides();
     }
 
-    showSnackBar(message, variant) {
-        this.setState({
-            snackBarClicked: true,
-            snackBarMessage: message,
-            snackBarVariant: SnackbarVariants[variant]
-        });
-        setTimeout(
-            function () {
-                this.setState({ snackBarClicked: false });
-            }.bind(this),
-            3000
-        );
-    }
-
     handleRideDelete(rideToDelete) {
         api.put("Ride/disactivate", rideToDelete).then(res => {
             if (res.status === 200) {

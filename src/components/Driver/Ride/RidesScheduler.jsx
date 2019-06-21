@@ -116,21 +116,6 @@ class RidesScheduler extends React.Component {
     }    });
   }
 
-  showSnackBar(message, variant) {
-    this.setState({
-      open: false,
-      snackBarClicked: true,
-      snackBarMessage: message,
-      snackBarVariant: SnackbarVariants[variant]
-    });
-    setTimeout(
-      function () {
-        this.setState({ snackBarClicked: false });
-      }.bind(this),
-      3000
-    );
-  }
-
   handleTime = value => {
     this.setState({ time: value });
   };

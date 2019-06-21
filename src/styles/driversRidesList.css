@@ -1,134 +1,140 @@
 div.container {
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 button:focus {
-  outline:0!important;
+    outline: 0!important;
 }
 
 .drivers-sugestion-modal {
-  margin-top: 15px;
+    margin-top: 15px;
+    max-height: 70%;
 }
+
+.suggestion-modal-list {
+    overflow-y: scroll;
+}
+
 .drivers-sugestion-close-icon {
-  position:absolute;
-  right:0;
-  z-index:10;
+    position: absolute;
+    right: 0;
+    z-index: 10;
 }
 
 .drivers-list-root {
-  max-height: 75vh;
-  overflow-y: scroll;
-  background-color: white;
+    max-height: 75vh;
+    overflow-y: scroll;
+    background-color: #f5f5f5;
 }
 
 .drivers-list-header {
-  text-align: center;
+    text-align: center;
 }
 
 .drivers-list {
-  align-items: flex-start;
-  vertical-align: middle;
+    align-items: flex-start;
+    vertical-align: middle;
 }
 
 .active-rides-card-container {
-  background-color: #f5f5f5;
-  vertical-align: middle;
-}
-
-.show-drivers {
-  background-color: #0a2239!important;
-  color: #e8e9eb!important;
-}
-
-.show-drivers:hover {
-  background-color: #10365a!important;
+    background-color: #f5f5f5;
+    vertical-align: middle;
 }
 
 .delete-button {
-  background-color: #f74428!important;
-  color: white!important;
+    background-color: #f74428!important;
+    color: white!important;
 }
 
 .delete-button:hover {
-  background-color: #f96f59!important;
+    background-color: #f96f59!important;
 }
 
 h2 {
-  text-align: center;
-  flex: 0 0 100%;
-  display: block;
-  padding: 0;
+    text-align: center;
+    flex: 0 0 100%;
+    display: block;
+    padding: 0;
 }
+
 div.table-responsive {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
+
 div.container a {
-  margin: 2em 0;
-  flex: 0 0 100%;
+    margin: 2em 0;
+    flex: 0 0 100%;
 }
+
 table tr:hover {
-  background-color: blue;
-  cursor: pointer;
-  color: white;
+    background-color: blue;
+    cursor: pointer;
+    color: white;
 }
+
 div.container table {
-  font-size: 0.9em;
+    font-size: 0.9em;
 }
 
 .list-group {
-  display: flex;
-  flex-wrap: wrap;
-  flex: 0 0 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex: 0 0 100%;
 }
 
 div.container a {
-  flex: 0 0 100%;
-  display: flex;
+    flex: 0 0 100%;
+    display: flex;
 }
+
 div.table-responsive table tr {
-  display: block;
-  margin-top: 2em;
-  border: 1 px solid black;
+    display: block;
+    margin-top: 2em;
+    border: 1 px solid black;
 }
+
 div.table-responsive table tr td {
-  display: flex;
-  flex-direction: column;
-  font-size: 14px;
-  font-weight: bold;
-  border: 1 px solid black;
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1 px solid black;
 }
+
 div.table-responsive table thead td {
-  text-align: justify;
-  font-size: 1.5em;
-  font-weight: bold;
-  text-transform: uppercase;
+    text-align: justify;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-transform: uppercase;
 }
+
 div.table-responsive table td button {
-  height: 50px;
-  margin: 1em 1em;
+    height: 50px;
+    margin: 1em 1em;
 }
+
 div.rides-card {
-  margin: 1em;
+    margin: 1em;
     margin-top: 10px;
 }
 
 div.passengers-card {
-  margin: 1em;
-  margin-top: 10px;
-  padding: 8px 4px;
+    margin: 1em;
+    margin-top: 10px;
+    padding: 8px 4px;
 }
 
-.rides-badge{
-  position: absolute !important;
+.rides-badge {
+    position: absolute !important;
 }
 
-.ride-request-note{
-  padding-left: 16px;
-  padding-right: 16px;
+.ride-request-note {
+    padding-left: 16px;
+    padding-right: 16px;
 }

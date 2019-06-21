@@ -33,20 +33,6 @@ export class PassengerRideRequestsList extends React.Component {
         this.showPassengerRequests();
     }
 
-    showSnackBar(message, variant) {
-        this.setState({
-            snackBarClicked: true,
-            snackBarMessage: message,
-            snackBarVariant: SnackbarVariants[variant]
-        });
-        setTimeout(
-            function () {
-                this.setState({ snackBarClicked: false });
-            }.bind(this),
-            3000
-        );
-    }
-
     cancelRequest(id) {
         var requests = this.state.requests;
         var index = requests.findIndex(x => x.rideRequestId === id);

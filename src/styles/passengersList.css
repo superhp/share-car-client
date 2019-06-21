@@ -1,24 +1,27 @@
 .passengersContainer {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  background-color: rgb(118, 194, 238);
-  border-radius: 2em;
-  padding: 2em;
-  box-shadow: 0px 0px 10px blue;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    background-color: rgb(118, 194, 238);
+    border-radius: 2em;
+    padding: 2em;
+    box-shadow: 0px 0px 10px blue;
 }
+
 .passengers-badge {
-  flex: 0 0 100%;
+    flex: 0 0 100%;
 }
+
 .passenger {
-  padding: 1em;
-  display: flex;
-  flex-wrap: wrap;
+    padding: 1em;
+    display: flex;
+    flex-wrap: wrap;
 }
+
 .passenger span {
-  flex: 0 0 100%;
+    flex: 0 0 100%;
 }
 
 button:focus {
-  outline:0!important;
+    outline: 0!important;
 }

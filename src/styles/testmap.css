@@ -1,145 +1,148 @@
 #map {
-  position: absolute;
-  width: 100%;
-  height: 100vh;
+    position: absolute;
+    width: 100%;
+    height: 94%;
+    border: none !important;
 }
+
 button.ap-input-icon {
-  display: none;
+    display: none;
 }
-/* button {
-  background-color: #007bff !important;
-} */
+
 .passengerForm {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  position: relative;
-  left: 0;
-  top: 20px;
-  z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    position: relative;
+    left: 0;
+    top: 20px;
+    z-index: 999;
 }
 
 button:focus {
-  outline:0!important;
+    outline: 0!important;
 }
 
 .navigation-buttons {
-  position: fixed;
-  bottom: 12%;
+    position: fixed;
+    bottom: 12%;
 }
 
 .paper-background {
-  padding: 0.2em;
+    padding: 0.2em;
 }
+
 .centerElement {
-  flex: 0 0 100%;
-  display: flex;
-  height: 100px;
-  justify-content: center;
+    flex: 0 0 100%;
+    display: flex;
+    height: 100px;
+    justify-content: center;
 }
 
 input.center-location {
-  opacity: 0.8;
+    opacity: 0.8;
 }
+
 .driver-button-container {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
+
 .driver-name {
-  display: flex;
-  justify-content: space-evenly;
+    display: flex;
+    justify-content: space-evenly;
 }
+
 .names-and-phones {
-  justify-content: center;
+    justify-content: center;
 }
+
 .call {
-  display: flex;
-  justify-content: space-evenly;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .centerElement input {
-  flex: 0 0 100%;
+    flex: 0 0 100%;
 }
-#map div {
-  border: none !important;
-}
+
 .route-creation-input-buttons {
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row;
 }
 
 .route-creation-input-buttons button {
-  margin-right: 5px;
+    margin-right: 5px;
 }
 
 span.ap-dropdown-menu {
-  z-index: 99999 !important;
+    z-index: 99999 !important;
 }
+
 .date-display {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
+
 tbody {
-  margin: 0 auto;
-  text-align: center;
+    margin: 0 auto;
+    text-align: center;
 }
+
 span.algolia-places {
-  width: 100%;
+    width: 100%;
 }
+
 div.map-input-selection input.location-select {
-  z-index: 999;
-} 
+    z-index: 999;
+}
 
 div.routes {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  z-index: 1;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    z-index: 1;
+}
+
+.view-drivers {
+    position: absolute;
+    z-index: 1;
+    bottom: 6%;
+    width: 100%
 }
 
 button.continue-button {
-  position: absolute;
-  bottom: 15vh;
-  right: 10px;
-  z-index: 999;
-  background-color: #f74428;
-  color: #e8e9eb;
+    position: absolute;
+    bottom: 15vh;
+    right: 10px;
+    z-index: 999;
+    background-color: #f74428;
+    color: #e8e9eb;
 }
 
-.register-button {
-  background-color: #0a2239!important;
-  color: white!important;
+button.continue-button:hover,
+button.select-office-menu:hover,
+button.change-direction:hover {
+    background-color: #F96F59;
 }
 
-.register-button-disabled {
-  background-color: #0a2239!important;
-  color: white!important;
-  opacity: 0.5;
-}
-
-
-.register-button:hover {
-  background-color: #10365a!important;
-}
-
-button.continue-button:hover, button.select-office-menu:hover, button.change-direction:hover {
-  background-color: #F96F59;
-}
 button.select-office-menu {
-  background-color: #f74428;
-  color: #e8e9eb;
-  z-index: 1;
+    background-color: #f74428;
+    color: #e8e9eb;
+    z-index: 1;
 }
-button.change-direction {
-  background-color: #f74428;
-  color: #e8e9eb;
-  z-index: 1;
-}
-button.remove-route-point {
-  z-index: 1;
-}
-.driver-route-input{
-  justify-content: left !important;
 
+button.change-direction {
+    background-color: #f74428;
+    color: #e8e9eb;
+    z-index: 1;
+}
+
+button.remove-route-point {
+    z-index: 1;
+}
+
+.driver-route-input {
+    justify-content: left !important;
 }
