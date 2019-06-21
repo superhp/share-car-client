@@ -59,6 +59,7 @@ export class PassengerMap extends React.Component {
     loading: true,
     driverInput: null,
     currentComponent: currentComponent.FullMap,
+    homeAddress: null,
     routePoints: [{
       address: null,
       displayName: null,
@@ -76,6 +77,19 @@ export class PassengerMap extends React.Component {
     const { map, vectorSource } = this.initializeMap();
     this.map = map;
     this.vectorSource = vectorSource;
+    api.get(`User/homeAddress`).then(response => {
+
+      if (response.data !== "") {
+        let address = {
+          address: response.data,
+          displayName: addressToString(response.data),
+        };
+        this.setState({ homeAddress: address });
+      }
+    })
+      .catch(() => {
+        showSnackBar("Failed to get home address", 2, this);
+      });
     // this.getAllRoutes(OfficeAddresses[0], this.state.direction);
     //this.getUsers();
   }
@@ -298,17 +312,18 @@ export class PassengerMap extends React.Component {
   }
 
   updateHomeAddress(address) {
-    api.post(`User/updateHomeAddress`, address).then(response => {
-      let stateAddress = {
-        address: address,
-        displayName: addressToString(address)
-      }
-      this.setState({ currentComponent: currentComponent.locationSelection, homeAddress: stateAddress, homeAddressSelection: false });
-    }).catch(() => {
-      showSnackBar("Failed to set home address", 2, this);
-      this.setState({ currentComponent: currentComponent.locationSelection, homeAddressSelection: false });
-    });
-
+    if (address) {
+      api.post(`User/updateHomeAddress`, address).then(response => {
+        let stateAddress = {
+          address: address,
+          displayName: addressToString(address)
+        }
+        this.setState({ currentComponent: currentComponent.locationSelection, homeAddress: stateAddress, homeAddressSelection: false });
+      }).catch(() => {
+        showSnackBar("Failed to set home address", 2, this);
+      });
+    }
+    this.setState({ currentComponent: currentComponent.locationSelection, homeAddressSelection: false });
   }
 
   shouldShowError() {
@@ -382,14 +397,16 @@ export class PassengerMap extends React.Component {
         routeDto = { FromAddress: address };
       }
       api.post("Ride/routes", routeDto).then(response => {
-        if (response.status === 200 && response.data !== "") {
-
-          if (this.state.selectedDriver || this.state.driverInput) {
-            this.setState({ loading: false, routes: response.data, fetchedRoutes: response.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, () => { this.onDriverSelection(this.state.selectedDriver) });
-          } else {
-            this.setState({ loading: false, routes: response.data, fetchedRoutes: response.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, this.displayRoute);
-          }
+        console.log(response)
+        if (response.data.length === 0) {
+          showSnackBar("No drivers to suggest", 2, this)
         }
+        //  if (this.state.selectedDriver || this.state.driverInput) {
+        //   this.setState({ loading: false, routes: response.data, fetchedRoutes: response.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, () => { this.onDriverSelection(this.state.selectedDriver) });
+        //  } else {
+        this.setState({ loading: false, routes: response.data, fetchedRoutes: response.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, this.displayRoute);
+        // }
+
       }).catch((error) => {
         this.setState({ loading: false });
         showSnackBar("Failed to load routes", 2, this)
@@ -477,7 +494,7 @@ export class PassengerMap extends React.Component {
                 : this.state.homeAddressSelection
                   ? <LocationSelectionMap
                     driver={false}
-                    routePoints={[this.state.homeAddress]}
+                    routePoints={[]}
                     routePointIndex={0}
                     routePointsType={routePointType.first}
                     direction={this.state.direction}

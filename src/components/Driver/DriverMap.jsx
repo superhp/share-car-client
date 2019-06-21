@@ -176,17 +176,18 @@ export class DriverMap extends React.Component {
   }
 
   updateHomeAddress(address) {
-    api.post(`User/updateHomeAddress`, address).then(response => {
-      let stateAddress = {
-        address: address,
-        displayName: addressToString(address)
-      }
-      this.setState({ currentComponent: currentComponent.locationSelection, homeAddress: stateAddress, homeAddressSelection: false });
-    }).catch(() => {
-      showSnackBar("Failed to set home address", 2, this);
-      this.setState({ currentComponent: currentComponent.locationSelection, homeAddressSelection: false });
-    });
-
+    if (address) {
+      api.post(`User/updateHomeAddress`, address).then(response => {
+        let stateAddress = {
+          address: address,
+          displayName: addressToString(address)
+        }
+        this.setState({ currentComponent: currentComponent.locationSelection, homeAddress: stateAddress, homeAddressSelection: false });
+      }).catch(() => {
+        showSnackBar("Failed to set home address", 2, this);
+      });
+    }
+    this.setState({ currentComponent: currentComponent.locationSelection, homeAddressSelection: false });
   }
 
   selectLocation(address) {

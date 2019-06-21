@@ -142,7 +142,6 @@ export default class LocationSelectionMap extends React.Component<{}> {
         }
     }
 
-
     render() {
         return (
             <div>
