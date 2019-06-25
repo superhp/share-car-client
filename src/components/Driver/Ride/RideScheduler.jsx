@@ -17,7 +17,7 @@ const styles = {
   }
 };
 
-class RidesScheduler extends React.Component {
+class RideScheduler extends React.Component {
   state = {
     selectedDates: [],
     time: null,
@@ -57,13 +57,13 @@ class RidesScheduler extends React.Component {
   }
 
   handleCreate = () => {
-    let ridesToPost = [];
+    let rides = [];
     const { fromAddress, toAddress } = this.props.routeInfo;
     this.state.selectedDates.forEach(element => {
-      ridesToPost.push(this.createRide(fromAddress, toAddress, element, this.state.note));
+      rides.push(this.createRide(fromAddress, toAddress, element, this.state.note));
     });
 
-    this.postRides(ridesToPost);
+    this.createRides(rides);
   };
 
   createRide(from, to, element, note) {
@@ -102,8 +102,8 @@ class RidesScheduler extends React.Component {
     return ride;
   }
 
-  postRides(ridesToPost) {
-    api.post("Ride", ridesToPost).then(res => {
+  createRides(rides) {
+    api.post("Ride", rides).then(res => {
       if (res.status === 200) {
         showSnackBar("Rides successfully created!", 0, this);
       }
@@ -153,8 +153,8 @@ class RidesScheduler extends React.Component {
   }
 }
 
-RidesScheduler.propTypes = {
+RideScheduler.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(RidesScheduler);
+export default withStyles(styles)(RideScheduler);

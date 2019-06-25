@@ -10,7 +10,7 @@ import Tile from "ol/layer/Tile";
 import Point from "ol/geom/Point";
 import OSM from "ol/source/OSM";
 
-import { centerMap, fromLonLatToMapCoords, createPointFeature, createRouteFeature } from "../../utils/mapUtils";
+import { iconType, centerMap, fromLonLatToMapCoords, createPointFeature, createRouteFeature } from "../../utils/mapUtils";
 
 import "../../styles/mapComponent.css";
 
@@ -65,9 +65,9 @@ export default class MapComponent extends React.Component<{}> {
       })
     });
 
-    const f1 = createPointFeature(pickUpPoint.longitude, pickUpPoint.latitude);
-    const f2 = createPointFeature(route.fromAddress.longitude, route.fromAddress.latitude);
-    const f3 = createPointFeature(route.toAddress.longitude, route.toAddress.latitude);
+    const f1 = createPointFeature(pickUpPoint.longitude, pickUpPoint.latitude, iconType.point);
+    const f2 = createPointFeature(route.fromAddress.longitude, route.fromAddress.latitude, iconType.start);
+    const f3 = createPointFeature(route.toAddress.longitude, route.toAddress.latitude, iconType.finish);
     const f4 = createRouteFeature(route.geometry);
     vectorSource.addFeature(f1);
     vectorSource.addFeature(f2);

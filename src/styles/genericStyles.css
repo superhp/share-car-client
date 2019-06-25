@@ -83,18 +83,20 @@ button:focus {
     color: #e8e9eb;
 }
 
-.generic-btn-color {
+.generic-colored-btn {
     background-color: #0A2239 !important;
     color: #e8e9eb !important;
+    margin-left: 2px!important;
+    margin-right: 2px!important;
+    padding-left: 10px!important;
+    padding-right: 10px!important;
 }
 
-.generic-btn-color.disabled {
-    background-color: #0a2239!important;
-    color: white!important;
+.generic-colored-btn.disabled {
     opacity: 0.5;
 }
 
-.generic-btn-color:hover {
+.generic-colored-btn:hover {
     background-color: #10365a!important;
 }
 

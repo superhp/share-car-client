@@ -73,7 +73,7 @@ export class DriversRidesList extends React.Component {
                     }}
                     variant="contained"
                     size="small"
-                    className="generic-btn-color"
+                    className="generic-colored-btn"
                   >
                     View
                           <InfoIcon />

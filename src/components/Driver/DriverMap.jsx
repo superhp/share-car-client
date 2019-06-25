@@ -7,17 +7,16 @@ import Tile from "ol/layer/Tile";
 import OSM from "ol/source/OSM";
 import Button from "@material-ui/core/Button";
 import { OfficeAddresses } from "../../utils/AddressData";
-import RidesScheduler from "./Ride/RidesScheduler";
+import RideScheduler from "./Ride/RideScheduler";
 import { DriverRouteInput } from "./Map/DriverRouteInput";
 import LocationSelection from "../Maps/LocationSelection";
 import {
   fromLonLatToMapCoords, fromMapCoordsToLonLat,
   getNearest, coordinatesToLocation,
   createPointFeature, createRouteFeature,
-  createRoute
+  createRoute, iconType
 } from "./../../utils/mapUtils";
 import { addressToString, fromLocationIqResponse } from "../../utils/addressUtils";
-
 import "./../../styles/testmap.css";
 import RouteSelection from "../Maps/RouteSelection";
 import LocationSelectionMap from "../Maps/LocationSelectionMap";
@@ -40,7 +39,7 @@ export class DriverMap extends React.Component {
   state = {
     isRideSchedulerVisible: false,
     direction: true,
-    routeGeometry: null, // only needed to prevent duplicate calls for RidesScheduler
+    routeGeometry: null, // only needed to prevent duplicate calls for RideScheduler
     routePoints: [{
       address: null,
       displayName: null,
@@ -108,13 +107,22 @@ export class DriverMap extends React.Component {
     const { routePoints } = this.state;
     const points = routePoints.filter(x => x.address).map(x => x.address);
     this.vectorSource.clear();
-    routePoints.forEach(x => {
-      if (x.address) {
-        const { longitude, latitude } = x.address;
-        const feature = createPointFeature(longitude, latitude);
+    for (let i = 0; i < routePoints.length; i++) {
+      if (routePoints[i].address) {
+        const { longitude, latitude } = routePoints[i].address;
+        let feature;
+        if(i === 0){
+        feature = createPointFeature(longitude, latitude, iconType.start);
+        }else{
+          if(i === routePoints.length - 1){
+            feature = createPointFeature(longitude, latitude, iconType.finish);
+          } else{
+            feature = createPointFeature(longitude, latitude, iconType.point);
+          }
+        }
         this.vectorSource.addFeature(feature);
       }
-    });
+    }
     if (points.length > 1) {
       createRoute(points, this.state.direction)
         .then(geometry => {
@@ -200,6 +208,7 @@ export class DriverMap extends React.Component {
         this.updateMap();
         return;
       }
+
       if (currentRoutePoint.routePointType === routePointType.first) {
         if (routePoints.length > 0 && routePoints[0].routePointType === routePointType.first) {
           this.changeRoutePoint(address, currentRoutePoint.index);
@@ -294,9 +303,9 @@ export class DriverMap extends React.Component {
               <div id="map"></div>
 
               {this.state.isRideSchedulerVisible ? (
-                <RidesScheduler routeInfo={{
-                  fromAddress: this.state.direction ? this.state.routePoints[this.state.routePoints.length - 1].address : this.state.routePoints[0].address,
-                  toAddress: this.state.direction ? this.state.routePoints[0].address : this.state.routePoints[this.state.routePoints.length - 1].address,
+                <RideScheduler routeInfo={{
+                  fromAddress: this.state.routePoints[0].address,
+                  toAddress: this.state.routePoints[this.state.routePoints.length - 1].address,
                   routeGeometry: this.state.routeGeometry
                 }} />
               ) : null}

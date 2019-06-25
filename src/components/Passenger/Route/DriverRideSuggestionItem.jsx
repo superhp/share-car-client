@@ -30,7 +30,7 @@ export class DriverRideSuggestionItem extends React.Component {
                 />
                 <Button
                     variant="contained"
-                    className={this.props.requested ? "generic-btn-color disabled" : "generic-btn-color"}
+                    className={this.props.requested ? "generic-colored-btn disabled" : "generic-colored-btn"}
                     onClick={() => this.props.register()}
                 >
                     Register

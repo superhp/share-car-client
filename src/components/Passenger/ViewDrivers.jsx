@@ -14,8 +14,6 @@ export default class ViewDrivers extends React.Component {
             <div className="view-drivers-container">
                 <Grid container item xs={12} >
                     <Card className="card">
-                        View drivers
-                        <Card>
                       <DriverRoutesSuggestions
                       routes={this.props.routes}
                       rides={this.props.rides}
@@ -26,7 +24,6 @@ export default class ViewDrivers extends React.Component {
                       passengerAddress={this.props.passengerAddress}
                       showSnackBar={(message, variant) => this.props.showSnackBar(message,variant)}
                       />
-                        </Card>
                         </Card>
                     </Grid>
             </div>

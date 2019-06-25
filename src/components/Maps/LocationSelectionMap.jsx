@@ -17,7 +17,7 @@ import { addressToString, fromLocationIqResponse } from "../../utils/addressUtil
 import {
     fromLonLatToMapCoords, fromMapCoordsToLonLat,
     getNearest, coordinatesToLocation, createPointFeature,
-    createRouteFeature, createRoute
+    createRouteFeature, createRoute, iconType
 } from "../../utils/mapUtils";
 
 export default class LocationSelectionMap extends React.Component<{}> {
@@ -39,8 +39,8 @@ export default class LocationSelectionMap extends React.Component<{}> {
         this.map = map;
         this.vectorSource = vectorSource;
         this.displayRoutePoints();
-        if(this.props.driver){
-        this.displayRoute();
+        if (this.props.driver) {
+            this.displayRoute();
         }
     }
 
@@ -76,27 +76,24 @@ export default class LocationSelectionMap extends React.Component<{}> {
                 const address = fromLocationIqResponse(response);
                 address.longitude = longitude;
                 address.latitude = latitude;
-                this.setState({ address }, this.addNewRoutePoint)
+                this.setState({ address }, () => this.addNewRoutePoint())
             }).catch();
-    }
-
-    setPickUpPointFeature() {
-        const { address, editableFeature } = this.state;
-        if (address) {
-            const { longitude, latitude } = address;
-            let feature = createPointFeature(longitude, latitude);
-            if (editableFeature) {
-                this.vectorSource.removeFeature(editableFeature);
-            }
-            this.vectorSource.addFeature(feature);
-            this.setState({ editableFeature: feature });
-        }
     }
 
     addNewRoutePoint() {
         const { address, editableFeature } = this.state;
         const { longitude, latitude } = address;
-        const feature = createPointFeature(longitude, latitude);
+        const { routePointIndex, routePoints } = this.props;
+        let feature;
+        if (routePointIndex === 0) {
+            feature = createPointFeature(longitude, latitude, iconType.start);
+        } else {
+            if (routePointIndex === routePoints.length - 1) {
+                feature = createPointFeature(longitude, latitude, iconType.finish);
+            } else {
+                feature = createPointFeature(longitude, latitude, iconType.point);
+            }
+        }
         if (editableFeature) {
             this.vectorSource.removeFeature(editableFeature);
         }
@@ -107,8 +104,8 @@ export default class LocationSelectionMap extends React.Component<{}> {
             feature: feature,
             displayName: addressToString(address),
             routePointType: this.props.routePointType
-        };    
-        this.setState({ routePoints: points, editableFeature: feature }, () => { if(this.props.driver){ this.displayRoute()} });
+        };
+        this.setState({ routePoints: points, editableFeature: feature }, () => { if (this.props.driver) { this.displayRoute() } });
     }
 
     displayRoutePoints() {
@@ -117,7 +114,16 @@ export default class LocationSelectionMap extends React.Component<{}> {
         for (let i = 0; i < routePoints.length; i++) {
             if (routePoints[i].address) {
                 const { longitude, latitude } = routePoints[i].address;
-                const feature = createPointFeature(longitude, latitude);
+                let feature;
+                if (i === 0) {
+                    feature = createPointFeature(longitude, latitude, iconType.start);
+                } else {
+                    if (i === routePoints.length - 1) {
+                        feature = createPointFeature(longitude, latitude, iconType.finish);
+                    } else {
+                        feature = createPointFeature(longitude, latitude, iconType.point);
+                    }
+                }
                 if (this.props.routePointIndex < this.props.routePoints.length && i === this.props.routePointIndex) {
                     this.setState({ editableFeature: feature });
                 }

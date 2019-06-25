@@ -13,7 +13,7 @@ import api from "./../../helpers/axiosHelper";
 import {
   fromLonLatToMapCoords, fromMapCoordsToLonLat,
   getNearest, coordinatesToLocation, createPointFeature,
-  createRouteFeature
+  createRouteFeature, iconType
 } from "../../utils/mapUtils";
 import { fromLocationIqResponse, addressToString } from "../../utils/addressUtils";
 import { sortRoutes } from "../../utils/shortestDistance";
@@ -33,6 +33,7 @@ import LocationSelectionMap from "../Maps/LocationSelectionMap";
 import { routePointType } from "../../utils/routePointTypes";
 import LocationSelection from "../Maps/LocationSelection";
 import ViewDrivers from "./ViewDrivers";
+import { DriverRoutesSuggestions } from "./Route/DriverRoutesSuggestions";
 const currentComponent = {
   fullMap: 0,
   locationSelection: 1,
@@ -63,14 +64,14 @@ export class PassengerMap extends React.Component {
     routePoints: [{
       address: null,
       displayName: null,
-      routePointType: routePointType.first
+      routePointType: iconType.first
     },
     {
       address: null,
       displayName: null,
-      routePointType: routePointType.last
+      routePointType: iconType.last
     }],
-    currentRoutePoint: { index: 0, routePointType: routePointType.first, displayName: null },
+    currentRoutePoint: { index: 0, routePointType: iconType.first, displayName: null },
   }
 
   componentDidMount() {
@@ -112,18 +113,20 @@ export class PassengerMap extends React.Component {
       const { map, vectorSource } = this.initializeMap();
       this.map = map;
       this.vectorSource = vectorSource;
+
       if (!address) {
         this.updateMap();
         return;
       }
-      if (currentRoutePoint.routePointType === routePointType.first) {
-        if (routePoints.length > 0 && routePoints[0].routePointType === routePointType.first) {
+
+      if (currentRoutePoint.routePointType === iconType.first) {
+        if (routePoints.length > 0 && routePoints[0].routePointType === iconType.first) {
           this.changeRoutePoint(address, currentRoutePoint.index);
         } else {
           this.addNewRoutePoint(address, currentRoutePoint.index);
         }
       } else {
-        if (routePoints.length > 0 && routePoints[routePoints.length - 1].routePointType === routePointType.last) {
+        if (routePoints.length > 0 && routePoints[routePoints.length - 1].routePointType === iconType.last) {
           this.changeRoutePoint(address, currentRoutePoint.index);
         } else {
           this.addNewRoutePoint(address, currentRoutePoint.index);
@@ -132,9 +135,9 @@ export class PassengerMap extends React.Component {
     });
   }
 
-  createPointFeature(address) {
+  createPointFeature(address, iconType) {
     const { longitude, latitude } = address;
-    const feature = createPointFeature(longitude, latitude);
+    const feature = createPointFeature(longitude, latitude, iconType);
     this.vectorSource.addFeature(feature);
   }
 
@@ -142,15 +145,19 @@ export class PassengerMap extends React.Component {
     const { routePoints, routes, currentRouteIndex } = this.state;
     const points = routePoints.filter(x => x.address).map(x => x.address);
     this.vectorSource.clear();
-    routePoints.forEach(x => {
-      if (x.address) {
-        this.createPointFeature(x.address);
+
+      if (routePoints[0].address) {
+        this.createPointFeature(routePoints[0].address, iconType.start);
       }
-    });
+
+      if (routePoints[1].address) {
+        this.createPointFeature(routePoints[1].address, iconType.finish);
+      }
+
     if (routes.length > 0 && currentRouteIndex >= 0) {
       const routeFeature = createRouteFeature(routes[currentRouteIndex].geometry);
-      this.createPointFeature(routes[currentRouteIndex].fromAddress);
-      this.createPointFeature(routes[currentRouteIndex].toAddress);
+      this.createPointFeature(routes[currentRouteIndex].fromAddress, iconType.start);
+      this.createPointFeature(routes[currentRouteIndex].toAddress, iconType.finish);
       this.vectorSource.addFeature(routeFeature);
     }
   }
@@ -165,23 +172,23 @@ export class PassengerMap extends React.Component {
 
       if (OfficeAddresses.filter(x =>
         x.longitude === routePoints[0].address.longitude &&
-        x.latitude === routePoints[0].address.latitude) &&
+        x.latitude === routePoints[0].address.latitude).length > 0 &&
 
         OfficeAddresses.filter(x =>
           x.longitude === routePoints[1].address.longitude &&
-          x.latitude === routePoints[1].address.latitude)) {
+          x.latitude === routePoints[1].address.latitude).length > 0) {
         return routePoints[0].address;
       }
 
       if (OfficeAddresses.filter(x =>
         x.longitude === routePoints[0].address.longitude &&
-        x.latitude === routePoints[0].address.latitude)) {
+        x.latitude === routePoints[0].address.latitude).length > 0) {
         return routePoints[1].address;
       }
 
       if (OfficeAddresses.filter(x =>
         x.longitude === routePoints[1].address.longitude &&
-        x.latitude === routePoints[1].address.latitude)) {
+        x.latitude === routePoints[1].address.latitude).length > 0) {
         return routePoints[0].address;
       }
     }
@@ -192,7 +199,7 @@ export class PassengerMap extends React.Component {
     if (address) {
       const { longitude, latitude } = address
       let routePoints = [...this.state.routePoints];
-      const feature = createPointFeature(longitude, latitude);
+      const feature = createPointFeature(longitude, latitude, index === 0 ? iconType.start : iconType.finish);
       this.vectorSource.addFeature(feature);
       routePoints[index] = {
         address: address,
@@ -202,12 +209,12 @@ export class PassengerMap extends React.Component {
 
       this.setState({ routePoints }, () => {
         let passengerAddress = this.getPassengerAddress();
-        if (passengerAddress) {
-          this.getAllRoutes(passengerAddress, this.state.direction);
-          this.setState({ passengerAddress }, () => this.updateMap());
-        } else {
-          this.updateMap();
-        }
+          this.setState({ passengerAddress }, () => {
+            if (this.isAddressOffice(address)) {
+              this.getRoutes();
+            }
+            this.updateMap();
+          });
       });
     }
   }
@@ -292,22 +299,22 @@ export class PassengerMap extends React.Component {
     let routePoints = [...this.state.routePoints];
     let revertedPoints = [];
     for (let i = routePoints.length - 1; i >= 0; i--) {
-      if (routePoints[i].routePointType === routePointType.last) {
-        routePoints[i].routePointType = routePointType.first
+      if (routePoints[i].routePointType === iconType.last) {
+        routePoints[i].routePointType = iconType.first
       }
-      if (routePoints[i].routePointType === routePointType.first) {
-        routePoints[i].routePointType = routePointType.last
+      if (routePoints[i].routePointType === iconType.first) {
+        routePoints[i].routePointType = iconType.last
       }
       revertedPoints.push(routePoints[i]);
     }
     this.setState({ routePoints: revertedPoints, direction: !this.state.direction }, () => {
       let passengerAddress = this.getPassengerAddress();
-      if (passengerAddress) {
-        this.getAllRoutes(passengerAddress, this.state.direction);
-        this.setState({ passengerAddress }, () => this.updateMap());
-      } else {
-        this.updateMap();
-      }
+      this.setState({ passengerAddress }, () => {
+        this.getRoutes();
+        this.updateMap()
+      });
+   //   this.updateMap();
+
     });
   }
 
@@ -385,33 +392,40 @@ export class PassengerMap extends React.Component {
     }
   */
 
+  isAddressOffice(address) {
+    return OfficeAddresses.filter(x => x.longitude === address.longitude &&
+      x.latitude === address.latitude).length !== 0;
+  }
 
-  getAllRoutes(address, direction) {
-    if (address) {
-      let routeDto;
-      this.setState({ direction: direction, loading: true });
-      if (direction) {
-        routeDto = { ToAddress: address };
-      }
-      else {
-        routeDto = { FromAddress: address };
-      }
-      api.post("Ride/routes", routeDto).then(response => {
-        console.log(response)
-        if (response.data.length === 0) {
-          showSnackBar("No drivers to suggest", 2, this)
-        }
-        //  if (this.state.selectedDriver || this.state.driverInput) {
-        //   this.setState({ loading: false, routes: response.data, fetchedRoutes: response.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, () => { this.onDriverSelection(this.state.selectedDriver) });
-        //  } else {
-        this.setState({ loading: false, routes: response.data, fetchedRoutes: response.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, this.displayRoute);
-        // }
-
-      }).catch((error) => {
-        this.setState({ loading: false });
-        showSnackBar("Failed to load routes", 2, this)
-      });
+  getRoutes() {
+    let routeDto = {
+      FromAddress:null,
+      ToAddress:null
+    };
+    this.setState({ loading: true });
+    const { routePoints } = this.state;
+    if (routePoints[0].address && this.isAddressOffice(routePoints[0].address)) {
+      routeDto.FromAddress = routePoints[0].address;
     }
+    if (routePoints[1].address && this.isAddressOffice(routePoints[1].address)) {
+      routeDto.ToAddress = routePoints[1].address;
+    }
+
+    api.post("Ride/routes", routeDto).then(response => {
+      if (response.data.length === 0 && !this.shouldShowError()) {
+        showSnackBar("No drivers to suggest", 2, this)
+      }
+      //  if (this.state.selectedDriver || this.state.driverInput) {
+      //   this.setState({ loading: false, routes: response.data, fetchedRoutes: response.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, () => { this.onDriverSelection(this.state.selectedDriver) });
+      //  } else {
+      this.setState({ loading: false, routes: response.data, fetchedRoutes: response.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, this.displayRoute);
+      // }
+
+    }).catch((error) => {
+      this.setState({ loading: false });
+      showSnackBar("Failed to load routes", 2, this)
+    });
+
   }
   /*
     handleRegister(ride) {
@@ -468,9 +482,12 @@ export class PassengerMap extends React.Component {
                 />
               </div>
               {
-                this.state.routePoints[0].address && this.state.routePoints[1].address
+                this.state.routePoints[0].address &&
+                  this.state.routePoints[1].address &&
+                  this.state.routes.length > 0 &&
+                  !this.shouldShowError()
                   ? <div className="view-drivers">
-                    <ViewDrivers
+                    <DriverRoutesSuggestions
                       routes={this.state.routes}
                       showRoute={(index) => { this.showRoute(index) }}
                       showRides={(index) => { this.getRidesByRoute(index) }}
@@ -496,7 +513,7 @@ export class PassengerMap extends React.Component {
                     driver={false}
                     routePoints={[]}
                     routePointIndex={0}
-                    routePointsType={routePointType.first}
+                    routePointsType={iconType.first}
                     direction={this.state.direction}
                     return={(address) => { this.updateHomeAddress(address) }}
                   />

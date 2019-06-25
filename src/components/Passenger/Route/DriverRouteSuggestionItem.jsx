@@ -46,14 +46,14 @@ export class DriverRouteSuggestionItem extends React.Component {
                 />
                 <Button
                   variant="contained"
-                  className={this.props.route.requested ? "generic-btn-color disabled" : "generic-btn-color"}
+                  className={this.props.route.requested ? "generic-colored-btn disabled" : "generic-colored-btn"}
                   onClick={() => this.props.showRoute()}
                 >
                     Show route
         </Button>
                 <Button
                     variant="contained"
-                    className={this.props.route.requested ? "generic-btn-color disabled" : "generic-btn-color"}
+                    className={this.props.route.requested ? "generic-colored-btn disabled" : "generic-colored-btn"}
                     onClick={() => this.setState({showRides: true})}
                 >
                     View rides

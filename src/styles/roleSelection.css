@@ -6,9 +6,10 @@
     margin-bottom: 20px;
     margin-top: 20px;
 }
+
 .role-image {
     display: block;
-    align-self:center;
+    align-self: center;
     justify-content: center;
     align-items: center;
     width: 50%;
@@ -18,9 +19,8 @@
     margin-left: 25%;
     margin-bottom: 20px;
     margin-top: 20px;
-
 }
 
 button:focus {
-    outline:0!important;
+    outline: 0!important;
 }

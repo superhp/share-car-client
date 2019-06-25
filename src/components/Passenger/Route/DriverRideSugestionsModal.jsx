@@ -48,8 +48,6 @@ class DriverRideSugestionsModal extends React.Component {
       this.props.showSnackBar("Ride requested!", 0);
     })
       .catch((error) => {
-        console.log(error)
-        console.log(error.response)
         if (error.response && error.response.status === 409) {
           this.props.showSnackBar(error.response.data, 2);
         } else {
