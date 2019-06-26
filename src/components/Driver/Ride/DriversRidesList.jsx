@@ -8,9 +8,12 @@ import Badge from "@material-ui/core/Badge";
 import DeleteIcon from "@material-ui/icons/Delete";
 import InfoIcon from "@material-ui/icons/Info";
 import "typeface-roboto";
-
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import "../../../styles/driversRidesList.css";
 import "../../../styles/genericStyles.css";
+import "../../../styles/navbar.css";
 import { PendingRequests } from "./PendingRequests";
 
 let moment = require("moment");
@@ -20,27 +23,45 @@ const standardStyle = {
 }
 const finishedStyle = {
   margin: "1em 0",
-  opacity:0.5
+  opacity: 0.5
 }
 
 export class DriversRidesList extends React.Component {
   state = {
-    open: false
+    open: false,
+    tabValue: 0,
+    rides: [],
   }
 
-  handleClickOpen() {
-    this.setState({ open: true });
+  componentDidMount() {
+    this.setState({ rides: this.props.rides.filter(x => !x.finished) });
   }
 
-  handleClose() {
-    this.setState({ open: false });
+  handleChange(newValue) {
+    let rides = [];
+    if (newValue === 0) {
+      rides = this.props.rides.filter(x => !x.finished);
+    } else {
+      rides = this.props.rides.filter(x => x.finished);
+    }
+
+    this.setState({ tabValue: newValue, rides }, () => {
+      console.log(rides);
+      console.log(this.state.rides)
+    });
   }
 
   render() {
     return (
       <Grid container>
-        {this.props.rides.length > 0 ? this.props.rides.map((ride, index) => (
-          <Grid style={ride.finished ? finishedStyle :standardStyle} key={index} item xs={12}>
+        <AppBar className="nav-tabs-container" position="static">
+          <Tabs centered value={this.state.tabValue} onChange={((e, newValue) => this.handleChange(newValue))}>
+            <Tab className="nav-tabs" label="Active" />
+            <Tab className="nav-tabs" label="Obsolete" />
+          </Tabs>
+        </AppBar>
+        {this.state.rides.length > 0 ? this.state.rides.map((ride, index) => (
+          <Grid style={ride.finished ? finishedStyle : standardStyle} key={index} item xs={12}>
             <Card className="rides-card generic-card">
               <Grid container className="active-rides-card-container">
                 <Grid item xs={8}>
@@ -69,7 +90,7 @@ export class DriversRidesList extends React.Component {
                   <Button
                     onClick={() => {
                       this.props.onRideClick(ride.rideId);
-                      this.handleClickOpen();
+                      this.setState({ open: true });
                     }}
                     variant="contained"
                     size="small"
@@ -79,19 +100,19 @@ export class DriversRidesList extends React.Component {
                           <InfoIcon />
                   </Button>
                   {ride.finished ? <div></div>
-                  :
-                  <Button
-                    size="small"
-                    onClick={() => {
-                      this.props.onDelete(ride);
-                      this.props.onRideClick(ride.rideId);
-                    }}
-                    variant="contained"
-                    className="delete-button"
-                  >
-                    Delete
+                    :
+                    <Button
+                      size="small"
+                      onClick={() => {
+                        this.props.onDelete(ride);
+                        this.props.onRideClick(ride.rideId);
+                      }}
+                      variant="contained"
+                      className="delete-button"
+                    >
+                      Delete
                           <DeleteIcon />
-                  </Button>
+                    </Button>
                   }
                 </Grid>
               </Grid>
@@ -107,7 +128,7 @@ export class DriversRidesList extends React.Component {
           rideRequests={this.props.requests.filter(x => x.rideId === this.props.selectedRide)}
           ride={this.props.rides.find(x => x.rideId === this.props.selectedRide) ? this.props.rides.find(x => x.rideId === this.props.selectedRide) : null}
           passengers={this.props.passengers.filter(x => x.rideId === this.props.selectedRide)}
-          handleClose={() => this.handleClose()}
+          handleClose={() => this.setState({ open: false })}
           handleRequestResponse={(response, rideRequestId, rideId, driverEmail) => this.props.handleRequestResponse(response, rideRequestId, rideId, driverEmail)}
           showSnackBar={(message, variant) => { this.props.showSnackBar(message, variant) }}
         />

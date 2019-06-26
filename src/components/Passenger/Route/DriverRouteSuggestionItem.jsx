@@ -65,7 +65,6 @@ export class DriverRouteSuggestionItem extends React.Component {
                     passengerAddress={this.props.passengerAddress}
                     showSnackBar={(message, variant) => this.props.showSnackBar(message, variant)}
                 />
-
             </ListItem>
         );
     }

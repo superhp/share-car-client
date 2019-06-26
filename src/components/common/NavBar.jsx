@@ -5,41 +5,44 @@ import NoteAdd from "@material-ui/icons/NoteAdd";
 import PlaylistAdd from "@material-ui/icons/PlaylistAdd";
 import Cached from "@material-ui/icons/Cached";
 import Book from "@material-ui/icons/Book";
-
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import "../../styles/navbar.css";
 import Media from "react-media";
+import history from "../../helpers/history";
 
-const NavBar = props => {
-  const status = props.isDriver ? "/driver" : "/passenger";
-  return (
-    <div className="navBar">
-      <Link className="navBar-button" role="button" to={status + "/map"}>
-        <div className="button-container">
-          <Map />
-          <Media query="(min-width: 714px)">
-            {matches => (matches ? <div className="">Routes map</div> : "")}
-          </Media>
-        </div>
-      </Link>
-      <Link
-        className="navBar-button"
-        role="button"
-        to={status + (!props.isDriver ? "/requests" : "/rides")}
-      >
-        <div className="button-container">
-          <NoteAdd />
-          <Media query="(min-width: 714px)">
-            {matches =>
-              matches ? (
-                <div className="">{!props.isDriver ? "Requests" : "Rides"}</div>
-              ) : (
-                ""
-              )
-            }
-          </Media>
-        </div>
-      </Link>
-    </div>
-  );
+
+export default class NavBar extends React.Component {
+  state = {
+    tabValue: 0
+  }
+
+  componentDidMount() {
+    this.status = this.props.isDriver ? "/driver" : "/passenger";
+  }
+
+  handleChange(newValue) {
+    this.setState({ tabValue: newValue }, () => {
+      if (newValue == 0) {
+        history.push(this.status + "/map");
+      } else {
+        history.push(this.status + this.props.isDriver ? "rides" : "requests");
+      }
+    });
+  }
+
+  render() {
+    return (
+      <div className="navBar">
+
+        <AppBar className="nav-tabs-container" position="static">
+          <Tabs centered value={this.state.tabValue} onChange={((e, newValue) => this.handleChange(newValue))}>
+            <Tab className="nav-tabs" label="Routes map" />
+            <Tab className="nav-tabs" label={this.props.isDriver ? "Rides" : "Requests"} />
+          </Tabs>
+        </AppBar>
+      </div>
+    )
+  };
 };
-export default NavBar;
