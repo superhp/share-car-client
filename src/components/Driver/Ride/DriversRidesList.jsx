@@ -18,11 +18,7 @@ import { PendingRequests } from "./PendingRequests";
 
 let moment = require("moment");
 
-const standardStyle = {
-  margin: "1em 0",
-}
 const finishedStyle = {
-  margin: "1em 0",
   opacity: 0.5
 }
 
@@ -44,11 +40,7 @@ export class DriversRidesList extends React.Component {
     } else {
       rides = this.props.rides.filter(x => x.finished);
     }
-
-    this.setState({ tabValue: newValue, rides }, () => {
-      console.log(rides);
-      console.log(this.state.rides)
-    });
+    this.setState({ tabValue: newValue, rides });
   }
 
   render() {
@@ -61,8 +53,8 @@ export class DriversRidesList extends React.Component {
           </Tabs>
         </AppBar>
         {this.state.rides.length > 0 ? this.state.rides.map((ride, index) => (
-          <Grid style={ride.finished ? finishedStyle : standardStyle} key={index} item xs={12}>
-            <Card className="rides-card generic-card">
+          <Grid style={ride.finished ? finishedStyle : null} key={index} item xs={12}>
+            <Card className="generic-card">
               <Grid container className="active-rides-card-container">
                 <Grid item xs={8}>
                   {this.props.requests.filter(x => x.rideId === ride.rideId && (!x.seenByDriver || !x.requestNoteSeen)).length > 0

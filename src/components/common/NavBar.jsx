@@ -15,11 +15,19 @@ import history from "../../helpers/history";
 
 export default class NavBar extends React.Component {
   state = {
-    tabValue: 0
+    tabValue: this.getInitialTabValue()
   }
 
   componentDidMount() {
     this.status = this.props.isDriver ? "/driver" : "/passenger";
+  }
+
+  getInitialTabValue() {
+    let urlParts = window.location.href.split('/');
+    if(urlParts[urlParts.length - 1] === "map"){
+      return 0;
+    }
+    return 1;
   }
 
   handleChange(newValue) {
@@ -27,7 +35,7 @@ export default class NavBar extends React.Component {
       if (newValue == 0) {
         history.push(this.status + "/map");
       } else {
-        history.push(this.status + this.props.isDriver ? "rides" : "requests");
+        history.push(this.status + (this.props.isDriver ? "/rides" : "/requests"));
       }
     });
   }

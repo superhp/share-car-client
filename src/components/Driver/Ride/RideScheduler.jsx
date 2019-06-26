@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import "react-infinite-calendar/styles.css"; // only needs to be imported once
 import api from "../../../helpers/axiosHelper";
+import history from "../../../helpers/history";
 import "../../common/TimePickers";
 import SnackBars from "../../common/Snackbars";
 import { SnackbarVariants, showSnackBar } from "../../../utils/SnackBarUtils";
@@ -63,7 +64,7 @@ class RideScheduler extends React.Component {
       rides.push(this.createRide(fromAddress, toAddress, element, this.state.note));
     });
 
-    this.createRides(rides);
+    this.saveRides(rides);
   };
 
   createRide(from, to, element, note) {
@@ -102,10 +103,11 @@ class RideScheduler extends React.Component {
     return ride;
   }
 
-  createRides(rides) {
+  saveRides(rides) {
     api.post("Ride", rides).then(res => {
       if (res.status === 200) {
         showSnackBar("Rides successfully created!", 0, this);
+        history.push("driver/rides");
       }
     }).catch((error) => {
       if (error.response && error.response.status === 409) {
