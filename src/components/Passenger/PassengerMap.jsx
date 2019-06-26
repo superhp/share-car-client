@@ -91,8 +91,6 @@ export class PassengerMap extends React.Component {
       .catch(() => {
         showSnackBar("Failed to get home address", 2, this);
       });
-    // this.getAllRoutes(OfficeAddresses[0], this.state.direction);
-    //this.getUsers();
   }
 
   showLocationSelection(routePointIndex, routePointType) {
@@ -146,13 +144,13 @@ export class PassengerMap extends React.Component {
     const points = routePoints.filter(x => x.address).map(x => x.address);
     this.vectorSource.clear();
 
-      if (routePoints[0].address) {
-        this.createPointFeature(routePoints[0].address, iconType.start);
-      }
+    if (routePoints[0].address) {
+      this.createPointFeature(routePoints[0].address, iconType.start);
+    }
 
-      if (routePoints[1].address) {
-        this.createPointFeature(routePoints[1].address, iconType.finish);
-      }
+    if (routePoints[1].address) {
+      this.createPointFeature(routePoints[1].address, iconType.finish);
+    }
 
     if (routes.length > 0 && currentRouteIndex >= 0) {
       const routeFeature = createRouteFeature(routes[currentRouteIndex].geometry);
@@ -209,12 +207,12 @@ export class PassengerMap extends React.Component {
 
       this.setState({ routePoints }, () => {
         let passengerAddress = this.getPassengerAddress();
-          this.setState({ passengerAddress }, () => {
-            if (this.isAddressOffice(address)) {
-              this.getRoutes();
-            }
-            this.updateMap();
-          });
+        this.setState({ passengerAddress }, () => {
+          if (this.isAddressOffice(address)) {
+            this.getRoutes();
+          }
+          this.updateMap();
+        });
       });
     }
   }
@@ -313,8 +311,6 @@ export class PassengerMap extends React.Component {
         this.getRoutes();
         this.updateMap()
       });
-   //   this.updateMap();
-
     });
   }
 
@@ -399,8 +395,8 @@ export class PassengerMap extends React.Component {
 
   getRoutes() {
     let routeDto = {
-      FromAddress:null,
-      ToAddress:null
+      FromAddress: null,
+      ToAddress: null
     };
     this.setState({ loading: true });
     const { routePoints } = this.state;
@@ -415,18 +411,31 @@ export class PassengerMap extends React.Component {
       if (response.data.length === 0 && !this.shouldShowError()) {
         showSnackBar("No drivers to suggest", 2, this)
       }
-      //  if (this.state.selectedDriver || this.state.driverInput) {
-      //   this.setState({ loading: false, routes: response.data, fetchedRoutes: response.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, () => { this.onDriverSelection(this.state.selectedDriver) });
-      //  } else {
-      this.setState({ loading: false, routes: response.data, fetchedRoutes: response.data, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, this.displayRoute);
-      // }
-
+      let sortedRoutes = this.sortRoutes(routeDto, response.data);
+      this.setState({ loading: false, routes: sortedRoutes, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, this.displayRoute);
     }).catch((error) => {
       this.setState({ loading: false });
       showSnackBar("Failed to load routes", 2, this)
     });
 
   }
+
+  sortRoutes(routeDto, routes) {
+    let sortedRoutes = [];
+    const { routePoints } = this.state;
+
+    if (routePoints[0].address && routePoints[1].address) {
+      if (routePoints[0].address && this.isAddressOffice(routePoints[0].address) && routePoints[1].address && this.isAddressOffice(routePoints[1].address)) {
+        sortedRoutes = sortRoutes(routeDto.FromAddress, routes);
+      } else if (routePoints[0].address && this.isAddressOffice(routePoints[0].address)) {
+        sortedRoutes = sortRoutes(routeDto.ToAddress, routes);
+      } else if (routePoints[1].address && this.isAddressOffice(routePoints[1].address)) {
+        sortedRoutes = sortRoutes(routeDto.FromAddress, routes);
+      }
+    }
+    return sortedRoutes;
+  }
+
   /*
     handleRegister(ride) {
       if (!this.state.passengerAddress) {

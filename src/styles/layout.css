@@ -1,65 +1,65 @@
 .app {
-  color: solid black;
-  height: 100%;
+    color: solid black;
+    height: 100%;
 }
+
 .ol-viewport {
-  margin-bottom: 0 !important;
+    margin-bottom: 0 !important;
 }
+
 .app-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+    animation: App-logo-spin infinite 20s linear;
+    height: 80px;
 }
 
 .app-header {
-  /* background-color: #222; */
-  height: 150px;
-  padding: 20px;
-  color: white;
+    height: 150px;
+    padding: 20px;
+    color: white;
 }
 
 .app-title {
-  font-size: 1.5em;
+    font-size: 1.5em;
 }
 
 .app-intro {
-  font-size: large;
+    font-size: large;
 }
 
 .header-small-device {
-  text-align: center;
+    text-align: center;
 }
 
 .top-header {
-  display: flex;
-  justify-content: flex-end;
-  height: 64px;
+    display: flex;
+    justify-content: flex-end;
+    height: 64px;
 }
 
-.top-header > div {
-  display: flex;
-  justify-content: flex-end;
+.top-header>div {
+    display: flex;
+    justify-content: flex-end;
 }
 
-.top-header .top-header-text {
-}
+.top-header .top-header-text {}
 
 .content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  margin-bottom: 9%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    margin-bottom: 9%;
 }
 
 button:focus {
-  outline: 0 !important;
+    outline: 0 !important;
 }
 
 @keyframes app-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }

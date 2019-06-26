@@ -1,38 +1,36 @@
-.location-selection-element{
-    padding:2px;
+.location-selection-element {
+    padding: 2px;
     justify-content: flex-start;
-    margin-left: 3%;    
+    margin-left: 3%;
     margin-right: 3%;
     color: black;
 }
 
-.settings{
-    margin-left:auto;
-    z-index : 99;
+.settings {
+    margin-left: auto;
+    z-index: 99;
 }
 
-.clickable{
+.clickable {
     border: 1px solid #666;
     padding: 2px;
     box-shadow: 1px 1px #888888;
     background-color: #fff;
-  /*  height: 36px;
-    width: 36px; */
     border-radius: 30%;
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.location-icon{
+.location-icon {
     padding: 2px;
     background-color: #fff;
     margin-right: 5px;
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.address-input{
+.address-input {
     overflow: visible !important;
 }

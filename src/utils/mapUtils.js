@@ -90,15 +90,10 @@ export const createRoute = (routePoints, direction) => {
     const URL_OSMR_ROUTE = "//maps.cts-parking.lt/route/v1/driving/";
 
     var coordinates = "";
-    // if (direction) {
     for (var i = 0; i < routePoints.length; i++) {
         coordinates += appendCoordinates(routePoints, i)
     }
-    /* } else {
-       for (var j = routePoints.length - 1; j >= 0; j--) {
-         coordinates += appendCoordinates(routePoints, j)
-       }
-     }*/
+
     coordinates = coordinates.substring(0, coordinates.length - 1);
     return fetch(URL_OSMR_ROUTE + coordinates)
 
