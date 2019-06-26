@@ -43,6 +43,7 @@ button:focus {
 .show-drivers {
   background-color: #0a2239!important;
   color: #e8e9eb!important;
+  width: 110px;
 }
 
 .show-drivers:hover {
@@ -52,10 +53,28 @@ button:focus {
 .delete-button {
   background-color: #f74428!important;
   color: white!important;
+  width: 110px;
+}
+
+.view-info-btn{
+  cursor: pointer;
 }
 
 .delete-button:hover {
-  background-color: #f96f59!important;
+  background-color: #5062af!important;
+}
+.delete-button-small {
+  background-color: #5062af!important;
+  color: white!important;    
+  position: absolute;
+  margin: -10px 0px 0px -12px;
+  border-radius: 50%;
+  border-color: red;
+  border: 2px solid #e7e7e7;
+  cursor: pointer;
+}
+.delete-button-small:hover {
+  background-color: #062074!important;
 }
 
 h2 {
