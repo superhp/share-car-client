@@ -51,7 +51,7 @@ class Layout extends React.Component<LayoutProps, MyProfileState> {
       <div className="app">
         <div className="content">
           <Grid container justify="center">
-            <AppBar position="static" className="generic-container-color">
+            <AppBar position="fixed" className="generic-container-color">
               <Toolbar className="top-header">
                 <Grid item xs={12} sm={2} />
                 <Grid item xs={12} sm={8} className="top-header-text">
@@ -74,12 +74,14 @@ class Layout extends React.Component<LayoutProps, MyProfileState> {
               </Toolbar>
             </AppBar>
           </Grid>
-          {this.props.children}
-          {this.props.location.pathname.includes("driver") ? (
-            <NavBar isDriver={true} />
-          ) : this.props.location.pathname.includes("passenger") ? (
-            <NavBar isDriver={false} />
-          ) : null}
+          <div className="app-content">
+            {this.props.children}
+            {this.props.location.pathname.includes("driver") ? (
+              <NavBar isDriver={true} />
+            ) : this.props.location.pathname.includes("passenger") ? (
+              <NavBar isDriver={false} />
+            ) : null}
+          </div>
         </div>
       </div>
     );

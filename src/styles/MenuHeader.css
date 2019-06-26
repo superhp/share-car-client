@@ -42,5 +42,7 @@ button:focus {
   height: 22px;
   right: -6px;
   bottom: -6px;
+  
+  border: 1px solid #e7e7e7;
   background-color: mintcream;
 }
