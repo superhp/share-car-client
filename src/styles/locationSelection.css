@@ -11,17 +11,6 @@
     z-index: 99;
 }
 
-.clickable {
-    border: 1px solid #666;
-    padding: 2px;
-    box-shadow: 1px 1px #888888;
-    background-color: #fff;
-    border-radius: 30%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .location-icon {
     padding: 2px;
     background-color: #fff;

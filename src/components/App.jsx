@@ -7,7 +7,6 @@ import Login from "./common/Login";
 import RoleSelection from "./User/RoleSelection";
 import Passenger from "./Passenger/Passenger";
 import UserProfile from "./User/UserProfile";
-import Rides from "./Driver/Ride/Rides";
 import LocationSelection from "./Maps/LocationSelection";
 import Manual from "./Manual";
 import WinnerBoard from "./Winner/WinnerBoard";
@@ -15,6 +14,7 @@ import Map from "./Maps/Map";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css";
 import LocationSelectionMap from "./Maps/LocationSelectionMap";
+import { DriversRidesList } from "./Driver/Ride/DriversRidesList";
 
 export default class App extends React.Component {
   state = {
@@ -53,7 +53,7 @@ export default class App extends React.Component {
             <Route
               path="/:role(driver|passenger)/rides"
               render={props => (
-                <Rides {...props} refetch={this.state.refetch} />
+                <DriversRidesList {...props} refetch={this.state.refetch} />
               )}
             />
             <Route

@@ -83,6 +83,11 @@ button:focus {
     color: #e8e9eb;
 }
 
+.generic-dark-color {
+    background-color: #0A2239 !important;
+    color: #e8e9eb !important;
+}
+
 .generic-colored-btn {
     background-color: #0A2239 !important;
     color: #e8e9eb !important;
@@ -90,6 +95,7 @@ button:focus {
     margin-right: 2px!important;
     padding-left: 10px!important;
     padding-right: 10px!important;
+    cursor: pointer;
 }
 
 .generic-colored-btn.disabled {
@@ -111,6 +117,7 @@ button:focus {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 .generic-button:not(.disabled):hover {
@@ -231,4 +238,19 @@ th {
 .manual-heading {
     text-align: center;
     color: #173f5f;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.confirmation-button-container {
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.confirmation-dialog {
+    display: flex;
+    justify-content: center;
 }

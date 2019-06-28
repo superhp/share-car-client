@@ -13,9 +13,7 @@
 }
 
 .app-header {
-    height: 150px;
-    padding: 20px;
-    color: white;
+    position: fixed;
 }
 
 .app-title {
