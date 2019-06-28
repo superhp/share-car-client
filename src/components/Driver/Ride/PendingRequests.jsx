@@ -46,25 +46,27 @@ export class PendingRequests extends React.Component {
 
     render() {
         return (
-            <Dialog onClose={() => this.props.handleClose()} aria-labelledby="simple-dialog-title" open={this.props.open}>
+            <Dialog onClose={(e) => e.preventDefault()} aria-labelledby="simple-dialog-title" open={this.props.open} >
                 <div className="pending-requests">
                     <DialogTitle className="dialog-title">Note</DialogTitle>
                     <Note
+                        disabled = {this.props.ride ? this.props.ride.finished : false}
                         note={this.props.ride ? this.props.ride.note : null}
                         updateNote={(note) => {this.updateNote(note)}}
                     />
                     <DialogTitle className="dialog-title">Requests</DialogTitle>
                     <List>
                         {this.props.rideRequests.length > 0
-                            ? this.props.rideRequests.map((req, index) => (
+                            ? this.props.rideRequests.map((request, index) => (
                                 <ListItem key={index}>
                                     <PendingRequestCard
-                                        req={req}
+                                        disabled = {this.props.ride.finished}
+                                        request={request}
                                         index={index}
                                         requestNoteSeen={(requestId) => {this.requestNoteSeen(requestId)}}
                                         route={this.props.ride ? this.props.ride.route : null}
-                                        onAcceptClick={() => this.props.handleRequestResponse(1, req.rideRequestId, req.rideId, req.driverEmail)}
-                                        onDenyClick={() => { this.props.handleRequestResponse(2, req.rideRequestId, req.rideId) }}
+                                        onAcceptClick={() => this.props.handleRequestResponse(1, request.rideRequestId, request.rideId, request.driverEmail)}
+                                        onDenyClick={() => { this.props.handleRequestResponse(2, request.rideRequestId, request.rideId) }}
                                     />
                                 </ListItem>
                             ))

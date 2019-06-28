@@ -17,10 +17,10 @@ export class PendingRequestCard extends React.Component {
         showNote: false
     }
 
-    onViewNoteClick(){
-        this.setState({ showNote: !this.state.showNote }, () =>{
-            if(!this.props.req.requestNoteSeen){
-                this.props.requestNoteSeen(this.props.req.rideRequestId)
+    onViewNoteClick() {
+        this.setState({ showNote: !this.state.showNote }, () => {
+            if (!this.props.request.requestNoteSeen) {
+                this.props.requestNoteSeen(this.props.request.rideRequestId)
             }
         });
     }
@@ -32,7 +32,7 @@ export class PendingRequestCard extends React.Component {
                     <Grid container justify="center">
                         <Grid item xs={12} zeroMinWidth>
                             <Grid container justify="center" className="request-person-info">
-                                {!this.props.req.seenByDriver? (
+                                {!this.props.request.seenByDriver ? (
                                     <Badge
                                         className="new-badge"
                                         badgeContent={"new"}
@@ -41,8 +41,8 @@ export class PendingRequestCard extends React.Component {
                                     />
                                 ) : null}
                                 <Typography className="name-para" component="p">
-                                    #{this.props.index + 1} {this.props.req.passengerFirstName}{" "}
-                                    {this.props.req.passengerLastName}
+                                    #{this.props.index + 1} {this.props.request.passengerFirstName}{" "}
+                                    {this.props.request.passengerLastName}
                                 </Typography>
                             </Grid>
                         </Grid>
@@ -60,14 +60,14 @@ export class PendingRequestCard extends React.Component {
 
                                     </Grid>
                                     <Grid item md={3} className="pending-request-button">
-                                    {!this.props.req.requestNoteSeen ? (
-                                    <Badge
-                                        className="new-badge"
-                                        badgeContent={"new"}
-                                        color="primary"
-                                        children={""}
-                                    />
-                                ) : null}
+                                        {!this.props.request.requestNoteSeen ? (
+                                            <Badge
+                                                className="new-badge"
+                                                badgeContent={"new"}
+                                                color="primary"
+                                                children={""}
+                                            />
+                                        ) : null}
                                         <Button
                                             variant="contained"
                                             className="show-on-map"
@@ -77,27 +77,29 @@ export class PendingRequestCard extends React.Component {
                                         </Button>
                                     </Grid>
                                     <Grid item md={6}>
-                                        {this.props.req.status !== 4 ?
-                                            <Grid container spacing={8}>
-                                                <Grid item md={6} className="pending-request-button">
-                                                    <Button
-                                                        variant="contained"
-                                                        className="accept"
-                                                        onClick={() => this.props.onAcceptClick()}
-                                                    >
-                                                        Accept
+                                        {this.props.request.status !== 4 ?
+                                            this.props.disabled
+                                                ? <div></div>
+                                                : <Grid container spacing={8}>
+                                                    <Grid item md={6} className="pending-request-button">
+                                                        <Button
+                                                            variant="contained"
+                                                            className="accept"
+                                                            onClick={() => this.props.onAcceptClick()}
+                                                        >
+                                                            Accept
                                                     </Button>
-                                                </Grid>
-                                                <Grid item md={6} className="pending-request-button">
-                                                    <Button
-                                                        variant="contained"
-                                                        className="deny"
-                                                        onClick={() => this.props.onDenyClick()}
-                                                    >
-                                                        Deny
+                                                    </Grid>
+                                                    <Grid item md={6} className="pending-request-button">
+                                                        <Button
+                                                            variant="contained"
+                                                            className="deny"
+                                                            onClick={() => this.props.onDenyClick()}
+                                                        >
+                                                            Deny
                                                     </Button>
+                                                    </Grid>
                                                 </Grid>
-                                            </Grid>
                                             : <p>
                                                 Request was canceled
                                             </p>
@@ -113,7 +115,7 @@ export class PendingRequestCard extends React.Component {
                         <Grid container justify="center">
                             <Grid item xs={12} zeroMinWidth>
                                 <MapComponent
-                                    pickUpPoint={{ longitude: this.props.req.address.longitude, latitude: this.props.req.address.latitude }}
+                                    pickUpPoint={{ longitude: this.props.request.address.longitude, latitude: this.props.request.address.latitude }}
                                     route={this.props.route}
                                     index={this.props.index}
                                 />
@@ -124,14 +126,14 @@ export class PendingRequestCard extends React.Component {
                 }
                 {this.state.showNote ?
                     <Card className="rides-card generic-card">
-                                <TextField
-                                    disabled
-                                    multiline
-                                    fullWidth
-                                    margin="none"
-                                    variant="outlined"
-                                    value={this.props.req.requestNote}
-                                />
+                        <TextField
+                            disabled
+                            multiline
+                            fullWidth
+                            margin="none"
+                            variant="outlined"
+                            value={this.props.request.requestNote}
+                        />
                     </Card>
                     : <div></div>
                 }

@@ -37,8 +37,7 @@ export class DriversRidesList extends React.Component {
     fetchedRides: [],
     requests: [],
     passengers: [],
-    clicked: false,
-    selectedRideId: null,
+    selectedRide: null,
     snackBarClicked: false,
     snackBarMessage: null,
     snackBarVariant: null,
@@ -47,13 +46,6 @@ export class DriversRidesList extends React.Component {
 
   componentDidMount() {
     this.getDriversRides();
-  }
-
-  handleRideClick(id) {
-    this.setState({
-      clicked: this.state.selectedRideId === id ? !this.state.clicked : true,
-      selectedRideId: id
-    });
   }
 
   getDriversRides() {
@@ -166,7 +158,7 @@ export class DriversRidesList extends React.Component {
     this.setState({ tabValue: newValue, rides });
   }
 
-  handleRideClick(e, ride) {
+  handleRideSelection(e, ride) {
     let selectedRides = [...this.state.selectedRides];
 
     if (e.target.checked) {
@@ -286,7 +278,7 @@ export class DriversRidesList extends React.Component {
                     <Grid item xs={3} className="list-buttons">
                       <Button
                         onClick={() => {
-                          this.handleRideClick(ride.rideId);
+                          this.setState({ selectedRide: ride });
                           this.setState({ openRideInfo: true });
                         }}
                         variant="contained"
@@ -305,7 +297,7 @@ export class DriversRidesList extends React.Component {
                             <DeleteIcon onClick={() => this.setState({ openDeleteConfirmation: true, rideToDelete: ride })} className="clickable" />
                           </div>
                           <div>
-                            <input onChange={(e) => { this.handleRideClick(e, ride) }} className="select-ride" type="checkbox" />
+                            <input onChange={(e) => { this.handleRideSelection(e, ride) }} className="select-ride" type="checkbox" />
                           </div>
                         </div>
                       }
@@ -321,9 +313,9 @@ export class DriversRidesList extends React.Component {
             }
             <PendingRequests
               open={this.state.openRideInfo}
-              rideRequests={this.state.requests.filter(x => x.rideId === this.state.selectedRide)}
-              ride={this.state.rides.find(x => x.rideId === this.state.selectedRide) ? this.state.rides.find(x => x.rideId === this.state.selectedRide) : null}
-              passengers={this.state.passengers.filter(x => x.rideId === this.state.selectedRide)}
+              rideRequests={this.state.requests.filter(x => x.rideId === this.state.selectedRide.rideId)}
+              ride={this.state.selectedRide}
+              passengers={this.state.passengers.filter(x => x.rideId === this.state.selectedRide.rideId)}
               handleClose={() => this.setState({ openRideInfo: false })}
               handleRequestResponse={(response, rideRequestId, rideId, driverEmail) => this.sendRequestResponse(response, rideRequestId, rideId, driverEmail)}
               showSnackBar={(message, variant) => { this.showSnackBar(message, variant, this) }}
