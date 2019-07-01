@@ -109,15 +109,13 @@ export class PassengerMap extends React.Component {
       const { map, vectorSource } = this.initializeMap();
       this.map = map;
       this.vectorSource = vectorSource;
-console.log("!!!!!!")
 
-console.log(address)
-if (!address) {
+      if (!address) {
         this.updateMap();
         return;
       }
 
-          this.changeRoutePoint(address, currentRoutePoint.index);
+      this.changeRoutePoint(address, currentRoutePoint.index);
     });
   }
 
@@ -182,27 +180,38 @@ if (!address) {
   }
 
   changeRoutePoint(address, index) {
-    if (address) {
-      const { longitude, latitude } = address
-      let routePoints = [...this.state.routePoints];
-      const feature = createPointFeature(longitude, latitude, index === 0 ? iconType.start : iconType.finish);
-      this.vectorSource.addFeature(feature);
-      routePoints[index] = {
-        address: address,
-        displayName: addressToString(address),
-        routePointType: this.state.currentRoutePoint.routePointType
-      }
-
-      this.setState({ routePoints }, () => {
-        let passengerAddress = this.getPassengerAddress();
-        this.setState({ passengerAddress }, () => {
-          if (this.isAddressOffice(address)) {
-            this.getRoutes();
-          }
-          this.updateMap();
-        });
-      });
+    const { longitude, latitude } = address
+    let routePoints = [...this.state.routePoints];
+    const feature = createPointFeature(longitude, latitude, index === 0 ? iconType.start : iconType.finish);
+    this.vectorSource.addFeature(feature);
+    routePoints[index] = {
+      address: address,
+      displayName: addressToString(address),
+      routePointType: this.state.currentRoutePoint.routePointType
     }
+
+    this.setState({ routePoints }, () => {
+      let passengerAddress = this.getPassengerAddress();
+      this.setState({ passengerAddress }, () => {
+        if (this.isAddressOffice(address)) {
+          this.getRoutes();
+        }
+
+        let routeDto = {
+          FromAddress: null,
+          ToAddress: null
+        };
+
+        if (routePoints[0].address && this.isAddressOffice(routePoints[0].address)) {
+          routeDto.FromAddress = routePoints[0].address;
+        }
+        if (routePoints[1].address && this.isAddressOffice(routePoints[1].address)) {
+          routeDto.ToAddress = routePoints[1].address;
+        }
+          this.sortRoutes(this.state.routes);
+        this.updateMap();
+      });
+    });
   }
 
   initializeMap() {
@@ -298,7 +307,6 @@ if (!address) {
     };
     this.setState({ loading: true });
     const { routePoints } = this.state;
-    console.log(this.state.routePoints)
     if (routePoints[0].address && this.isAddressOffice(routePoints[0].address)) {
       routeDto.FromAddress = routePoints[0].address;
     }
@@ -310,29 +318,29 @@ if (!address) {
       if (response.data.length === 0 && !this.shouldShowError()) {
         showSnackBar("No drivers to suggest", 2, this)
       }
-      let sortedRoutes = this.sortRoutes(routeDto, response.data);
+      let sortedRoutes = this.sortRoutes(response.data);
       this.setState({ loading: false, routes: sortedRoutes, currentRoute: { routeFeature: null, fromFeature: null, toFeature: null } }, this.displayRoute);
     }).catch((error) => {
       this.setState({ loading: false });
       showSnackBar("Failed to load routes", 2, this)
     });
-
   }
 
-  sortRoutes(routeDto, routes) {
+  sortRoutes(routes) {
     let sortedRoutes = [];
     const { routePoints } = this.state;
-console.log(routeDto)
+
     if (routePoints[0].address && routePoints[1].address) {
       if (routePoints[0].address && this.isAddressOffice(routePoints[0].address) && routePoints[1].address && this.isAddressOffice(routePoints[1].address)) {
-        sortedRoutes = sortRoutes(routeDto.FromAddress, routes);
+        sortedRoutes = sortRoutes(routePoints[0].address, routes);
       } else if (routePoints[0].address && this.isAddressOffice(routePoints[0].address)) {
-        sortedRoutes = sortRoutes(routeDto.ToAddress, routes);
+        sortedRoutes = sortRoutes(routePoints[1].address, routes);
       } else if (routePoints[1].address && this.isAddressOffice(routePoints[1].address)) {
-        sortedRoutes = sortRoutes(routeDto.FromAddress, routes);
+        sortedRoutes = sortRoutes(routePoints[0].address, routes);
       }
+      return sortedRoutes;
     }
-    return sortedRoutes;
+    return routes;
   }
   render() {
     return (
