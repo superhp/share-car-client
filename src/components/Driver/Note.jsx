@@ -26,7 +26,7 @@ export class Note extends React.Component {
                         fullWidth
                         variant="outlined"
                         value={this.state.value}
-                        onChange={(e) => { this.setState({ temporaryValue: e.target.value}) }}
+                        onChange={(e) => { this.setState({ value: e.target.value}) }}
                     />
                 </div>
             </div>

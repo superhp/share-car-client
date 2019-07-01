@@ -26,8 +26,8 @@ function TimePickers(props) {
         id="time"
         label="Select default time of rides"
         type="time"
-        onBlur={e => {
-          props.onTimeSet(e.target.value);
+        onChange={e => {
+          props.onChange(e.target.value);
         }}
         defaultValue={defaultTime}
         className={classes.textField}

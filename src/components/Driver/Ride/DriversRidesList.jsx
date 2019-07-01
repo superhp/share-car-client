@@ -15,7 +15,7 @@ import Tab from '@material-ui/core/Tab';
 import "../../../styles/driversRidesList.css";
 import "../../../styles/genericStyles.css";
 import "../../../styles/navbar.css";
-import { PendingRequests } from "./PendingRequests";
+import { RideInfo } from "./RideInfo";
 import { Checkbox } from "@material-ui/core";
 import { RideDeletingConfirmation } from "./RideDeletingConfirmation";
 import api from "../../../helpers/axiosHelper"
@@ -311,7 +311,7 @@ export class DriversRidesList extends React.Component {
                 <h3>You have no rides</h3>
               </Grid>
             }
-            <PendingRequests
+            <RideInfo
               open={this.state.openRideInfo}
               rideRequests={this.state.requests.filter(x => x.rideId === this.state.selectedRide.rideId)}
               ride={this.state.selectedRide}

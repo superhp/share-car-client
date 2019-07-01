@@ -298,7 +298,6 @@ export class DriverMap extends React.Component {
                   showLocationSelection={(routePointIndex, routePointType) => { this.showLocationSelection(routePointIndex, routePointType) }}
                 />
 
-
               </div>
               <div id="map"></div>
 

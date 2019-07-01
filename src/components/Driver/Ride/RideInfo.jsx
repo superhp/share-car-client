@@ -9,8 +9,9 @@ import { RidePassengersList } from "./RidePassengersList";
 import { Status } from "../../../utils/status";
 import "../../../styles/genericStyles.css";
 import { Note } from "../Note";
+import Close from "@material-ui/icons/Close";
 
-export class PendingRequests extends React.Component {
+export class RideInfo extends React.Component {
 
     seenRequests(requests) {
         const unseenRequests = [];
@@ -78,6 +79,7 @@ export class PendingRequests extends React.Component {
                         route={this.props.ride ? this.props.ride.route : null}
                     />
                 </div>
+                <Close/>
             </Dialog>
         );
     }
