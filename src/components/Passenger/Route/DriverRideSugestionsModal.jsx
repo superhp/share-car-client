@@ -59,7 +59,7 @@ class DriverRideSugestionsModal extends React.Component {
   render() {
     return (
       <div className="drivers-sugestion-modal">
-        <Dialog className="sugestion-modal-dialog" aria-labelledby="simple-dialog-title" open={this.props.showRides}>
+        <Dialog aria-labelledby="simple-dialog-title" open={this.props.showRides}>
           <Close className="drivers-sugestion-close-icon" onClick={() => { this.props.closeModal() }}>
           </Close>
           <List className="suggestion-modal-list">

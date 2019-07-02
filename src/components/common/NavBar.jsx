@@ -1,7 +1,5 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import Map from "@material-ui/icons/Map";
-import NoteAdd from "@material-ui/icons/NoteAdd";
 import PlaylistAdd from "@material-ui/icons/PlaylistAdd";
 import Cached from "@material-ui/icons/Cached";
 import Book from "@material-ui/icons/Book";

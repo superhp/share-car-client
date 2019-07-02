@@ -153,27 +153,7 @@ div.passengers-card {
     padding: 8px 4px;
 }
 
-.rides-badge {
-    position: absolute !important;
-}
-
 .ride-request-note {
     padding-left: 16px;
     padding-right: 16px;
-}
-
-.delete-ride-container {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-end;
-}
-
-.select-rides-container {
-    margin: 5px;
-}
-
-.select-ride {
-    margin: 3px;
 }

@@ -7,7 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Badge from "@material-ui/core/Badge";
 import MapComponent from "../../Maps/MapComponent";
-
+import Map from "@material-ui/icons/Map";
+import NoteAdd from "@material-ui/icons/NoteAdd";
 import "../../../styles/riderequests.css";
 import "../../../styles/genericStyles.css";
 
@@ -55,7 +56,7 @@ export class PendingRequestCard extends React.Component {
                                             className="show-on-map"
                                             onClick={() => { this.setState({ showMap: !this.state.showMap }) }}
                                         >
-                                            Show on map
+                                            <Map/>
                                         </Button>
 
                                     </Grid>
@@ -73,7 +74,7 @@ export class PendingRequestCard extends React.Component {
                                             className="show-on-map"
                                             onClick={() => { this.onViewNoteClick() }}
                                         >
-                                            View note
+                                            <NoteAdd/>
                                         </Button>
                                     </Grid>
                                     <Grid item md={6}>

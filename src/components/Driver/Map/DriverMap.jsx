@@ -6,24 +6,24 @@ import LayerVector from "ol/layer/Vector";
 import Tile from "ol/layer/Tile";
 import OSM from "ol/source/OSM";
 import Button from "@material-ui/core/Button";
-import { OfficeAddresses } from "../../utils/AddressData";
-import RideScheduler from "./Ride/RideScheduler";
-import { DriverRouteInput } from "./Map/DriverRouteInput";
-import LocationSelection from "../Maps/LocationSelection";
+import { OfficeAddresses } from "../../../utils/AddressData";
+import RideScheduler from "../Ride/RideScheduler";
+import { DriverRouteInput } from "./../Map/DriverRouteInput";
+import LocationSelection from "../../Maps/LocationSelection";
 import {
   fromLonLatToMapCoords, fromMapCoordsToLonLat,
   getNearest, coordinatesToLocation,
   createPointFeature, createRouteFeature,
   createRoute, iconType
-} from "./../../utils/mapUtils";
-import { addressToString, fromLocationIqResponse } from "../../utils/addressUtils";
-import "./../../styles/testmap.css";
-import RouteSelection from "../Maps/RouteSelection";
-import LocationSelectionMap from "../Maps/LocationSelectionMap";
-import { routePointType } from "../../utils/routePointTypes";
-import api from "../../helpers/axiosHelper";
-import SnackBars from "../common/Snackbars";
-import { SnackbarVariants, showSnackBar } from "../../utils/SnackBarUtils"
+} from "./../../../utils/mapUtils";
+import { addressToString, fromLocationIqResponse } from "../../../utils/addressUtils";
+import "./../../../styles/testmap.css";
+import RouteSelection from "../../Maps/RouteSelection";
+import LocationSelectionMap from "../../Maps/LocationSelectionMap";
+import { routePointType } from "../../../utils/routePointTypes";
+import api from "../../../helpers/axiosHelper";
+import SnackBars from "../../common/Snackbars";
+import { SnackbarVariants, showSnackBar } from "../../../utils/SnackBarUtils"
 
 const currentComponent = {
   fullMap: 0,

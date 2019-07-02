@@ -1,6 +1,6 @@
 import React from "react";
 
-import { DriverMap } from "../Driver/DriverMap";
+import { DriverMap } from "../Driver/Map/DriverMap";
 import { PassengerMap } from "../Passenger/PassengerMap";
 
 export default class Map extends React.Component {

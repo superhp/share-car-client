@@ -47,7 +47,6 @@ export class RideInfo extends React.Component {
 
     render() {
         return (
-            <Dialog onClose={(e) => e.preventDefault()} aria-labelledby="simple-dialog-title" open={this.props.open} >
                 <div className="pending-requests">
                     <DialogTitle className="dialog-title">Note</DialogTitle>
                     <Note
@@ -79,8 +78,6 @@ export class RideInfo extends React.Component {
                         route={this.props.ride ? this.props.ride.route : null}
                     />
                 </div>
-                <Close/>
-            </Dialog>
         );
     }
 }

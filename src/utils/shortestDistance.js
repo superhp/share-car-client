@@ -1,7 +1,6 @@
 const polylineDecoder = require('@mapbox/polyline');
 
 export const sortRoutes = (address, routes) => {
-    console.log(address)
     let routePoints = decodeRoutes(routes.map(x => x.geometry));
     let distances = calculateDisntances(routePoints, address);
     let routeCopy = [...routes];
@@ -58,7 +57,6 @@ function decodeRoutes(routes) {
 }
 
 function calculateDisntances(routePoints, pickUpPoint) {
-    console.log(pickUpPoint)
     const { longitude, latitude } = pickUpPoint;
     let shortestDistances = [];
 

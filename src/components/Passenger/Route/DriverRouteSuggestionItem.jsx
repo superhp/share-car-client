@@ -38,7 +38,7 @@ export class DriverRouteSuggestionItem extends React.Component {
                             <Typography className="generic-color" component="p">
                                 From {this.props.route.fromAddress.street} {this.props.route.fromAddress.number}, {this.props.route.fromAddress.city}
                             </Typography>
-                            <Typography color="textSecondary">
+                            <Typography color="textPrimary">
                                 To {this.props.route.toAddress.street} {this.props.route.toAddress.number}, {this.props.route.toAddress.city}
                             </Typography>
                         </React.Fragment>

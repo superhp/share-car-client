@@ -53,10 +53,6 @@ class RideScheduler extends React.Component {
         this.handleTime(defaultTime);
     }
 
-    setRecurrence(e) {
-        console.log(e);
-    }
-
     handleClose = () => {
         this.setState({ openDialog: false });
     };

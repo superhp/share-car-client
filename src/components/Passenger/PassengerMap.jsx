@@ -32,7 +32,6 @@ import RouteSelection from "../Maps/RouteSelection";
 import LocationSelectionMap from "../Maps/LocationSelectionMap";
 import { routePointType } from "../../utils/routePointTypes";
 import LocationSelection from "../Maps/LocationSelection";
-import ViewDrivers from "./ViewDrivers";
 import { DriverRoutesSuggestions } from "./Route/DriverRoutesSuggestions";
 const currentComponent = {
   fullMap: 0,
