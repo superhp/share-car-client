@@ -45,9 +45,8 @@ export default class ListCard extends React.Component {
             </Grid>
             <Grid item xs={3} className="card-button-container">
            <div>
-              {this.props.newView ?
-
-                <Badge
+              {this.props.newView 
+               ? <Badge
                   className="view-badge"
                   badgeContent={"new"}
                   color="primary"

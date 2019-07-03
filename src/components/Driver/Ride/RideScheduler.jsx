@@ -141,15 +141,15 @@ class RideScheduler extends React.Component {
         if (monday || tuesday || wednesday || thursday || friday) {
             let today = new Date();
                 if (monday) {
-                 rides = rides.concat(this.createRecurentRides(0, time, fromAddress, toAddress));
+                 rides = rides.concat(this.createRecurentRides(1, time, fromAddress, toAddress));
                 } else if (tuesday) {
-                    rides = rides.concat(this.createRecurentRides(1, time, fromAddress, toAddress));
-                } else if (wednesday) {
                     rides = rides.concat(this.createRecurentRides(2, time, fromAddress, toAddress));
-                } else if (thursday) {
+                } else if (wednesday) {
                     rides = rides.concat(this.createRecurentRides(3, time, fromAddress, toAddress));
-                } else if (friday) {
+                } else if (thursday) {
                     rides = rides.concat(this.createRecurentRides(4, time, fromAddress, toAddress));
+                } else if (friday) {
+                    rides = rides.concat(this.createRecurentRides(5, time, fromAddress, toAddress));
                 }
         }
 

@@ -4,8 +4,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import ListItem from "@material-ui/core/ListItem";
 import List from "@material-ui/core/List";
 import api from "../../../helpers/axiosHelper";
-import { PendingRequestCard } from "./PendingRequestCard";
-import { RidePassengersList } from "./RidePassengersList";
+import { RideRequestCard } from "./RideRequestCard";
 import { Status } from "../../../utils/status";
 import "../../../styles/genericStyles.css";
 import { Note } from "../Note";
@@ -36,17 +35,11 @@ export class RideInfo extends React.Component {
     }
 
     requestNoteSeen(requestId){
-        api.get("RideRequest/" + requestId).then().catch();
-    }
-
-    componentWillReceiveProps(props) {
-        if (props.open) {
-            this.seenRequests(props.rideRequests);
-        }
+        api.get("RideRequest/seenDriver/" + requestId).then().catch();
     }
 
     render() {
-        return (
+        return ( 
                 <div className="pending-requests">
                     <DialogTitle className="dialog-title">Note</DialogTitle>
                     <Note
@@ -56,14 +49,14 @@ export class RideInfo extends React.Component {
                     />
                     <DialogTitle className="dialog-title">Requests</DialogTitle>
                     <List>
-                        {this.props.rideRequests.length > 0
-                            ? this.props.rideRequests.map((request, index) => (
+                        {this.props.unaccpetedRequests.length > 0
+                            ? this.props.unaccpetedRequests.map((request, index) => (
                                 <ListItem key={index}>
-                                    <PendingRequestCard
+                                    <RideRequestCard
                                         disabled = {this.props.ride.finished}
                                         request={request}
                                         index={index}
-                                        requestNoteSeen={(requestId) => {this.requestNoteSeen(requestId)}}
+                                        requestNoteSeen={() => {this.requestNoteSeen(request.rideRequestId)}}
                                         route={this.props.ride ? this.props.ride.route : null}
                                         onAcceptClick={() => this.props.handleRequestResponse(1, request.rideRequestId, request.rideId, request.driverEmail)}
                                         onDenyClick={() => { this.props.handleRequestResponse(2, request.rideRequestId, request.rideId) }}
@@ -73,10 +66,22 @@ export class RideInfo extends React.Component {
                             : <div className="no-requests-div">No requests</div>}
                     </List>
                     <DialogTitle className="dialog-title">Passengers</DialogTitle>
-                    <RidePassengersList
-                        passengers={this.props.passengers}
-                        route={this.props.ride ? this.props.ride.route : null}
-                    />
+                    <List>
+                        {this.props.accpetedRequests.length> 0
+                            ? this.props.accpetedRequests.map((request, index) => (
+                                <ListItem key={index}>
+                                    <RideRequestCard
+                                        disabled = {true}
+                                        request={request}
+                                        index={index}
+                                        requestNoteSeen={() => {this.requestNoteSeen(request.rideRequestId)}}
+                                        route={this.props.ride ? this.props.ride.route : null}
+                                    />
+                                </ListItem>
+                            ))
+                            : <div className="no-requests-div">No passengers</div>}
+                    </List>
+    
                 </div>
         );
     }

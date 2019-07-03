@@ -2,11 +2,10 @@
 import React, { Component } from "react";
 
 import UserService from "../../services/userService";
-import { PassengerRideRequestsList } from "./Ride/PassengerRideRequestsList";
 import { CircularProgress, withStyles } from "@material-ui/core";
 import { styles } from "../../utils/spinnerStyle";
 import "../../styles/genericStyles.css";
-
+import PassengerRideRequestsList from "./Ride/PassengerRideRequestsList"
 class Passenger extends Component<{}, MyProfileState> {
   userService = new UserService();
   state: MyProfileState = { loading: true, user: null };

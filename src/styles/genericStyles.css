@@ -133,12 +133,6 @@ button:focus {
     text-align: center;
 }
 
-.request-card-container {
-    width: 300px;
-    box-shadow: 2px 1px 2px 1px #212529, 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
-    margin-top: 10px;
-}
-
 .no-requests-div {
     text-align: center;
     padding-right: 10px;
@@ -200,6 +194,7 @@ th {
 }
 
 .generic-card {
+    overflow: visible !important;
     margin-top: 10px;
     margin-right: 10px;
     margin-left: 10px;
@@ -254,10 +249,12 @@ th {
     position: absolute;
     right: 0;
     z-index: 10;
+    background-color: #e8e9eb;
 }
 
 .dialog-content {
-    margin-top: 20px;
+    padding: 12px !important;
+    background-color: #e8e9eb;
 }
 
 .dialog-body {
@@ -267,4 +264,41 @@ th {
 .list-container {
     display: flex;
     justify-content: center;
+}
+
+.new-badge {
+    margin-top: 10px;
+}
+
+.ride-request-card {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.request-card-content {
+    padding: 16px !important;
+}
+
+.accept {
+    background-color: #3581b8!important;
+    color: #e8e9eb !important;
+    margin-left: 2px!important;
+    margin-right: 2px!important;
+    padding-left: 10px!important;
+    padding-right: 10px!important;
+    cursor: pointer;
+}
+
+.deny {
+    background-color: #f74428!important;
+    color: #e8e9eb !important;
+    margin-left: 2px!important;
+    margin-right: 2px!important;
+    padding-left: 10px!important;
+    padding-right: 10px!important;
+    cursor: pointer;
+}
+
+.pending-request-button {
+    justify-content: flex-end;
 }

@@ -12,7 +12,6 @@ import Badge from "@material-ui/core/Badge";
 import MapComponent from "../Maps/MapComponent";
 import { Status } from "../../utils/status";
 import Grid from "@material-ui/core/Grid";
-import "../../styles/riderequests.css";
 import "../../styles/genericStyles.css";
 import "../../styles/driversRidesList.css";
 import "../../styles/note.css";
@@ -25,74 +24,76 @@ export default class RideRequestInfo extends React.Component {
         showMap: false,
         showNotes: false,
     }
-getDisplayName(address){
-    return address.number + " " + address.street + ", " + address.city;
-}
+    getDisplayName(address) {
+        return address.number + " " + address.street + ", " + address.city;
+    }
     render() {
         return (
             <div>
-                <Card className="request-card generic-card">
-                    <Grid container className="requests-card-container">
-                        <Grid item xs={12}>
-                            <CardContent >
-                                <Typography className="generic-color" component="p">
-                                    Request for {this.props.request.driverFirstName} {this.props.request.driverLastName}
-                                </Typography>
-                                <Typography color="textPrimary">
-                                    From: {this.getDisplayName(this.props.request.route.fromAddress)}
-                                </Typography>
-                                <Typography color="textPrimary">
-                                    To: {this.getDisplayName(this.props.request.route.toAddress)}
-                                </Typography>
-                                <Typography color="textPrimary">
-                                    Date: <Moment date={this.props.request.rideDateTime} format="MM-DD HH:mm" />
-                                </Typography>
-                                <Typography color="textPrimary">
-                                    Status: {Status[parseInt(this.props.request.status)]}
-                                </Typography>
-   
-                                {!this.props.request.rideNoteSeen ?
+                <Card className="generic-card request-card-content">
+                    <Typography className="generic-color" component="div" style={{ paddingBottom: "5px" }}>
+                        Request for {this.props.request.driverFirstName} {this.props.request.driverLastName}
+                    </Typography>
+                    <Typography color="textPrimary" component="div" style={{ paddingBottom: "5px" }}>
+                        From: {this.getDisplayName(this.props.request.route.fromAddress)}
+                    </Typography>
+                    <Typography color="textPrimary" component="div" style={{ paddingBottom: "5px" }}>
+                        To: {this.getDisplayName(this.props.request.route.toAddress)}
+                    </Typography>
+                    <Typography color="textPrimary" component="div" style={{ paddingBottom: "5px" }}>
+                        Date: <Moment date={this.props.request.rideDateTime} format="MM-DD HH:mm" />
+                    </Typography>
+                    <Typography color="textPrimary" component="div" style={{ paddingBottom: "5px" }}>
+                        Status: {Status[parseInt(this.props.request.status)]}
+                    </Typography>
 
-                                    <Badge
-                                        className="rides-badge"
-                                        badgeContent={"new"}
-                                        color="primary"
-                                        children={""}
-                                    />
-                                    : null}
-                                <Button
-                                    variant="contained"
-                                    className="view-notes"
-                                    onClick={() => {
-                                        this.setState({
-                                            showNotes: !this.state.showNotes,
-                                            showMap:false
-                                        }, () => { this.props.noteSeen(this.props.request.rideRequestId) });
-                                    }}
-                                >
-                                    <NoteAdd/>
-                        </Button>
-                       
+
+                    <Grid container justify="center" style={{ marginBottom: "5px" }}>
+                        {!this.props.request.rideNoteSeen ?
+
+                            <Badge
+                                className="rides-badge"
+                                badgeContent={"new"}
+                                color="primary"
+                                children={""}
+                            />
+                            : null}
+                        <Grid item xs={5} style={{ marginRight: "5px" }}>
                             <Button
+                                fullWidth
                                 variant="contained"
-                                className="show-on-map"
+                                className="generic-colored-btn"
+                                onClick={() => {
+                                    this.setState({
+                                        showNotes: !this.state.showNotes,
+                                        showMap: false
+                                    }, () => { this.props.noteSeen(this.props.request.rideRequestId) });
+                                }}
+                            >
+                                <NoteAdd />
+                            </Button>
+                        </Grid>
+                        <Grid item xs={5}>
+                            <Button
+                                fullWidth
+
+                                variant="contained"
+                                className="generic-colored-btn"
                                 onClick={() => {
                                     this.setState({
                                         showMap: !this.state.showMap,
-                                        showNotes:false
+                                        showNotes: false
                                     });
                                 }}
                             >
-                                <Map/>
-                        </Button>
-                        </CardContent>
-
+                                <Map />
+                            </Button>
                         </Grid>
-                        </Grid>
+                    </Grid>
                 </Card>
 
                 {this.state.showNotes ? (
-                    <Card className="request-card">
+                    <Card className="generic-card request-card-content">
                         <DialogTitle className="dialog-title">Your note</DialogTitle>
                         <Note
                             note={this.props.request.requestNote}
@@ -114,9 +115,8 @@ getDisplayName(address){
                 ) : (
                         <div></div>
                     )}
-
                 {this.state.showMap ? (
-                    <Card className="request-card request-map">
+                    <Card className="generic-card">
                         <MapComponent
                             pickUpPoint={{ longitude: this.props.request.address.longitude, latitude: this.props.request.address.latitude }}
                             route={this.props.request.route}
@@ -127,7 +127,7 @@ getDisplayName(address){
                         <div></div>
                     )}
 
-                    </div>
+            </div>
         )
     }
 }

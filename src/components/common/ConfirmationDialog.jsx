@@ -10,8 +10,8 @@ export default class ConfirmationDialog extends React.Component {
 
     render() {
         return (
-            <Dialog onClose={() => this.props.handleClose()} aria-labelledby="simple-dialog-title" open={this.props.open}>
-                <DialogTitle className="dialog-title">{this.props.deleteMultiple ?  this.props.deleteMultipleMessage : this.props.deleteSingleMessage + " ?"}</DialogTitle>
+            <Dialog onClose={() => this.props.close()} aria-labelledby="simple-dialog-title" open={this.props.open}>
+                <DialogTitle className="dialog-title">{this.props.deleteMultiple ?  this.props.deleteMultipleMessage : this.props.deleteSingleMessage}</DialogTitle>
                 <DialogContent>
                     <div className="confirmation-button-container">
                         <Button

@@ -1,18 +1,38 @@
 body {
-  height: 100vh;
+    height: 100vh;
 }
 
 .requestMap {
-  position: relative !important;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  height: 300px !important;
-
-}
-.map{
-  height:300px !important;
+    position: relative !important;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    height: 300px !important;
 }
 
-button:focus {
-  outline:0!important;
+.map {
+    height: 300px !important;
+}
+
+@media only screen and (max-width: 700px) {
+    .requestMap {
+        position: relative !important;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        height: 250px !important;
+    }
+    .map {
+        height: 250px !important;
+    }
+}
+
+@media only screen and (min-width: 699px) {
+    .requestMap {
+        position: relative !important;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        height: 300px !important;
+    }
+    .map {
+        height: 300px !important;
+    }
 }

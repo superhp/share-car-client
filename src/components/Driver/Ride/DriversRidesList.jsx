@@ -4,7 +4,6 @@ import Typography from "@material-ui/core/Typography";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import Badge from "@material-ui/core/Badge";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Close from "@material-ui/icons/Close";
 import InfoIcon from "@material-ui/icons/Info";
@@ -38,7 +37,6 @@ export class DriversRidesList extends React.Component {
     rideToDelete: null,
     fetchedRides: [],
     requests: [],
-    passengers: [],
     selectedRide: null,
     snackBarClicked: false,
     snackBarMessage: null,
@@ -57,18 +55,13 @@ export class DriversRidesList extends React.Component {
         if (response.status === 200) {
           let fetchedRides = response.data;
           let requests = [];
-          let passengers = [];
           for (var i = 0; i < fetchedRides.length; i++) {
             if (fetchedRides[i].requests.length > 0) {
               requests = requests.concat(fetchedRides[i].requests);
               fetchedRides[i].requests = null;
             }
-            if (fetchedRides[i].passengers.length > 0) {
-              passengers = passengers.concat(fetchedRides[i].passengers);
-              fetchedRides[i].passengers = null;
-            }
           }
-          this.setState({ fetchedRides, requests, passengers, rides: fetchedRides.filter(x => !x.finished), loading: false });
+          this.setState({ fetchedRides, requests, rides: fetchedRides.filter(x => !x.finished), loading: false });
 
         }
       })
@@ -82,8 +75,6 @@ export class DriversRidesList extends React.Component {
     if (reason === "clickaway") {
       return;
     }
-
-    this.setState({ clickedRequest: false });
   };
 
   sendRequestResponse(response, rideRequestId, rideId, driverEmail) {
@@ -93,33 +84,24 @@ export class DriversRidesList extends React.Component {
       RideId: rideId,
       DriverEmail: driverEmail
     };
-    api.put("/RideRequest", data).then(res => {
-      if (res.status === 200) {
+    api.put("/RideRequest", [data]).then(response => {
+      if (response.status === 200) {
         if (response === 1) {
-          var request = this.state.requests.find(x => x.rideRequestId === rideRequestId);
-          this.setState({
-            passengers: [...this.state.passengers, {
-              firstName: request.passengerFirstName,
-              lastName: request.passengerLastName,
-              phone: request.passengerPhone,
-              longitude: request.address.longitude,
-              latitude: request.address.latitude,
-              route: request.route,
-              rideId: request.rideId,
-            }],
-
-          });
+          let requests = [...this.state.requests];
+          let request = requests.find(x => x.rideId === rideId);
+          request.status = 1;
+          request.seendByDriver = false;
+          this.setState({ requests });
           showSnackBar("Request accepted", 0, this)
-
         } else {
-          showSnackBar("Request denied", 0, this)
+          showSnackBar("Request denied", 0, this);
+          this.setState({
+            requests: this.state.requests.filter(
+              x => x.rideRequestId !== rideRequestId
+            ),
+          });
         }
-        this.setState({
-          clickedRequest: true,
-          requests: this.state.requests.filter(
-            x => x.rideRequestId !== rideRequestId
-          ),
-        });
+
       }
     }).catch((error) => {
       if (error.response && error.response.status === 409) {
@@ -174,7 +156,7 @@ export class DriversRidesList extends React.Component {
 
   selectAll() {
     this.setState({ selectedRides: this.state.rides });
-    let checkboxes = document.getElementsByClassName("select-ride");
+    let checkboxes = document.getElementsByClassName("select-item");
     for (let i = 0; i < checkboxes.length; i++) {
       checkboxes[i].checked = true;
     }
@@ -182,7 +164,7 @@ export class DriversRidesList extends React.Component {
 
   deselectAll() {
     this.setState({ selectedRides: [] });
-    let checkboxes = document.getElementsByClassName("select-ride");
+    let checkboxes = document.getElementsByClassName("select-item");
     for (let i = 0; i < checkboxes.length; i++) {
       checkboxes[i].checked = false;
     }
@@ -220,9 +202,12 @@ export class DriversRidesList extends React.Component {
             </AppBar>
             <ConfirmationDialog
               open={this.state.openDeleteConfirmation}
-              confirm={() => this.deleteRides()}
+              close={() => this.setState({ openDeleteConfirmation: false })}
+              confirm={() => this.setState({ openDeleteConfirmation: false }, () => this.deleteRides())}
               deny={() => this.setState({ openDeleteConfirmation: false })}
-              deleteMultipleRides={this.shouldDeleteMultipleRides()}
+              deleteMultipleMessage={"Are you sure want to delete selected rides ?"}
+              deleteSingleMessage={"Are you sure want to delete this ride ?"}
+              deleteMultiple={this.shouldDeleteMultipleRides()}
             />
             {
               this.state.selectedRides.length > 0
@@ -255,9 +240,9 @@ export class DriversRidesList extends React.Component {
               close={() => { this.setState({ openRideInfo: false }) }}
               content={
                 <RideInfo
-                  rideRequests={this.state.selectedRide ? this.state.requests.filter(x => x.rideId === this.state.selectedRide.rideId) : []}
+                  unaccpetedRequests={this.state.selectedRide ? this.state.requests.filter(x => x.status !== 1 && x.rideId === this.state.selectedRide.rideId) : []}
+                  accpetedRequests={this.state.selectedRide ? this.state.requests.filter(x => x.status === 1 && x.rideId === this.state.selectedRide.rideId) : []}
                   ride={this.state.selectedRide}
-                  passengers={this.state.selectedRide ? this.state.passengers.filter(x => x.rideId === this.state.selectedRide.rideId) : []}
                   handleClose={() => this.setState({ openRideInfo: false })}
                   handleRequestResponse={(response, rideRequestId, rideId, driverEmail) => this.sendRequestResponse(response, rideRequestId, rideId, driverEmail)}
                   showSnackBar={(message, variant) => { showSnackBar(message, variant, this) }}
