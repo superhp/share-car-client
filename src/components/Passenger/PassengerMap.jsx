@@ -21,7 +21,6 @@ import { OfficeAddresses } from "../../utils/AddressData";
 import "./../../styles/genericStyles.css";
 import "../../styles/testmap.css";
 import SnackBars from "../common/Snackbars";
-import DriverRoutesSugestionsModal from "./Route/DriverRideSugestionsModal";
 import Media from "react-media";
 import NavigateNext from "@material-ui/icons/NavigateNext";
 import NavigateBefore from "@material-ui/icons/NavigateBefore";
@@ -360,10 +359,11 @@ export class PassengerMap extends React.Component {
                 />
               </div>
               {
-                this.state.routePoints[0].address &&
-                  this.state.routePoints[1].address &&
-                  this.state.routes.length > 0 &&
-                  !this.shouldShowError()
+              //  this.state.routePoints[0].address &&
+              //    this.state.routePoints[1].address &&
+               //   this.state.routes.length > 0 &&
+               //   !this.shouldShowError()
+                  true
                   ? <div className="view-drivers">
                     <DriverRoutesSuggestions
                       routes={this.state.routes}

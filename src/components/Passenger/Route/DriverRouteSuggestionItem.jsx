@@ -6,12 +6,12 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import "../../../styles/genericStyles.css";
 import "../../../styles/testmap.css";
-import { DriverRideSuggestionItem } from "./DriverRideSuggestionItem";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import CalendarToday from "@material-ui/icons/CalendarToday";
 import Place from "@material-ui/icons/Place";
 import List from "@material-ui/core/List";
 import DriverRideSugestionsModal from "./DriverRideSugestionsModal";
+import GenericDialog from "../../common/GenericDialog";
 export class DriverRouteSuggestionItem extends React.Component {
 
     state = {
@@ -22,11 +22,11 @@ export class DriverRouteSuggestionItem extends React.Component {
     render() {
         return (
             <ListItem className="drivers-list">
+
                 <ListItemText
                     primary={<span>{this.props.route.driverFirstName} {this.props.route.driverLastName}</span>}
                     secondary={
                         <React.Fragment>
-
                             {this.props.route.driverPhone ?
                                 <span>
                                     <Typography component="span" style={{ display: 'inline' }} color="textPrimary">
@@ -36,6 +36,7 @@ export class DriverRouteSuggestionItem extends React.Component {
                                 </span>
                                 : ""}
                             <Typography className="generic-color" component="p">
+
                                 From {this.props.route.fromAddress.street} {this.props.route.fromAddress.number}, {this.props.route.fromAddress.city}
                             </Typography>
                             <Typography color="textPrimary">
@@ -49,21 +50,23 @@ export class DriverRouteSuggestionItem extends React.Component {
                     className={this.props.route.requested ? "generic-colored-btn disabled" : "generic-colored-btn"}
                     onClick={() => this.props.showRoute()}
                 >
-                    <Place/>
-        </Button>
+                    <Place />
+                </Button>
                 <Button
                     variant="contained"
                     className={this.props.route.requested ? "generic-colored-btn disabled" : "generic-colored-btn"}
                     onClick={() => this.setState({ showRides: true })}
                 >
-                    <CalendarToday/>
-        </Button>
-                <DriverRideSugestionsModal
-                    routeId={this.props.route.routeId}
-                    showRides={this.state.showRides}
-                    closeModal={() => { this.setState({ showRides: false }) }}
-                    passengerAddress={this.props.passengerAddress}
-                    showSnackBar={(message, variant) => this.props.showSnackBar(message, variant)}
+                    <CalendarToday />
+                </Button>
+                <GenericDialog
+                    open={this.state.showRides}
+                    close={() => this.setState({ showRides: false })}
+                    content={<DriverRideSugestionsModal
+                        rides={this.props.route.rides}
+                        passengerAddress={this.props.passengerAddress}
+                        showSnackBar={(message, variant) => this.props.showSnackBar(message, variant)}
+                    />}
                 />
             </ListItem>
         );

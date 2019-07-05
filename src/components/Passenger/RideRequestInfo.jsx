@@ -30,25 +30,35 @@ export default class RideRequestInfo extends React.Component {
     render() {
         return (
             <div>
-                <Card className="generic-card request-card-content">
-                    <Typography className="generic-color" component="div" style={{ paddingBottom: "5px" }}>
-                        Request for {this.props.request.driverFirstName} {this.props.request.driverLastName}
-                    </Typography>
-                    <Typography color="textPrimary" component="div" style={{ paddingBottom: "5px" }}>
-                        From: {this.getDisplayName(this.props.request.route.fromAddress)}
-                    </Typography>
-                    <Typography color="textPrimary" component="div" style={{ paddingBottom: "5px" }}>
-                        To: {this.getDisplayName(this.props.request.route.toAddress)}
-                    </Typography>
-                    <Typography color="textPrimary" component="div" style={{ paddingBottom: "5px" }}>
-                        Date: <Moment date={this.props.request.rideDateTime} format="MM-DD HH:mm" />
-                    </Typography>
-                    <Typography color="textPrimary" component="div" style={{ paddingBottom: "5px" }}>
-                        Status: {Status[parseInt(this.props.request.status)]}
-                    </Typography>
+                <Card className="request-card">
+                    <Grid container direction="column" spacing={8}>
+                        <Grid item>
+                        <Typography className="generic-color" component="div">
+                            Request for {this.props.request.driverFirstName} {this.props.request.driverLastName}
+                        </Typography>
+                        </Grid>
+                        <Grid item>
+                        <Typography color="textPrimary" component="div">
+                            From: {this.getDisplayName(this.props.request.route.fromAddress)}
+                        </Typography>
+                        </Grid>
+                        <Grid item>
+                        <Typography color="textPrimary" component="div">
+                            To: {this.getDisplayName(this.props.request.route.toAddress)}
+                        </Typography>
+                        </Grid>
+                        <Grid item>
+                        <Typography color="textPrimary" component="div">
+                            Date: <Moment date={this.props.request.rideDateTime} format="MM-DD HH:mm" />
+                        </Typography>
+                        </Grid>
+                        <Grid item>
+                        <Typography color="textPrimary" component="div">
+                            Status: {Status[parseInt(this.props.request.status)]}
+                        </Typography>
+                        </Grid>
 
-
-                    <Grid container justify="center" style={{ marginBottom: "5px" }}>
+                    <Grid container justify="center" spacing={8}>
                         {!this.props.request.rideNoteSeen ?
 
                             <Badge
@@ -58,7 +68,7 @@ export default class RideRequestInfo extends React.Component {
                                 children={""}
                             />
                             : null}
-                        <Grid item xs={5} style={{ marginRight: "5px" }}>
+                        <Grid item xs={6}>
                             <Button
                                 fullWidth
                                 variant="contained"
@@ -73,7 +83,7 @@ export default class RideRequestInfo extends React.Component {
                                 <NoteAdd />
                             </Button>
                         </Grid>
-                        <Grid item xs={5}>
+                        <Grid item xs={6}>
                             <Button
                                 fullWidth
 
@@ -90,10 +100,11 @@ export default class RideRequestInfo extends React.Component {
                             </Button>
                         </Grid>
                     </Grid>
+                    </Grid>
                 </Card>
 
                 {this.state.showNotes ? (
-                    <Card className="generic-card request-card-content">
+                    <Card className="request-card">
                         <DialogTitle className="dialog-title">Your note</DialogTitle>
                         <Note
                             note={this.props.request.requestNote}

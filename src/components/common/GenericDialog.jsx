@@ -8,13 +8,17 @@ import NoteAdd from "@material-ui/icons/NoteAdd";
 import Close from "@material-ui/icons/Close";
 
 
-export default class RideRequestInfo extends React.Component {
+export default class GenericDialog extends React.Component {
+state={
+    content: this.props.content
+}
 
     render() {
         return (
-            <Dialog className="dialog-body" open={this.props.open}>
+            
+            <Dialog className="dialog-body" onClose = {() => this.props.close()} open={this.props.open}>
                 <div>
-                <Close onClick={() => this.props.close()} className="dialog-close" />
+                <Close onClick={() => this.props.close()} className={this.props.white ? "dialog-close-white" : "dialog-close-black"} />
                 </div>
                 <DialogContent className="dialog-content">
                 {this.props.content}

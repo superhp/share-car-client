@@ -14,22 +14,22 @@ const styles = theme => ({
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: 200
+    width: "100%"
   }
 });
 
 function TimePickers(props) {
-  const { classes } = props;
+  const { classes, title, defaultValue } = props;
   return (
     <form className={classes.container} noValidate>
       <TextField
         id="time"
-        label="Select default time of rides"
+        label={title}
         type="time"
         onChange={e => {
           props.onChange(e.target.value);
         }}
-        defaultValue={defaultTime}
+        defaultValue={defaultValue}
         className={classes.textField}
         InputLabelProps={{
           shrink: true

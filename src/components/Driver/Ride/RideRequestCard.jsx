@@ -39,17 +39,16 @@ export class RideRequestCard extends React.Component {
                             children={""}
                         />
                     ) : null}
-                    <Grid item xs={12} zeroMinWidth container justify="center" >
-                        <Typography className="generic-color" component="p">
+                    <Grid item xs={12} zeroMinWidth container justify="center" direction="column">
+                        <Typography className="generic-color" component="div">
                             {this.props.request.passengerFirstName}{" "}
                             {this.props.request.passengerLastName}
                         </Typography>
-                        <Typography color="textPrimary" component="p">
+                        <Typography color="textPrimary" component="div">
                             {this.getDisplayName(this.props.request.address)}
                         </Typography>
                     </Grid>
-                    <Grid item xs={12} >
-                        <CardActions>
+                    <Grid container justify="center" item xs={12} >
                             <Grid container justify="center" direction="column" >
                                 <Grid container justify="center" style={{marginBottom:"5px"}}>
                                     {!this.props.request.requestNoteSeen ? (
@@ -81,8 +80,8 @@ export class RideRequestCard extends React.Component {
                                         </Button>
                                     </Grid>
                                 </Grid>
-                                {this.props.request.status !== 4 ?
-                                    this.props.disabled
+                                {this.props.request.status !== 4 
+                                   ? this.props.disabled
                                         ? <div></div>
                                         : <Grid container justify="center">
                                             <Grid item xs={5} style={{marginRight:"5px"}}>
@@ -106,12 +105,18 @@ export class RideRequestCard extends React.Component {
                                                     </Button>
                                             </Grid>
                                         </Grid>
-                                    : <p>
-                                        Request was canceled
-                                            </p>
+                                    : <Grid item>
+                    <Typography color="textPrimary" component="div">
+                            Request was canceled
+                        </Typography>
+                                    </Grid>
                                 }
                             </Grid>
-                        </CardActions>
+
+
+
+
+
                     </Grid >
                 </Grid >
                 {

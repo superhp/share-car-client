@@ -23,7 +23,6 @@ import RideSchedulerNavigation from "./RideSchedulerNavigation";
 import "react-infinite-calendar/styles.css"; // only needs to be imported once
 import api from "../../../helpers/axiosHelper";
 import history from "../../../helpers/history";
-import "../../common/TimePickers";
 import SnackBars from "../../common/Snackbars";
 import { SnackbarVariants, showSnackBar } from "../../../utils/SnackBarUtils";
 import { formatRelative } from "date-fns";
@@ -335,7 +334,7 @@ if(new Date(rides[0].rideDateTime).getTime() < new Date().getTime()){
                         }
                         {this.state.step === 2
                             ? <Grid item xs={12}>
-                                <TimePickers onChange={(value) => { this.handleTime(value) }} />
+                                <TimePickers title="Select default time of rides" onChange={(value) => { this.handleTime(value) }} />
                             </Grid>
                             : null
                         }

@@ -43,10 +43,6 @@ div.react-datetime-picker input {
     color: black;
 }
 
-.calendar {
-    display: inline;
-}
-
 .scheduler-container {
     display: flex;
     justify-content: center;
