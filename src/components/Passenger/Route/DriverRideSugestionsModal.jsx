@@ -31,12 +31,14 @@ class DriverRideSugestionsModal extends React.Component {
       let index = rides.indexOf(ride);
       rides[index].requested = true;
       this.props.showSnackBar("Ride requested!", 0);
-      this.props.updateRides();
+      //this.props.updateRides();
     })
       .catch((error) => {
         if (error.response && error.response.status === 409) {
           this.props.showSnackBar(error.response.data, 2);
         } else {
+          console.log(error)
+          console.log(error.response)
           this.props.showSnackBar("Failed to request ride", 2);
         }
       });

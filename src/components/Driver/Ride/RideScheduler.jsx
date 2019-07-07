@@ -10,7 +10,6 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TimePickers from "../../common/TimePickers";
-import { defaultTime } from "../../common/TimePickers";
 import TextField from "@material-ui/core/TextField";
 import Checkbox from '@material-ui/core/Checkbox';
 import "../../../styles/newRideForm.css";
@@ -47,10 +46,6 @@ class RideScheduler extends React.Component {
         snackBarClicked: false,
         note: ""
     };
-
-    componentDidMount() {
-        this.handleTime(defaultTime);
-    }
 
     handleClose = () => {
         this.setState({ openDialog: false });
@@ -89,6 +84,8 @@ class RideScheduler extends React.Component {
 
     disableRight() {
         const { step, selectedDates, time, monday, tuesday, wednesday, thursday, friday } = this.state;
+        console.log(this.state)
+
         if (step === amountOfSteps - 1) {
             return true;
         }
@@ -99,6 +96,7 @@ class RideScheduler extends React.Component {
             return true;
         }
         if (step === 2 && !time) {
+            console.log(time)
             return true;
         }
         return false;
@@ -251,11 +249,6 @@ if(new Date(rides[0].rideDateTime).getTime() < new Date().getTime()){
     render() {
         return (
             <div>
-                <Dialog
-                    open={this.state.openDialog}
-                    onClose={() => this.handleClose()}
-                    TransitionComponent={Transition}
-                >
                     <DialogTitle >{this.state.title}</DialogTitle>
                     <Grid container className="scheduler-container">
                         {this.state.step === 0
@@ -334,7 +327,7 @@ if(new Date(rides[0].rideDateTime).getTime() < new Date().getTime()){
                         }
                         {this.state.step === 2
                             ? <Grid item xs={12}>
-                                <TimePickers title="Select default time of rides" onChange={(value) => { this.handleTime(value) }} />
+                                <TimePickers defaultValue={null} title="Select default time of rides" onChange={(value) => { this.handleTime(value) }} />
                             </Grid>
                             : null
                         }
@@ -380,7 +373,6 @@ if(new Date(rides[0].rideDateTime).getTime() < new Date().getTime()){
                         />
 
                     </Grid>
-                </Dialog>
                 <SnackBars
                     message={this.state.snackBarMessage}
                     snackBarClicked={this.state.snackBarClicked}

@@ -8,12 +8,10 @@ import OSM from "ol/source/OSM";
 import Button from "@material-ui/core/Button";
 import { OfficeAddresses } from "../../../utils/AddressData";
 import RideScheduler from "../Ride/RideScheduler";
-import { DriverRouteInput } from "./../Map/DriverRouteInput";
 import LocationSelection from "../../Maps/LocationSelection";
 import {
-  fromLonLatToMapCoords, fromMapCoordsToLonLat,
-  getNearest, coordinatesToLocation,
   createPointFeature, createRouteFeature,
+  fromLonLatToMapCoords,
   createRoute, iconType
 } from "./../../../utils/mapUtils";
 import { addressToString, fromLocationIqResponse } from "../../../utils/addressUtils";
@@ -23,8 +21,8 @@ import LocationSelectionMap from "../../Maps/LocationSelectionMap";
 import { routePointType } from "../../../utils/routePointTypes";
 import api from "../../../helpers/axiosHelper";
 import SnackBars from "../../common/Snackbars";
-import { SnackbarVariants, showSnackBar } from "../../../utils/SnackBarUtils"
-
+import { showSnackBar } from "../../../utils/SnackBarUtils";
+import GenericDialog from "../../common/GenericDialog";
 const currentComponent = {
   fullMap: 0,
   locationSelection: 1,
@@ -37,7 +35,7 @@ export class DriverMap extends React.Component {
   }
 
   state = {
-    isRideSchedulerVisible: false,
+    open: false,
     direction: true,
     routeGeometry: null, // only needed to prevent duplicate calls for RideScheduler
     routePoints: [{
@@ -64,7 +62,7 @@ export class DriverMap extends React.Component {
     this.map = map;
     this.vectorSource = vectorSource;
     api.get(`User/homeAddress`).then(response => {
-      if (response.data !== null) {
+      if (response.data !== "") {
         let address = {
           address: response.data,
           displayName: addressToString(response.data),
@@ -80,7 +78,6 @@ export class DriverMap extends React.Component {
   // index => index of input field representing route point. Since First Route Point is office (and there is no input field for office) index must be incermented
   changeRoutePoint(address, index) {
     if (address) {
-      const { longitude, latitude } = address
       let routePoints = [...this.state.routePoints];
       routePoints[index] = {
         address: address,
@@ -111,12 +108,12 @@ export class DriverMap extends React.Component {
       if (routePoints[i].address) {
         const { longitude, latitude } = routePoints[i].address;
         let feature;
-        if(i === 0){
-        feature = createPointFeature(longitude, latitude, iconType.start);
-        }else{
-          if(i === routePoints.length - 1){
+        if (i === 0) {
+          feature = createPointFeature(longitude, latitude, iconType.start);
+        } else {
+          if (i === routePoints.length - 1) {
             feature = createPointFeature(longitude, latitude, iconType.finish);
-          } else{
+          } else {
             feature = createPointFeature(longitude, latitude, iconType.point);
           }
         }
@@ -301,24 +298,29 @@ export class DriverMap extends React.Component {
               </div>
               <div id="map"></div>
 
-              {this.state.isRideSchedulerVisible ? (
-                <RideScheduler routeInfo={{
-                  fromAddress: this.state.routePoints[0].address,
-                  toAddress: this.state.routePoints[this.state.routePoints.length - 1].address,
-                  routeGeometry: this.state.routeGeometry
-                }} />
-              ) : null}
-
-              <Button
-                disabled={!this.canCreateRide()}
-                className="continue-button"
-                variant="contained"
-                onClick={() => this.setState({ isRideSchedulerVisible: !this.state.isRideSchedulerVisible })}
-              >
-                Continue
+              <GenericDialog
+                open={this.state.open}
+                close={() => { this.setState({ open: false }) }}
+                content={
+                  <RideScheduler routeInfo={{
+                    fromAddress: this.state.routePoints[0].address,
+                    toAddress: this.state.routePoints[this.state.routePoints.length - 1].address,
+                    routeGeometry: this.state.routeGeometry
+                  }} />
+                }
+              />
+              {
+                this.state.routePoints[0].address && this.state.routePoints[this.state.routePoints.length - 1].address
+                  ? <Button
+                    disabled={!this.canCreateRide()}
+                    className="continue-button"
+                    variant="contained"
+                    onClick={() => this.setState({ open: true })}
+                  >
+                    Continue
         </Button>
-
-
+                  : null
+              }
             </div>
             : <div>
               {this.state.currentComponent === currentComponent.locationSelection

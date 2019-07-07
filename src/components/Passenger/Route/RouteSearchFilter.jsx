@@ -60,11 +60,6 @@ export default class RouteSearchFilter extends React.Component {
             weekDayChanged,
             driverChanged,
             step,
-            monday,
-            tuesday,
-            wednesday,
-            thursday,
-            friday,
             selectedDriver,
             selectedDates,
             startTime,
@@ -94,6 +89,24 @@ export default class RouteSearchFilter extends React.Component {
         }
     }
 
+    canClear(){
+        if(this.canApply()){
+            return true;
+        }
+        const {showCalendar, step} = this.state;
+        if(step === 0){
+            if(showCalendar){
+            return this.state.selectedDates.length > 0;
+            } else{
+                return this.props.filter.weekDays.includes(true);
+            }
+        } else if(step === 1){
+            return this.props.filter.startTime !== null;
+        } else if(step === 2){
+            return this.props.filter.driver !== null;
+        }
+    }
+
     onAutosuggestBlur(resetRoutes) {
         if (resetRoutes) {
             this.setState({ routes: this.state.fetchedRoutes, currentRouteIndex: 0 }, this.displayRoute);
@@ -101,17 +114,6 @@ export default class RouteSearchFilter extends React.Component {
             this.setState({ routes: [], currentRouteIndex: 0 }, this.displayRoute);
         }
     }
-
-    /*componentDidMount() {
-        document.onclick = (e) => {
-            if (this.autosuggestRef.current) {
-                if (e.target !== this.autosuggestRef.current.input && document.activeElement === this.autosuggestRef.current.input) {
-                //    this.autosuggestRef.current.input.blur();
-                //    this.onBlur();
-                }
-            }
-        };
-    }*/
 
     onBlur = () => {
         var user = this.props.users.find(x => x.name === this.state.value);
@@ -233,7 +235,7 @@ export default class RouteSearchFilter extends React.Component {
             placeholder: 'Type driver\'s name',
             value,
             onChange: this.onChange,
-            onBlur: this.onBlur
+            onBlur: this.onBlur,
         };
         return (
             <div>
@@ -304,22 +306,40 @@ export default class RouteSearchFilter extends React.Component {
                                 label="Friday"
                             />
                         </Grid>
-                        <Grid container justify="space-between">
-                            <Button
-                                variant="contained"
-                                className="generic-colored-btn"
-                                onClick={() => this.setState({ showCalendar: true, weekDayChanged: true })}
-                            >
-                                Calendar
+                        <Grid container justify="space-between" direction="row">
+                            <Grid item>
+                                <Button
+                                    variant="contained"
+                                    className="generic-colored-btn"
+                                    onClick={() => this.setState({ showCalendar: true, weekDayChanged: true })}
+                                >
+                                    Calendar
                         </Button>
-                            <Button
-                                variant="contained"
-                                className={this.canApply() ? "generic-colored-btn" : "generic-colored-btn disabled"}
-                                onClick={() => this.filterByWeekDays()}
-                                disabled={!this.canApply()}
-                            >
-                                Apply
+                            </Grid>
+                            <Grid item>
+                                <Grid container justify="flex-end" spacing={8}>
+                                    <Grid item>
+                                        <Button
+                                            variant="contained"
+                                            className={this.canClear() ? "generic-colored-btn" : "generic-colored-btn disabled"}
+                                            onClick={() => this.props.clearWeekdays()}
+                                            disabled={!this.canClear()}
+                                        >
+                                            Clear
                         </Button>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button
+                                            variant="contained"
+                                            className={this.canApply() ? "generic-colored-btn" : "generic-colored-btn disabled"}
+                                            onClick={() => this.filterByWeekDays(true)}
+                                            disabled={!this.canApply()}
+                                        >
+                                            Apply
+                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
                         </Grid>
 
                     </div>
@@ -334,15 +354,27 @@ export default class RouteSearchFilter extends React.Component {
                             <Grid item xs={6} >
                                 <TimePickers defaultValue={this.state.endTime} title="Time range end" onChange={(value) => { this.handleTime(value, false) }} />
                             </Grid>
-                            <Grid container justify="flex-end">
-                                <Button
-                                    onClick={() => this.props.filterByTime(this.state.startTime, this.state.endTime)}
-                                    variant="contained"
-                                    className={this.canApply() ? "generic-colored-btn" : "generic-colored-btn disabled"}
-                                    disabled={!this.canApply()}
-                                >
-                                    Apply
+                            <Grid container justify="flex-end" spacing={8}>
+                                <Grid item>
+                                    <Button
+                                        variant="contained"
+                                        className={this.canClear() ? "generic-colored-btn" : "generic-colored-btn disabled"}
+                                        onClick={() => this.props.clearTime()}
+                                        disabled={!this.canClear()}
+                                    >
+                                        Clear
                         </Button>
+                                </Grid>
+                                <Grid item>
+                                    <Button
+                                        onClick={() => this.props.filterByTime(this.state.startTime, this.state.endTime)}
+                                        variant="contained"
+                                        className={this.canApply() ? "generic-colored-btn" : "generic-colored-btn disabled"}
+                                        disabled={!this.canApply()}
+                                    >
+                                        Apply
+                        </Button>
+                                </Grid>
                             </Grid>
                         </Grid>
                         : null
@@ -350,7 +382,7 @@ export default class RouteSearchFilter extends React.Component {
                 {
                     this.state.step === 2
                         ? <Grid container className="filter-body" justify="flex-end" >
-                            <Grid item xs={12} style={{ marginBottom: "5px" }}>
+                            <Grid item xs={12} style={{ marginBottom: "5px", marginTop: "5px" }}>
                                 <Autosuggest
                                     suggestions={suggestions}
                                     onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -362,15 +394,27 @@ export default class RouteSearchFilter extends React.Component {
                                     ref={this.autosuggestRef}
                                 />
                             </Grid>
-                            <Grid item>
-                                <Button
-                                    variant="contained"
-                                    className={this.canApply() ? "generic-colored-btn" : "generic-colored-btn disabled"}
-                                    onClick={() => this.props.filterByDriver(this.state.selectedDriver)}
-                                    disabled={!this.canApply()}
-                                >
-                                    Apply
+                            <Grid container spacing={8} item justify="flex-end">
+                                <Grid item>
+                                    <Button
+                                        variant="contained"
+                                        className={this.canClear() ? "generic-colored-btn" : "generic-colored-btn disabled"}
+                                        onClick={() => this.props.clearDriver()}
+                                        disabled={!this.canClear()}
+                                    >
+                                        Clear
                         </Button>
+                                </Grid>
+                                <Grid item>
+                                    <Button
+                                        variant="contained"
+                                        className={this.canApply() ? "generic-colored-btn" : "generic-colored-btn disabled"}
+                                        onClick={() => this.props.filterByDriver(this.state.selectedDriver)}
+                                        disabled={!this.canApply()}
+                                    >
+                                        Apply
+                        </Button>
+                                </Grid>
                             </Grid>
                         </Grid>
                         : null
@@ -398,21 +442,39 @@ export default class RouteSearchFilter extends React.Component {
                         </Grid>
 
                         <Grid container justify="space-between">
-                            <Button
-                                variant="contained"
-                                className="generic-colored-btn"
-                                onClick={() => this.setState({ showCalendar: false })}
-                            >
-                                Weekdays
+                            <Grid item>
+                                <Button
+                                    variant="contained"
+                                    className="generic-colored-btn"
+                                    onClick={() => this.setState({ showCalendar: false })}
+                                >
+                                    Weekdays
                         </Button>
-                            <Button
-                                onClick={() => this.props.filterByDates(this.state.selectedDates)}
-                                variant="contained"
-                                className={this.canApply() ? "generic-colored-btn" : "generic-colored-btn disabled"}
-                                disabled={!this.canApply()}
-                            >
-                                Apply
+                            </Grid>
+                            <Grid item>
+                                <Grid container justify="flex-end" spacing={8}>
+                                    <Grid item>
+                                        <Button
+                                            variant="contained"
+                                            className={this.canClear() ? "generic-colored-btn" : "generic-colored-btn disabled"}
+                                            onClick={() => this.props.clearDates([])}
+                                            disabled={!this.canClear()}
+                                        >
+                                            Clear
                         </Button>
+                        </Grid>
+                                        <Grid item>
+                                        <Button
+                                            onClick={() => this.props.filterByDates(this.state.selectedDates)}
+                                            variant="contained"
+                                            className={this.canApply() ? "generic-colored-btn" : "generic-colored-btn disabled"}
+                                            disabled={!this.canApply()}
+                                        >
+                                            Apply
+                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </div>
                     : null

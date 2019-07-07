@@ -1,7 +1,8 @@
 #map {
     position: absolute;
     width: 100%;
-    height: 94%;
+    height: 91%;;
+    overflow-y: hidden;
     border: none !important;
 }
 
@@ -99,6 +100,7 @@ div.map-input-selection input.location-select {
 }
 
 div.routes {
+    width: 100%;
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -111,22 +113,20 @@ div.routes {
     bottom: 6%;
     width: 100%
 }
-
 button.continue-button {
     position: absolute;
     bottom: 15vh;
     right: 10px;
     z-index: 999;
-    background-color: #f74428;
-    color: #e8e9eb;
+    background-color: #0A2239 !important;
+    color: #e8e9eb !important;
 }
 
-button.continue-button:hover,
-button.select-office-menu:hover,
-button.change-direction:hover {
-    background-color: #F96F59;
+button.continue-button:hover{
+    background-color: #10365a!important;
+    color: #e8e9eb !important;
+    cursor: pointer;
 }
-
 button.select-office-menu {
     background-color: #f74428;
     color: #e8e9eb;

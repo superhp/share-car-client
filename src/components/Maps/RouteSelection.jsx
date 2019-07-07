@@ -1,32 +1,18 @@
 import * as React from "react";
-import { AddressInput } from "../common/AddressInput";
 import "../../styles/routeSelection.css";
 import "../../styles/genericStyles.css";
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Cached from "@material-ui/icons/Cached";
 import Close from "@material-ui/icons/Close";
-import Minimize from "@material-ui/icons/Minimize";
-import Error from "@material-ui/icons/Error";
 import Add from "@material-ui/icons/Add";
 import MoreVert from "@material-ui/icons/MoreVert";
 import UnfoldMore from "@material-ui/icons/UnfoldMore";
 import UnfoldLess from "@material-ui/icons/UnfoldLess";
-import Dehaze from "@material-ui/icons/Dehaze";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import { formAlgoliaAddress } from "../../utils/addressUtils";
-import history from "../../helpers/history";
 import { routePointType } from "../../utils/routePointTypes";
 import { OfficeAddresses } from "../../utils/AddressData";
 import Tooltip from '@material-ui/core/Tooltip';
-
 
 export default class RouteSelection extends React.Component<{}> {
     state = {

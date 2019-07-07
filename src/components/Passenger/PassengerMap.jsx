@@ -5,31 +5,21 @@ import SourceVector from "ol/source/Vector";
 import LayerVector from "ol/layer/Vector";
 import Tile from "ol/layer/Tile";
 import OSM from "ol/source/OSM";
-import Grid from "@material-ui/core/Grid";
-import { centerMap } from "./../../utils/mapUtils";
-import { PassengerRouteSelection } from "./Route/PassengerRouteSelection";
-import { PassengerNavigationButton } from "./PassengerNavigationButton";
 import api from "./../../helpers/axiosHelper";
 import {
-  fromLonLatToMapCoords, fromMapCoordsToLonLat,
-  getNearest, coordinatesToLocation, createPointFeature,
+  fromLonLatToMapCoords,
+  createPointFeature,
   createRouteFeature, iconType
 } from "../../utils/mapUtils";
-import { fromLocationIqResponse, addressToString } from "../../utils/addressUtils";
+import { addressToString } from "../../utils/addressUtils";
 import { sortRoutes } from "../../utils/shortestDistance";
 import { OfficeAddresses } from "../../utils/AddressData";
 import "./../../styles/genericStyles.css";
 import "../../styles/testmap.css";
 import SnackBars from "../common/Snackbars";
-import Media from "react-media";
-import NavigateNext from "@material-ui/icons/NavigateNext";
-import NavigateBefore from "@material-ui/icons/NavigateBefore";
-import Button from "@material-ui/core/Button";
-import { CircularProgress } from "@material-ui/core";
-import { SnackbarVariants, showSnackBar } from "../../utils/SnackBarUtils";
+import { showSnackBar } from "../../utils/SnackBarUtils";
 import RouteSelection from "../Maps/RouteSelection";
 import LocationSelectionMap from "../Maps/LocationSelectionMap";
-import { routePointType } from "../../utils/routePointTypes";
 import LocationSelection from "../Maps/LocationSelection";
 import { DriverRoutesSuggestions } from "./Route/DriverRoutesSuggestions";
 const currentComponent = {
@@ -359,11 +349,10 @@ export class PassengerMap extends React.Component {
                 />
               </div>
               {
-              //  this.state.routePoints[0].address &&
-              //    this.state.routePoints[1].address &&
-               //   this.state.routes.length > 0 &&
-               //   !this.shouldShowError()
-                  true
+                this.state.routePoints[0].address &&
+                  this.state.routePoints[1].address &&
+                  this.state.routes.length > 0 &&
+                  !this.shouldShowError()
                   ? <div className="view-drivers">
                     <DriverRoutesSuggestions
                       routes={this.state.routes}

@@ -38,7 +38,7 @@ export class DriverRoutesSuggestions extends React.Component {
         this.setState({ users, filteredRoutes: this.props.routes })
     }
 
-    applyFilters() {
+    filter(clear) {
         const { selectedWeekDays, selectedDriver, selectedDates, startTime, endTime } = this.state;
         this.setState({ filteredRoutes: this.props.routes }, () => {
             let routes = [...this.state.filteredRoutes];
@@ -57,7 +57,7 @@ export class DriverRoutesSuggestions extends React.Component {
 
             this.setState({ showFilters: false, filteredRoutes: routes }, () => {
                 if (this.state.filteredRoutes.length > 0) {
-                    this.props.showSnackBar("Filters changed", 0);
+                    this.props.showSnackBar(clear ? "Filters cleared" : "Filters changed", 0);
                 } else {
                     this.props.showSnackBar("No drivers to suggest", 2);
                 }
@@ -143,16 +143,11 @@ export class DriverRoutesSuggestions extends React.Component {
         return filteredRoutes;
     }
 
-    setWeekDays(weekDays) {
-        this.setState({
-            selectedWeekDays: weekDays
-        }, () => { this.applyFilters() });
-    }
     render() {
         return (
             <div>
-                {true
-                    //this.state.show
+                {
+                    this.state.show
                         ? <div className="driver-list-root">
 
                             <Grid container justify="space-between" item xs={12}>
@@ -178,7 +173,7 @@ export class DriverRoutesSuggestions extends React.Component {
                                 <ListItem>
                                 </ListItem>
                                 {
-                                 true//   this.state.filteredRoutes.length > 0
+                                    this.state.filteredRoutes.length > 0
                                         ? this.state.filteredRoutes.map((route, index) => (
                                             <DriverRouteSuggestionItem
                                                 key={index}
@@ -197,7 +192,7 @@ export class DriverRoutesSuggestions extends React.Component {
                                 }
                             </List>
                             {
-                             true//   this.state.showFilters
+                                this.state.showFilters
                                     ? <GenericDialog
                                         open={this.state.showFilters}
                                         close={() => { this.setState({ showFilters: false }) }}
@@ -212,10 +207,16 @@ export class DriverRoutesSuggestions extends React.Component {
                                                     driver: this.state.selectedDriver
                                                 }}
                                                 users={this.state.users}
-                                                filterByDriver={(selectedDriver) => { this.setState({ selectedDriver }, () => this.applyFilters()) }}
-                                                filterByTime={(startTime, endTime) => { this.setState({ startTime, endTime }, () => this.applyFilters()) }}
-                                                filterByWeekDays={(weekDays) => { this.setWeekDays(weekDays) }}
-                                                filterByDates={(selectedDates) => { this.setState({ selectedDates }, () => this.applyFilters()) }}
+                                                filterByDriver={(selectedDriver) => { this.setState({ selectedDriver }, () => this.filter(false)) }}
+                                                filterByTime={(startTime, endTime) => { this.setState({ startTime, endTime }, () => this.filter(false)) }}
+                                                filterByWeekDays={(weekDays) => { this.setWeekDays(weekDays, false) }}
+                                                filterByDates={(selectedDates) => { this.setState({ selectedDates }, () => this.filter(false)) }}
+                                               
+                                                clearDriver={(selectedDriver) => { this.setState({ selectedDriver: null }, () => this.filter(true)) }}
+                                                clearTime={(startTime, endTime) => { this.setState({ startTime: null, endTime: null }, () => this.filter(true)) }}
+                                                clearWeekDays={(weekDays) => { this.setState({ selectedWeekDays: [false, false, false, false, false] }, () => { this.filter(true)})}}
+                                                ClearDates={(selectedDates) => { this.setState({ selectedDates: [] }, () => this.filter(true)) }}
+                                               
                                             />
                                         }
                                     />

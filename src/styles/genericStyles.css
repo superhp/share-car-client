@@ -119,6 +119,20 @@ button:focus {
     align-items: center;
 }
 
+.generic-button:not(.disabled) {
+    border: 1px solid #666;
+    padding: 2px;
+    box-shadow: 1px 1px #888888;
+    background-color: #fff;
+    border-radius: 30%;
+    margin-right: 5px;
+    margin-left: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor:pointer;
+}
+
 .rides-delete-button {
     background-color: #f74428!important;
     color: white!important;
@@ -230,7 +244,7 @@ th {
     color: #173f5f;
 }
 
-.clickable {
+.clickable:not(.disabled) {
     cursor: pointer;
 }
 
@@ -261,10 +275,12 @@ th {
 .dialog-content {
     padding: 0px !important;
     background-color: #e8e9eb;
+    overflow: visible !important;
 }
 
 .dialog-body {
     max-width: 95% !important;
+    overflow: visible !important;
 }
 
 .list-container {
@@ -283,7 +299,8 @@ th {
 
 .request-card {
     padding: 16px !important;
-    margin: 10px;
+    
+    margin: 13px;
 }
 
 .accept {
@@ -321,9 +338,9 @@ th {
 }
 
 .filter-body {
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
 }
 
 .calendar-container {

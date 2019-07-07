@@ -1,12 +1,5 @@
 import * as React from "react";
-import Card from "@material-ui/core/Card";
-import Typography from "@material-ui/core/Typography";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import DeleteIcon from "@material-ui/icons/Delete";
-import Close from "@material-ui/icons/Close";
-import InfoIcon from "@material-ui/icons/Info";
 import "typeface-roboto";
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -19,7 +12,7 @@ import { Checkbox } from "@material-ui/core";
 import ConfirmationDialog from "../../common/ConfirmationDialog";
 import api from "../../../helpers/axiosHelper"
 import { CircularProgress } from "@material-ui/core";
-import { SnackbarVariants, showSnackBar } from "../../../utils/SnackBarUtils"
+import { showSnackBar } from "../../../utils/SnackBarUtils"
 import SnackBars from "../../common/Snackbars";
 import ListCard from "../../common/ListCard"
 import MultiselectButtons from "../../common/MultiselectButtons";
