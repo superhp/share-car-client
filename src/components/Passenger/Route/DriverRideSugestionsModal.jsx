@@ -37,8 +37,6 @@ class DriverRideSugestionsModal extends React.Component {
         if (error.response && error.response.status === 409) {
           this.props.showSnackBar(error.response.data, 2);
         } else {
-          console.log(error)
-          console.log(error.response)
           this.props.showSnackBar("Failed to request ride", 2);
         }
       });
@@ -46,8 +44,9 @@ class DriverRideSugestionsModal extends React.Component {
 
   render() {
     return (
-      <div className="drivers-sugestion-modal">
-          <List className="suggestion-modal-list">
+      <div className="drivers-suggestion-modal">
+        <div className="drivers-suggestion-list">
+          <List>
             {this.props.rides.map((ride, index) => (
               <DriverRideSuggestionItem
                 key={index}
@@ -57,6 +56,7 @@ class DriverRideSugestionsModal extends React.Component {
               />
             ))}
           </List>
+          </div>
           <div className="ride-request-note">
                         <TextField
                             margin="normal"

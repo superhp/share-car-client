@@ -40,114 +40,122 @@ export class RideRequestCard extends React.Component {
                         />
                     ) : null}
                     <Grid item xs={12} zeroMinWidth container justify="center" direction="column">
-                        <Typography className="generic-color" component="div">
+                        <Typography className="generic-color" component="p">
+                        <Grid container justify="center">
+                            <Grid item>
                             {this.props.request.passengerFirstName}{" "}
                             {this.props.request.passengerLastName}
-                        </Typography>
-                        <Typography color="textPrimary" component="div">
-                            {this.getDisplayName(this.props.request.address)}
-                        </Typography>
+                            </Grid>
                     </Grid>
-                    <Grid container justify="center" item xs={12} >
-                            <Grid container justify="center" direction="column" >
-                                <Grid container justify="center" style={{marginBottom:"5px"}}>
-                                    {!this.props.request.requestNoteSeen ? (
-                                        <Badge
-                                            className="new-badge"
-                                            badgeContent={"new"}
-                                            color="primary"
-                                            children={""}
-                                        />
-                                    ) : null}
-                                    <Grid item xs={5} style={{marginRight:"5px"}}>
-                                        <Button
-                                            fullWidth
-                                            variant="contained"
-                                            className="generic-colored-btn"
-                                            onClick={() => { this.onViewNoteClick() }}
-                                        >
-                                            <NoteAdd />
-                                        </Button>
-                                    </Grid>
-                                    <Grid item xs={5}>
-                                        <Button
-                                            fullWidth
-                                            variant="contained"
-                                            className="generic-colored-btn"
-                                            onClick={() => { this.setState({ showNote: false, showMap: !this.state.showMap }) }}
-                                        >
-                                            <Map />
-                                        </Button>
-                                    </Grid>
-                                </Grid>
-                                {this.props.request.status !== 4 
-                                   ? this.props.disabled
-                                        ? <div></div>
-                                        : <Grid container justify="center">
-                                            <Grid item xs={5} style={{marginRight:"5px"}}>
-                                                <Button
-                                                    fullWidth
-                                                    variant="contained"
-                                                    className="accept"
-                                                    onClick={() => this.props.onAcceptClick()}
-                                                >
-                                                    Accept
-                                                    </Button>
-                                            </Grid>
-                                            <Grid item xs={5}>
-                                                <Button
-                                                    fullWidth
-                                                    variant="contained"
-                                                    className="deny"
-                                                    onClick={() => this.props.onDenyClick()}
-                                                >
-                                                    Deny
-                                                    </Button>
-                                            </Grid>
-                                        </Grid>
-                                    : <Grid item>
-                    <Typography color="textPrimary" component="div">
-                            Request was canceled
                         </Typography>
-                                    </Grid>
-                                }
+                    <Typography color="textPrimary" component="p">
+                        <Grid container justify="center">
+                            <Grid item>
+                                {this.getDisplayName(this.props.request.address)}
                             </Grid>
-
-
-
-
-
-                    </Grid >
-                </Grid >
-                {
-                    this.state.showMap ?
-                        <Card className="generic-card">
-                            <Grid container justify="center">
-                                <Grid item xs={12} zeroMinWidth>
-                                    <MapComponent
-                                        pickUpPoint={{ longitude: this.props.request.address.longitude, latitude: this.props.request.address.latitude }}
-                                        route={this.props.route}
-                                        index={this.props.index}
-                                    />
+                        </Grid>
+                    </Typography>
+                    </Grid>
+            <Grid container justify="center" item xs={12} >
+                <Grid container justify="center" direction="column" >
+                    <Grid container justify="center" style={{ marginBottom: "5px" }}>
+                        {!this.props.request.requestNoteSeen ? (
+                            <Badge
+                                className="new-badge"
+                                badgeContent={"new"}
+                                color="primary"
+                                children={""}
+                            />
+                        ) : null}
+                        <Grid item xs={5} style={{ marginRight: "5px" }}>
+                            <Button
+                                fullWidth
+                                variant="contained"
+                                className="generic-colored-btn"
+                                onClick={() => { this.onViewNoteClick() }}
+                            >
+                                <NoteAdd />
+                            </Button>
+                        </Grid>
+                        <Grid item xs={5}>
+                            <Button
+                                fullWidth
+                                variant="contained"
+                                className="generic-colored-btn"
+                                onClick={() => { this.setState({ showNote: false, showMap: !this.state.showMap }) }}
+                            >
+                                <Map />
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    {this.props.request.status !== 4
+                        ? this.props.disabled
+                            ? <div></div>
+                            : <Grid container justify="center">
+                                <Grid item xs={5} style={{ marginRight: "5px" }}>
+                                    <Button
+                                        fullWidth
+                                        variant="contained"
+                                        className="accept"
+                                        onClick={() => this.props.onAcceptClick()}
+                                    >
+                                        Accept
+                                                    </Button>
+                                </Grid>
+                                <Grid item xs={5}>
+                                    <Button
+                                        fullWidth
+                                        variant="contained"
+                                        className="deny"
+                                        onClick={() => this.props.onDenyClick()}
+                                    >
+                                        Deny
+                                                    </Button>
                                 </Grid>
                             </Grid>
-                        </Card>
-                        : <div></div>
-                }
-                {
-                    this.state.showNote ?
-                        <Card className="generic-card">
-                            <TextField
-                                disabled
-                                multiline
-                                fullWidth
-                                margin="none"
-                                variant="outlined"
-                                value={this.props.request.requestNote}
-                            />
-                        </Card>
-                        : <div></div>
-                }
+                        : <Grid item>
+                            <Typography color="textPrimary" component="div">
+                                Request was canceled
+                        </Typography>
+                        </Grid>
+                    }
+                </Grid>
+
+
+
+
+
+            </Grid >
+                </Grid >
+            {
+                this.state.showMap ?
+                    <Card className="generic-card">
+                        <Grid container justify="center">
+                            <Grid item xs={12} zeroMinWidth>
+                                <MapComponent
+                                    pickUpPoint={{ longitude: this.props.request.address.longitude, latitude: this.props.request.address.latitude }}
+                                    route={this.props.route}
+                                    index={this.props.index}
+                                />
+                            </Grid>
+                        </Grid>
+                    </Card>
+                    : <div></div>
+            }
+        {
+            this.state.showNote ?
+                <Card className="generic-card">
+                    <TextField
+                        disabled
+                        multiline
+                        fullWidth
+                        margin="none"
+                        variant="outlined"
+                        value={this.props.request.requestNote}
+                    />
+                </Card>
+                : <div></div>
+        }
             </Card >
         );
     }

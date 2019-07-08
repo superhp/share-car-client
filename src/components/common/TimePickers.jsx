@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import 'react-times/css/classic/default.css';
-// pick a date util library
 import TimePicker from 'react-times';
 import "../../styles/newRideForm.css";
 var time = null;

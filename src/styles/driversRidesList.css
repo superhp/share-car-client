@@ -11,9 +11,13 @@ button:focus {
     outline: 0!important;
 }
 
-.drivers-sugestion-modal {
+.drivers-suggestion-modal {
     margin-top: 15px;
-    max-height: 70%;
+}
+
+.drivers-suggestion-list {
+    overflow: scroll;
+    max-height: 70vh;
 }
 
 .driver-list-button-container {
@@ -35,10 +39,6 @@ button:focus {
     font-weight: 500;
     padding-left: 16px;
     padding-right: 16px;
-}
-
-.suggestion-modal-list {
-    overflow-y: scroll;
 }
 
 .drivers-sugestion-close-icon {

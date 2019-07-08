@@ -59,15 +59,19 @@ export class DriverRouteSuggestionItem extends React.Component {
                 >
                     <CalendarToday />
                 </Button>
-                <GenericDialog
-                    open={this.state.showRides}
-                    close={() => this.setState({ showRides: false })}
-                    content={<DriverRideSugestionsModal
-                        rides={this.props.route.rides}
-                        passengerAddress={this.props.passengerAddress}
-                        showSnackBar={(message, variant) => this.props.showSnackBar(message, variant)}
-                    />}
-                />
+                {
+                    this.state.showRides
+                        ? <GenericDialog
+                            open={this.state.showRides}
+                            close={() => this.setState({ showRides: false })}
+                            content={<DriverRideSugestionsModal
+                                rides={this.props.route.rides}
+                                passengerAddress={this.props.passengerAddress}
+                                showSnackBar={(message, variant) => this.props.showSnackBar(message, variant)}
+                            />}
+                        />
+                        : null
+                }
             </ListItem>
         );
     }

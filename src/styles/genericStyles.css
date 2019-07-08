@@ -130,7 +130,7 @@ button:focus {
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .rides-delete-button {
@@ -272,15 +272,18 @@ th {
     z-index: 10;
 }
 
+.dialog-content-x {
+    padding: 0px !important;
+    background-color: #e8e9eb;
+}
+
 .dialog-content {
     padding: 0px !important;
     background-color: #e8e9eb;
-    overflow: visible !important;
 }
 
 .dialog-body {
     max-width: 95% !important;
-    overflow: visible !important;
 }
 
 .list-container {
@@ -299,7 +302,6 @@ th {
 
 .request-card {
     padding: 16px !important;
-    
     margin: 13px;
 }
 

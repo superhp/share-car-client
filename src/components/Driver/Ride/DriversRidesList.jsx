@@ -124,6 +124,10 @@ export class DriversRidesList extends React.Component {
     });
   }
 
+requestSeen(){
+
+}
+
   handleChange(newValue) {
     let rides = [];
     const { fetchedRides } = this.state;
@@ -215,7 +219,7 @@ export class DriversRidesList extends React.Component {
                 firstText={"From " + ride.route.fromAddress.street + " " + ride.route.fromAddress.number + ", " + ride.route.fromAddress.city}
                 secondText={"To " + ride.route.toAddress.street + " " + ride.route.toAddress.number + ", " + ride.route.toAddress.city}
                 thirdText={moment(ride.rideDateTime).format("dddd MMM DD hh:mm")}
-                viewed={() => { this.setState({ selectedRide: ride, openRideInfo: true }) }}
+                viewed={() => { console.log(this.state);this.setState({ selectedRide: ride, openRideInfo: true }) }}
                 deleted={() => { this.setState({ openDeleteConfirmation: true, rideToDelete: ride }) }}
                 selected={(e) => { this.handleRideSelection(e, ride) }}
                 new={this.state.requests.filter(x => x.rideId === ride.rideId && (!x.seenByDriver)).length > 0}
@@ -231,6 +235,7 @@ export class DriversRidesList extends React.Component {
             <GenericDialog
               open={this.state.openRideInfo}
               close={() => { this.setState({ openRideInfo: false }) }}
+              overflowX={true}
               content={
                 <RideInfo
                   unaccpetedRequests={this.state.selectedRide ? this.state.requests.filter(x => x.status !== 1 && x.rideId === this.state.selectedRide.rideId) : []}

@@ -12,15 +12,14 @@ import Close from "@material-ui/icons/Close";
 
 export class RideInfo extends React.Component {
 
-    seenRequests(requests) {
-        const unseenRequests = [];
-        for (let i = 0; i < requests.length; i++) {
-            if (!requests[i].seenByDriver) {
-                unseenRequests.push(requests[i].rideRequestId);
-            }
-        }
-        if (unseenRequests.length !== 0) {
-            api.post("RideRequest/seenDriver", unseenRequests).then(res => {
+componentDidMount(){
+    this.seenRequests();
+}
+
+    seenRequests() {
+        console.log(this.props)
+        if (this.props.unaccpetedRequests.filter(x => !x.seenByDriver).length > 0) {
+            api.get("RideRequest/requestsSeenByDriver/" + this.props.ride.rideId).then(res => {
             });
         }
     }
@@ -35,7 +34,7 @@ export class RideInfo extends React.Component {
     }
 
     requestNoteSeen(requestId){
-        api.get("RideRequest/seenDriver/" + requestId).then().catch();
+        api.get("RideRequest/noteSeenByDriver/" + requestId).then().catch();
     }
 
     render() {

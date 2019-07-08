@@ -25,6 +25,8 @@ import history from "../../../helpers/history";
 import SnackBars from "../../common/Snackbars";
 import { SnackbarVariants, showSnackBar } from "../../../utils/SnackBarUtils";
 import { formatRelative } from "date-fns";
+import 'react-times/css/classic/default.css';
+import TimePicker from 'react-times';
 const today = new Date();
 function Transition(props) {
     return <Slide direction="up" {...props} />;
@@ -84,7 +86,6 @@ class RideScheduler extends React.Component {
 
     disableRight() {
         const { step, selectedDates, time, monday, tuesday, wednesday, thursday, friday } = this.state;
-        console.log(this.state)
 
         if (step === amountOfSteps - 1) {
             return true;
@@ -96,7 +97,6 @@ class RideScheduler extends React.Component {
             return true;
         }
         if (step === 2 && !time) {
-            console.log(time)
             return true;
         }
         return false;
@@ -160,10 +160,8 @@ class RideScheduler extends React.Component {
     createRecurentRides(weekDayIndex, time, fromAddress, toAddress) {
         let rides = [];
         let date = new Date();
-        date.setHours(time.split(':')[0]);
-        date.setMinutes(time.split(':')[1]);
-
-
+        date.setHours(time.hour);
+        date.setMinutes(time.minute);
 
         while (date.getDay() !== weekDayIndex) {
             date.setDate(date.getDate() + 1);
@@ -232,10 +230,6 @@ if(new Date(rides[0].rideDateTime).getTime() < new Date().getTime()){
             }
         });
     }
-
-    handleTime = value => {
-        this.setState({ time: value });
-    };
 
     checkForDateDuplicate = function (needle, haystack) {
         for (let i = 0; i < haystack.length; i++) {
@@ -326,12 +320,16 @@ if(new Date(rides[0].rideDateTime).getTime() < new Date().getTime()){
                             : null
                         }
                         {this.state.step === 2
-                            ? <Grid item xs={12}>
-                                <TimePickers defaultValue={null} title="Select default time of rides" onChange={(value) => { this.handleTime(value) }} />
+                            ? <Grid item xs={12} style={{marginBottom:"10px"}}>
+                                  <TimePicker 
+                                  time={this.state.time ? this.state.time.hour + ":" + this.state.time.minute : null}
+                                  onTimeChange={(value) => {this.setState({ time: value})}} 
+                                  colorPalette="dark" theme="classic"
+                                  />
+
                             </Grid>
                             : null
                         }
-
                         {this.state.step === 3
                             ? <div>
                                 <Grid item xs={12}

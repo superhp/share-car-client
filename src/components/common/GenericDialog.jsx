@@ -9,33 +9,27 @@ import Close from "@material-ui/icons/Close";
 import { Paper } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
-const styles = {
-    root: {
-        overflow: 'visible',
-    },
-    paper: {
-        overflow: 'visible !important',
-        margin: '13px !important'
-    }
-}
-
 class GenericDialog extends React.Component {
-    state = {
-        content: this.props.content
-    }
+
     render() {
         return (
+            <div>
+                {
+                    this.props.visibleOverflow
+                        ? <style dangerouslySetInnerHTML={{ __html: `.MuiPaper-root-107 { overflow: visible !important;}` }} />
+                        : null
+                }
+                <Dialog className="dialog-body" onClose={() => this.props.close()} open={this.props.open}>
+                    <div>
+                        <Close onClick={() => this.props.close()} className={this.props.white ? "dialog-close-white" : "dialog-close-black"} />
+                    </div>
+                    <DialogContent className={this.props.overflowX ? "dialog-content-x" : "dialog-content"}>
+                        {this.props.content}
 
-            <Dialog className="dialog-body" classes={{paper:'style: "overflow:visible"'}} onClose={() => this.props.close()} open={this.props.open}>
-                <div>
-                    <Close onClick={() => this.props.close()} className={this.props.white ? "dialog-close-white" : "dialog-close-black"} />
-                </div>
-                <DialogContent className="dialog-content">
-                    {this.props.content}
-
-                </DialogContent>
-            </Dialog>
+                    </DialogContent>
+                </Dialog>
+            </div>
         )
     }
 }
-export default withStyles(styles)(GenericDialog);
+export default GenericDialog;

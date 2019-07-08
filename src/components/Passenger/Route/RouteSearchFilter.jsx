@@ -13,16 +13,17 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Autosuggest from 'react-autosuggest';
 import FormGroup from '@material-ui/core/FormGroup';
 import "../../../styles/driversRidesList.css";
+import "../../../styles/customTimepickerStyle.css";
 import api from "../../../helpers/axiosHelper"
 import InfiniteCalendar, {
     Calendar,
     withMultipleDates,
     defaultMultipleDateInterpolation
 } from "react-infinite-calendar";
-import TimePickers from "../../common/TimePickers";
-import { defaultTime } from "../../common/TimePickers";
 import { calendarStyle } from "../../../utils/calendarStyle";
 import { weekdays } from "moment";
+import 'react-times/css/classic/default.css';
+import TimePicker from 'react-times';
 const escapeRegexCharacters = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 export default class RouteSearchFilter extends React.Component {
@@ -53,6 +54,22 @@ export default class RouteSearchFilter extends React.Component {
         weekDayChanged: false,
     }
 
+componentDidMount(){
+    if(this.props.filter.startTime === null){
+        let today = new Date();
+        this.setState({
+        startTime: {
+            hour: today.getHours(),
+            minute: today.getMinutes()
+        },
+        endTime: {
+            hour: today.getHours(),
+            minute: today.getMinutes()
+        },   
+    });
+    }
+}
+
     canApply() {
         const {
             timeChanged,
@@ -78,31 +95,27 @@ export default class RouteSearchFilter extends React.Component {
             if (!notNull) {
                 return false;
             }
-            let hoursFrom = parseInt(startTime.split(':')[0]);
-            let minutesFrom = parseInt(startTime.split(':')[1]);
-            let hoursTo = parseInt(endTime.split(':')[0]);
-            let minutesTo = parseInt(endTime.split(':')[1]);
-            let notConflictingTime = ((hoursFrom < hoursTo) || (hoursFrom === hoursTo && minutesFrom < minutesTo));
+            let notConflictingTime = ((startTime.hour < endTime.hour) || (startTime.hour === endTime.hour && startTime.minute < endTime.minute));
             return (notConflictingTime && notNull && timeChanged);
         } else if (step === 2) {
             return (selectedDriver || value === '') && driverChanged;
         }
     }
 
-    canClear(){
-        if(this.canApply()){
+    canClear() {
+        if (this.canApply()) {
             return true;
         }
-        const {showCalendar, step} = this.state;
-        if(step === 0){
-            if(showCalendar){
-            return this.state.selectedDates.length > 0;
-            } else{
+        const { showCalendar, step } = this.state;
+        if (step === 0) {
+            if (showCalendar) {
+                return this.state.selectedDates.length > 0;
+            } else {
                 return this.props.filter.weekDays.includes(true);
             }
-        } else if(step === 1){
+        } else if (step === 1) {
             return this.props.filter.startTime !== null;
-        } else if(step === 2){
+        } else if (step === 2) {
             return this.props.filter.driver !== null;
         }
     }
@@ -185,14 +198,6 @@ export default class RouteSearchFilter extends React.Component {
         this.setState({ driverSelected: true, selectedDriver: suggestion, driverChanged: true });
     };
 
-    handleTime(time, start) {
-        if (start) {
-            this.setState({ startTime: time, timeChanged: true })
-        } else {
-            this.setState({ endTime: time, timeChanged: true })
-        }
-    }
-
     filterByWeekDays() {
         const { monday, tuesday, wednesday, thursday, friday } = this.state;
         this.props.filterByWeekDays([monday, tuesday, wednesday, thursday, friday]);
@@ -205,6 +210,7 @@ export default class RouteSearchFilter extends React.Component {
         }
         return false;
     };
+
     handleSelect(e) {
         if (this.state.selectedDates.length > 0) {
             if (this.checkForDateDuplicate(e, this.state.selectedDates)) {
@@ -229,6 +235,24 @@ export default class RouteSearchFilter extends React.Component {
             }));
         }
     }
+
+    setTime(value, isStartTime) {
+        const { startTime, endTime } = this.state;
+        if (isStartTime) {
+            if ((endTime.hour < value.hour) || ((endTime.hour === value.hour && endTime.minute <= value.minute))){
+                return;
+            }else{
+                this.setState({startTime:value, timeChanged: true});
+            }
+        }else{
+            if ((startTime.hour > value.hour) || ((startTime.hour === value.hour && startTime.minute >= value.minute))){
+                return;
+            }else{
+                this.setState({endTime:value, timeChanged: true});
+            }
+        }
+    }
+
     render() {
         const { value, suggestions } = this.state;
         const inputProps = {
@@ -347,12 +371,18 @@ export default class RouteSearchFilter extends React.Component {
                 }
                 {
                     this.state.step === 1
-                        ? <Grid container className="filter-body">
-                            <Grid item xs={6} >
-                                <TimePickers defaultValue={this.state.startTime} title="Time range start" onChange={(value) => { this.handleTime(value, true) }} />
+                        ? <Grid container className="filter-body" spacing={8}>
+                            <Grid item xs={6} style={{ marginBottom: "5px", marginTop: "5px" }}>
+                                <TimePicker
+                                    time={ this.state.startTime ? this.state.startTime.hour + ":" + this.state.startTime.minute : null}
+                                    colorPalette="dark" theme="classic"
+                                    onTimeChange={(value) => { this.setTime(value, true) }} />
                             </Grid>
-                            <Grid item xs={6} >
-                                <TimePickers defaultValue={this.state.endTime} title="Time range end" onChange={(value) => { this.handleTime(value, false) }} />
+                            <Grid item xs={6} style={{ marginBottom: "5px", marginTop: "5px" }}>
+                                <TimePicker
+                                    time={this.state.endTime ? this.state.endTime.hour + ":" + this.state.endTime.minute : null}
+                                    colorPalette="dark" theme="classic"
+                                    onTimeChange={(value) => { this.setTime(value, false) }} />
                             </Grid>
                             <Grid container justify="flex-end" spacing={8}>
                                 <Grid item>
@@ -462,8 +492,8 @@ export default class RouteSearchFilter extends React.Component {
                                         >
                                             Clear
                         </Button>
-                        </Grid>
-                                        <Grid item>
+                                    </Grid>
+                                    <Grid item>
                                         <Button
                                             onClick={() => this.props.filterByDates(this.state.selectedDates)}
                                             variant="contained"

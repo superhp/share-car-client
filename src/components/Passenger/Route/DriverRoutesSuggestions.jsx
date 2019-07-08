@@ -12,7 +12,7 @@ import "../../../styles/genericStyles.css";
 import GenericDialog from "../../common/GenericDialog"
 import RouteSearchFilter from "./RouteSearchFilter"
 import { weekdays } from "moment";
-
+const today = new Date();
 export class DriverRoutesSuggestions extends React.Component {
 
     state = {
@@ -24,8 +24,8 @@ export class DriverRoutesSuggestions extends React.Component {
         selectedDates: [],
         selectedDriver: null,
         startTime: null,
-        endTime: null,
-    }
+        endTime:null,
+     }
 
     componentDidMount() {
         let users = [];
@@ -66,12 +66,6 @@ export class DriverRoutesSuggestions extends React.Component {
     }
 
     filterByTime(timeFrom, timeTo, routes) {
-        let hoursFrom = parseInt(timeFrom.split(':')[0]);
-        let minutesFrom = parseInt(timeFrom.split(':')[1]);
-
-        let hoursTo = parseInt(timeTo.split(':')[0]);
-        let minutesTo = parseInt(timeTo.split(':')[1]);
-
         let filteredRoutes = [];
         routes.filter(x => {
             let rides = [...x.rides];
@@ -80,10 +74,10 @@ export class DriverRoutesSuggestions extends React.Component {
                 let date = new Date(y.rideDateTime);
                 let todayFrom = new Date(y.rideDateTime);
                 let todayTo = new Date(y.rideDateTime);
-                todayFrom.setHours(hoursFrom);
-                todayFrom.setMinutes(minutesFrom);
-                todayTo.setHours(hoursTo);
-                todayTo.setMinutes(minutesTo);
+                todayFrom.setHours(timeFrom.hour);
+                todayFrom.setMinutes(timeFrom.minute);
+                todayTo.setHours(timeTo.hour);
+                todayTo.setMinutes(timeTo.minute);
                 if (date.getTime() >= todayFrom.getTime() && date.getTime() <= todayTo.getTime()) {
                     filteredRides.push(y);
                 }
@@ -197,8 +191,10 @@ export class DriverRoutesSuggestions extends React.Component {
                                         open={this.state.showFilters}
                                         close={() => { this.setState({ showFilters: false }) }}
                                         white={true}
+                                        visibleOverflow={true}
                                         content={
                                             <RouteSearchFilter
+                                            overflowX={true}
                                                 filter={{
                                                     weekDays: this.state.selectedWeekDays,
                                                     dates: this.state.selectedDates,
@@ -215,7 +211,7 @@ export class DriverRoutesSuggestions extends React.Component {
                                                 clearDriver={(selectedDriver) => { this.setState({ selectedDriver: null }, () => this.filter(true)) }}
                                                 clearTime={(startTime, endTime) => { this.setState({ startTime: null, endTime: null }, () => this.filter(true)) }}
                                                 clearWeekDays={(weekDays) => { this.setState({ selectedWeekDays: [false, false, false, false, false] }, () => { this.filter(true)})}}
-                                                ClearDates={(selectedDates) => { this.setState({ selectedDates: [] }, () => this.filter(true)) }}
+                                                clearDates={(selectedDates) => { this.setState({ selectedDates: [] }, () => this.filter(true)) }}
                                                
                                             />
                                         }

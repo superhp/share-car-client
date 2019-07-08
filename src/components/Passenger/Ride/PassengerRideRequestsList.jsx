@@ -87,7 +87,7 @@ export default class PassengerRideRequestsList extends React.Component {
                     }
                 }
                 if (unseenRequests.length !== 0) {
-                    api.post("RideRequest/seenPassenger", unseenRequests).catch();
+                    api.post("RideRequest/requestsSeenByPassenger", unseenRequests).catch();
                 }
             })
             .catch((error) => {
@@ -97,7 +97,7 @@ export default class PassengerRideRequestsList extends React.Component {
     }
 
     noteSeen(requestId) {
-        api.get("RideRequest/seenPassenger/" + requestId).catch();
+        api.get("RideRequest/noteSeenByPassenger/" + requestId).catch();
     }
     selectAll() {
         this.setState({ selectedRequests: this.state.requests });
@@ -165,6 +165,7 @@ export default class PassengerRideRequestsList extends React.Component {
                                 />
                                 : <div></div>
                         }
+                        {console.log(this.state.requests)}
                         {this.state.requests.length > 0 ? this.state.requests.map((request, i) =>
                             <ListCard
                                 firstText={"Request for " + request.driverFirstName + " " + request.driverLastName}
@@ -182,9 +183,11 @@ export default class PassengerRideRequestsList extends React.Component {
                         }
                         {this.state.open
                             ? <GenericDialog
+                            overflowX={true}
                                 open={this.state.open}
                                 close={() => this.setState({ open: false })}
-                                content={<RideRequestInfo
+                                content={
+                                <RideRequestInfo
                                     request={this.state.selectedRequest}
                                     updateNote={(note, requestId) => { this.updateNote(note, requestId) }}
                                     noteSeen={(requestId) => { this.noteSeen(requestId) }}

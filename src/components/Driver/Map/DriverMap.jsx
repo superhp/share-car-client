@@ -299,8 +299,10 @@ export class DriverMap extends React.Component {
               <div id="map"></div>
 
               <GenericDialog
+                visibleOverflow={true}
                 open={this.state.open}
                 close={() => { this.setState({ open: false }) }}
+                overflowX={true}
                 content={
                   <RideScheduler routeInfo={{
                     fromAddress: this.state.routePoints[0].address,
