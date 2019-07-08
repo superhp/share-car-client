@@ -32,17 +32,17 @@ export default class LocationSelection extends React.Component<{}> {
                     <Grid item xs={12} >
                         <Card className="location-selection-element address-input">
                             <div className="algolia-input-container">
-                            <div className="generic-button">
-                            <ArrowBack onClick={() => this.props.selectLocation()}/>
-                            </div>
-                            <AddressInput
-                                deletable={false}
-                                removeRoutePoint={id => { this.props.removeRoutePoint(id) }}
-                                placeholder={this.props.isRouteToOffice ? "To location" : "From location"}
-                                onChange={(suggestion, index) => { this.props.selectLocation(formAlgoliaAddress(suggestion)) }}
-                                displayName={this.props.currentRoutePoint ? this.props.currentRoutePoint.displayName : ""}
-                                onClick={() => { }}
-                            />
+                                <div className="generic-button">
+                                    <ArrowBack onClick={() => this.props.selectLocation()} />
+                                </div>
+                                <AddressInput
+                                    deletable={false}
+                                    removeRoutePoint={id => { this.props.removeRoutePoint(id) }}
+                                    placeholder={this.props.isRouteToOffice ? "To location" : "From location"}
+                                    onChange={(suggestion, index) => { this.props.selectLocation(formAlgoliaAddress(suggestion)) }}
+                                    displayName={this.props.currentRoutePoint ? this.props.currentRoutePoint.displayName : ""}
+                                    onClick={() => { }}
+                                />
                             </div>
                         </Card>
                     </Grid>
@@ -58,26 +58,42 @@ export default class LocationSelection extends React.Component<{}> {
                     </Card>
                     </Grid>
                 </Grid>
-                <Grid item xs={12} container className="location-selection-element">
+                <Grid container item xs={12} direction="row" className="location-selection-element">
                     <Grid item xs={12}>
                         <Card className="location-selection-element"
-                            onClick={() => {this.props.homeAddress ? this.props.selectLocation(this.props.homeAddress.address) : this.props.selectHomeAddress() }}
+                            onClick={() => { this.props.homeAddress ? this.props.selectLocation(this.props.homeAddress.address) : this.props.selectHomeAddress() }}
                         >
-                            <div className="location-icon">
-                                <Home />
-                            </div>
-                            {this.props.homeAddress
-                                ? this.props.homeAddress.displayName
-                                : "Select your home address"
-                            }
-                            {this.props.homeAddress
-                                ?
-                                <div className="generic-button settings" onClick={(e) => { e.stopPropagation(); this.props.selectHomeAddress()}}>
-                                    <Settings />
-                                </div>
-                                :
-                                <div></div>
-                            }
+                            <Grid container direction="row" justify="space-between">
+                                <Grid item>
+                                    <Grid container direction="row">
+                                        <Grid item>
+                                            <div className="location-icon">
+                                                <Home />
+                                            </div>
+                                        </Grid>
+                                        <Grid item>
+                                            {this.props.homeAddress
+                                                ? this.props.homeAddress.displayName
+                                                : "Select your home address"
+                                            }
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                                <Grid item>
+                                    <Grid container justify="flex-end">
+                                        <Grid item>
+                                            {this.props.homeAddress
+                                                ?
+                                                <div className="generic-button settings" onClick={(e) => { e.stopPropagation(); this.props.selectHomeAddress() }}>
+                                                    <Settings />
+                                                </div>
+                                                :
+                                                <div></div>
+                                            }
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
                         </Card>
                     </Grid>
                 </Grid>

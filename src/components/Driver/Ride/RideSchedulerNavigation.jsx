@@ -8,11 +8,11 @@ class RideSchedulerNavigation extends React.Component {
 
     navigation(direction) {
         if (direction === 1) {
-            if (!this.props.disabledRight) {
+            if (!this.props.disableRight) {
                 this.props.navigation(1);
             }
         } else {
-            if (!this.props.disabledLeft) {
+            if (!this.props.disableLeft) {
                 this.props.navigation(-1);
             }
         }

@@ -21,7 +21,7 @@ export class DriverRouteSuggestionItem extends React.Component {
 
     render() {
         return (
-            <ListItem className="drivers-list">
+            <ListItem className="driver-list-item">
 
                 <ListItemText
                     primary={<span>{this.props.route.driverFirstName} {this.props.route.driverLastName}</span>}

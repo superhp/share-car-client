@@ -9,7 +9,7 @@ import api from "./../../helpers/axiosHelper";
 import {
   fromLonLatToMapCoords,
   createPointFeature,
-  createRouteFeature, iconType
+  createRouteFeature, iconType, centerMap
 } from "../../utils/mapUtils";
 import { addressToString } from "../../utils/addressUtils";
 import { sortRoutes } from "../../utils/shortestDistance";
@@ -132,6 +132,7 @@ export class PassengerMap extends React.Component {
       this.createPointFeature(routes[currentRouteIndex].toAddress, iconType.finish);
       this.vectorSource.addFeature(routeFeature);
     }
+    centerMap(routePoints[0].address.longitude, routePoints[0].address.latitude, this.map);
   }
 
   showRoute(index) {
@@ -196,7 +197,7 @@ export class PassengerMap extends React.Component {
         if (routePoints[1].address && this.isAddressOffice(routePoints[1].address)) {
           routeDto.ToAddress = routePoints[1].address;
         }
-          this.sortRoutes(this.state.routes);
+        this.sortRoutes(this.state.routes);
         this.updateMap();
       });
     });
@@ -377,6 +378,7 @@ export class PassengerMap extends React.Component {
                 />
                 : this.state.homeAddressSelection
                   ? <LocationSelectionMap
+                    homeAddress={true}
                     driver={false}
                     routePoints={[]}
                     routePointIndex={0}

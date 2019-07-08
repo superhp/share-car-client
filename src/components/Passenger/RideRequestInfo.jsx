@@ -62,7 +62,7 @@ export default class RideRequestInfo extends React.Component {
                         {!this.props.request.rideNoteSeen ?
 
                             <Badge
-                                className="rides-badge"
+                                className="new-badge"
                                 badgeContent={"new"}
                                 color="primary"
                                 children={""}

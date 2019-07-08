@@ -163,7 +163,7 @@ export class DriverRoutesSuggestions extends React.Component {
                                     </Close>
                                 </Grid>
                             </Grid>
-                            <List >
+                            <List className="suggested-driver-list">
                                 <ListItem>
                                 </ListItem>
                                 {
@@ -184,6 +184,7 @@ export class DriverRoutesSuggestions extends React.Component {
                                             </Grid>
                                         </Grid>
                                 }
+                                                             
                             </List>
                             {
                                 this.state.showFilters

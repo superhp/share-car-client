@@ -46,7 +46,6 @@
     flex-direction: column;
     justify-content: center;
     height: 100%;
-    margin-bottom: 9%;
 }
 
 button:focus {

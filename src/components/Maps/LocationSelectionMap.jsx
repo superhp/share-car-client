@@ -11,14 +11,17 @@ import Point from "ol/geom/Point";
 import OSM from "ol/source/OSM";
 import "../../styles/locationSelectionMap.css";
 import "../../styles/genericStyles.css";
+import { AddressInput } from "../common/AddressInput";
+import { formAlgoliaAddress } from "../../utils/addressUtils";
 import Done from "@material-ui/icons/Done";
 import Clear from "@material-ui/icons/Clear";
 import { addressToString, fromLocationIqResponse } from "../../utils/addressUtils";
 import {
     fromLonLatToMapCoords, fromMapCoordsToLonLat,
     getNearest, coordinatesToLocation, createPointFeature,
-    createRouteFeature, createRoute, iconType
+    createRouteFeature, createRoute, iconType,centerMap
 } from "../../utils/mapUtils";
+import { routePointType } from "../../utils/routePointTypes";
 
 export default class LocationSelectionMap extends React.Component<{}> {
     constructor(props) {
@@ -110,6 +113,7 @@ export default class LocationSelectionMap extends React.Component<{}> {
 
     displayRoutePoints() {
         const { routePoints } = this.state;
+        console.log(routePoints)
         const points = routePoints.filter(x => x.address).map(x => x.address);
         for (let i = 0; i < routePoints.length; i++) {
             if (routePoints[i].address) {
@@ -147,7 +151,16 @@ export default class LocationSelectionMap extends React.Component<{}> {
                 });
         }
     }
-
+    changeRoutePoint(address) {
+            let routePoints = [...this.state.routePoints];
+            routePoints[0] = {
+                address: address,
+                displayName: addressToString(address),
+                routePointType: routePointType.first
+            }
+            centerMap(address.longitude, address.latitude, this.map);
+            this.setState({ routePoints: routePoints}, () => this.displayRoutePoints() );
+    }
     render() {
         return (
             <div>
@@ -166,6 +179,20 @@ export default class LocationSelectionMap extends React.Component<{}> {
                         </div>
                     </div>
                 </div>
+                {
+                    this.props.homeAddress
+                        ? <AddressInput
+                            onClick={() => { }}
+                            key={0}
+                            index={0}
+                            deletable={false}
+                            removeRoutePoint={id => { }}
+                            placeholder="Select location"
+                            onChange={(suggestion, index) => this.changeRoutePoint(formAlgoliaAddress(suggestion))}
+                            displayName={this.state.routePoints.length > 0 ? this.state.routePoints[0].displayName : null}
+                        />
+                        : null
+                }
                 <div id="map"></div>
             </div>
         );

@@ -335,8 +335,9 @@ export class DriverMap extends React.Component {
                 />
                 : this.state.homeAddressSelection
                   ? <LocationSelectionMap
+                  homeAddress={true}
                     driver={true}
-                    routePoints={[this.state.homeAddress]}
+                    routePoints={[]}
                     routePointIndex={0}
                     routePointsType={routePointType.first}
                     direction={this.state.direction}

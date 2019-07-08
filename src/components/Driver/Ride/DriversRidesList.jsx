@@ -70,16 +70,16 @@ export class DriversRidesList extends React.Component {
     }
   };
 
-  sendRequestResponse(response, rideRequestId, rideId, driverEmail) {
+  sendRequestResponse(requestResponse, rideRequestId, rideId, driverEmail) {
     let data = {
       RideRequestId: rideRequestId,
-      Status: response,
+      Status: requestResponse,
       RideId: rideId,
       DriverEmail: driverEmail
     };
     api.put("/RideRequest", [data]).then(response => {
       if (response.status === 200) {
-        if (response === 1) {
+        if (requestResponse === 1) {
           let requests = [...this.state.requests];
           let request = requests.find(x => x.rideId === rideId);
           request.status = 1;

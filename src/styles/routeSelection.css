@@ -14,8 +14,6 @@
 }
 
 .algolia-input {
-    margin-left: 5px;
-    margin-right: 5px;
     width: 100%;
     z-index: 9;
 }

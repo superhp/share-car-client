@@ -12,7 +12,7 @@ export class DriverRideSuggestionItem extends React.Component {
 
     render() {
         return (
-            <ListItem className="drivers-list">
+            <ListItem className="driver-list-item">
                <ListItemText
                     secondary={
                         <React.Fragment>

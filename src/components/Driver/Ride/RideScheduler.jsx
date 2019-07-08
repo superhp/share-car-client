@@ -153,7 +153,7 @@ class RideScheduler extends React.Component {
         this.state.selectedDates.forEach(element => {
             rides.push(this.createRide(fromAddress, toAddress, element, this.state.note));
         });
-
+console.log(rides)
         this.saveRides(rides);
     };
 
@@ -201,7 +201,7 @@ if(new Date(rides[0].rideDateTime).getTime() < new Date().getTime()){
                 },
                 Geometry: this.props.routeInfo.routeGeometry,
             },
-            Note: note,
+            note: note,
             rideDateTime:
                 element.getFullYear() +
                 "-" +
@@ -209,7 +209,7 @@ if(new Date(rides[0].rideDateTime).getTime() < new Date().getTime()){
                 "-" +
                 element.getDate() +
                 "  " +
-                this.state.time
+                this.state.time.hour + ":" + this.state.time.minute
         };
 
         return ride;
@@ -303,7 +303,8 @@ if(new Date(rides[0].rideDateTime).getTime() < new Date().getTime()){
                             : null
                         }
                         {this.state.step === 1
-                            ? <Grid item xs={12} >
+                            ?                         
+                            <Grid item xs={12} className="calendar-container">
                                 <InfiniteCalendar
                                     onSelect={e => this.handleSelect(e)}
                                     Component={withMultipleDates(Calendar)}
