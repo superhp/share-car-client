@@ -10,12 +10,7 @@ import "../../../styles/genericStyles.css";
 
 class RideCompletedNotification extends React.Component {
     state = {
-      open: true,
-      ridesId: []
-    };
-  
-    handleClose = () => {
-      this.setState({ open: false });
+      rideIds: []
     };
 
     sendResponse(response, rideId) {
@@ -23,20 +18,14 @@ class RideCompletedNotification extends React.Component {
             Response: response,
             RideId: rideId
         }
-        api.post(`Ride/passengerResponse`, passengerResponse);
+        api.post(`Ride/passengerResponse`, passengerResponse).catch();
     }
   
     render() {
       return (
         <div>
-          <Dialog
-            open={this.state.open}
-            onClose={this.handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
             <DialogTitle id="alert-dialog-title">{"Have you participated in these rides?"}</DialogTitle>
-            {this.props.rides.filter(x => !this.state.ridesId.includes(x.rideId)).map((ride, i) => 
+            {this.props.rides.filter(x => !this.state.rideIds.includes(x.rideId)).map((ride, i) => 
                <DialogContent key={i}>
                     <DialogContentText id="alert-dialog-description">
                         Driver: {ride.driverFirstName} {ride.driverLastName}
@@ -45,9 +34,9 @@ class RideCompletedNotification extends React.Component {
                     </DialogContentText>
                     <DialogActions>
                         <Button onClick={() => {
-                                if(this.props.rides.length - 1 === this.state.ridesId.length) this.handleClose();
+                                if(this.props.rides.length - 1 === this.state.rideIds.length) this.props.close();
                                 this.sendResponse(true, ride.rideId);
-                                this.setState({ridesId: [...this.state.ridesId, ride.rideId]});
+                                this.setState({rideIds: [...this.state.rideIds, ride.rideId]});
                             }} 
                             className="ride-completed-notification-button"
                             variant="outlined"
@@ -55,9 +44,9 @@ class RideCompletedNotification extends React.Component {
                             Yes
                         </Button>
                         <Button onClick={() => {
-                                if(this.props.rides.length - 1 === this.state.ridesId.length) this.handleClose();
+                                if(this.props.rides.length - 1 === this.state.rideIds.length) this.props.close();
                                 this.sendResponse(false, ride.rideId);
-                                this.setState({ridesId: [...this.state.ridesId, ride.rideId]});
+                                this.setState({rideIds: [...this.state.rideIds, ride.rideId]});
                             }} 
                             className="ride-completed-notification-button"
                             variant="outlined"
@@ -67,7 +56,6 @@ class RideCompletedNotification extends React.Component {
                     </DialogActions>
                 </DialogContent> 
             )}
-          </Dialog>
         </div>
       );
     }

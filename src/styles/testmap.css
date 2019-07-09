@@ -1,7 +1,7 @@
 #map {
     position: absolute;
     width: 100%;
-    height: 90vh;
+    height: 92vh;
     overflow-y: hidden;
     border: none !important;
 }
@@ -113,6 +113,7 @@ div.routes {
     bottom: 6%;
     width: 100%
 }
+
 button.continue-button {
     position: absolute;
     bottom: 15vh;
@@ -122,11 +123,12 @@ button.continue-button {
     color: #e8e9eb !important;
 }
 
-button.continue-button:hover{
+button.continue-button:hover {
     background-color: #10365a!important;
     color: #e8e9eb !important;
     cursor: pointer;
 }
+
 button.select-office-menu {
     background-color: #f74428;
     color: #e8e9eb;

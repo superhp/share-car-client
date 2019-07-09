@@ -63,9 +63,9 @@ button:focus {
     vertical-align: middle;
 }
 
-.suggested-driver-list{
-overflow-y:scroll;
-height: 20vh;
+.suggested-driver-list {
+    overflow-y: scroll;
+    max-height: 20vh;
 }
 
 .active-rides-card-container {

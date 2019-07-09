@@ -164,7 +164,7 @@ export default class LocationSelectionMap extends React.Component<{}> {
     render() {
         return (
             <div>
-                <div className="navigation">
+                <div className="navigation">                            
                     <div className="return">
                         <div className="generic-button return-icon" onClick={() => { this.props.return() }}>
                             <Clear />

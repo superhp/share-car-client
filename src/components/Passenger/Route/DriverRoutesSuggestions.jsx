@@ -23,8 +23,14 @@ export class DriverRoutesSuggestions extends React.Component {
         selectedWeekDays: [],
         selectedDates: [],
         selectedDriver: null,
-        startTime: null,
-        endTime:null,
+        startTime: {
+            hour: today.getHours(),
+            minute: today.getMinutes()
+         },
+        endTime: {
+            hour: today.getHours(),
+            minute: today.getMinutes()
+         },
      }
 
     componentDidMount() {

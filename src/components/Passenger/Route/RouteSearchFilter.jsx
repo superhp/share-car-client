@@ -54,21 +54,21 @@ export default class RouteSearchFilter extends React.Component {
         weekDayChanged: false,
     }
 
-componentDidMount(){
-    if(this.props.filter.startTime === null){
-        let today = new Date();
-        this.setState({
-        startTime: {
-            hour: today.getHours(),
-            minute: today.getMinutes()
-        },
-        endTime: {
-            hour: today.getHours(),
-            minute: today.getMinutes()
-        },   
-    });
+    componentDidMount() {
+        if (this.props.filter.startTime === null) {
+            let today = new Date();
+            this.setState({
+                startTime: {
+                    hour: today.getHours(),
+                    minute: today.getMinutes()
+                },
+                endTime: {
+                    hour: today.getHours(),
+                    minute: today.getMinutes()
+                },
+            });
+        }
     }
-}
 
     canApply() {
         const {
@@ -239,16 +239,16 @@ componentDidMount(){
     setTime(value, isStartTime) {
         const { startTime, endTime } = this.state;
         if (isStartTime) {
-            if ((endTime.hour < value.hour) || ((endTime.hour === value.hour && endTime.minute <= value.minute))){
+            if ((endTime.hour < value.hour) || ((endTime.hour === value.hour && endTime.minute <= value.minute))) {
                 return;
-            }else{
-                this.setState({startTime:value, timeChanged: true});
+            } else {
+                this.setState({ startTime: value, timeChanged: true });
             }
-        }else{
-            if ((startTime.hour > value.hour) || ((startTime.hour === value.hour && startTime.minute >= value.minute))){
+        } else {
+            if ((startTime.hour > value.hour) || ((startTime.hour === value.hour && startTime.minute >= value.minute))) {
                 return;
-            }else{
-                this.setState({endTime:value, timeChanged: true});
+            } else {
+                this.setState({ endTime: value, timeChanged: true });
             }
         }
     }
@@ -374,7 +374,7 @@ componentDidMount(){
                         ? <Grid container className="filter-body" spacing={8}>
                             <Grid item xs={6} style={{ marginBottom: "5px", marginTop: "5px" }}>
                                 <TimePicker
-                                    time={ this.state.startTime ? this.state.startTime.hour + ":" + this.state.startTime.minute : null}
+                                    time={this.state.startTime ? this.state.startTime.hour + ":" + this.state.startTime.minute : null}
                                     colorPalette="dark" theme="classic"
                                     onTimeChange={(value) => { this.setTime(value, true) }} />
                             </Grid>

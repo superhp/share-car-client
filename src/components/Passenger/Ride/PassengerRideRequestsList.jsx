@@ -165,7 +165,6 @@ export default class PassengerRideRequestsList extends React.Component {
                                 />
                                 : <div></div>
                         }
-                        {console.log(this.state.requests)}
                         {this.state.requests.length > 0 ? this.state.requests.map((request, i) =>
                             <ListCard
                                 firstText={"Request for " + request.driverFirstName + " " + request.driverLastName}
@@ -183,7 +182,7 @@ export default class PassengerRideRequestsList extends React.Component {
                         }
                         {this.state.open
                             ? <GenericDialog
-                            overflowX={true}
+                                overflowX={true}
                                 open={this.state.open}
                                 close={() => this.setState({ open: false })}
                                 content={

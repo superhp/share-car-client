@@ -36,15 +36,18 @@ class RideScheduler extends React.Component {
     state = {
         openDialog: true,
         step: 0,
-        title: "Set rides' recurrence",
-        buttonTitle: "Go to calendar",
+        title: "Recurrence",
+        buttonTitle: "Calendar",
         monday: false,
         tuesday: false,
         wednesday: false,
         thurday: false,
         friday: false,
         selectedDates: [],
-        time: null,
+        time: {
+           hour: today.getHours(),
+           minute: today.getMinutes()
+        },
         snackBarClicked: false,
         note: ""
     };
@@ -57,9 +60,9 @@ class RideScheduler extends React.Component {
         const { step } = this.state;
 
         if (this.state.step === 0) {
-            this.setState({ step: 1, buttonTitle: "Return to recurrence", title: "Set rides' recurrence" });
+            this.setState({ step: 1, buttonTitle: "Recurrence", title: "Set rides' recurrence" });
         } else if (this.state.step === 1) {
-            this.setState({ step: 0, buttonTitle: "Go to calendar", title: "Select specific days" });
+            this.setState({ step: 0, buttonTitle: "Calendar", title: "Select specific days" });
         }
     }
 
@@ -70,12 +73,12 @@ class RideScheduler extends React.Component {
         step += direction;
 
         if (step === 0) {
-            this.setState({ step: 0, buttonTitle: "Go to calendar", showButton: true, title: "Set rides' recurrence" });
+            this.setState({ step: 0, buttonTitle: "Calendar", showButton: true, title: "Set rides' recurrence" });
         } else if (step === 1) {
             if (previousStep === 0) {
                 this.setState({ step: 2, showButton: false, title: "Choose rides' time" });
             } else {
-                this.setState({ step: 0, buttonTitle: "Go to calendar", showButton: true, title: "Set rides' recurrence" });
+                this.setState({ step: 0, buttonTitle: "Calendar", showButton: true, title: "Set rides' recurrence" });
             }
         } else if (step === 2) {
             this.setState({ step: 2, showButton: false, title: "Choose rides' time" });
@@ -153,7 +156,6 @@ class RideScheduler extends React.Component {
         this.state.selectedDates.forEach(element => {
             rides.push(this.createRide(fromAddress, toAddress, element, this.state.note));
         });
-console.log(rides)
         this.saveRides(rides);
     };
 
@@ -304,19 +306,24 @@ if(new Date(rides[0].rideDateTime).getTime() < new Date().getTime()){
                         }
                         {this.state.step === 1
                             ?                         
-                            <Grid item xs={12} className="calendar-container">
+                            <Grid container justify="center" item xs={12} className="calendar-container">
+                                <Grid item>
                                 <InfiniteCalendar
                                     onSelect={e => this.handleSelect(e)}
                                     Component={withMultipleDates(Calendar)}
+                                    displayOptions={{
+                                        showHeader: false
+                                    }}
                                     selected={this.state.selectedDates}
                                     interpolateSelection={defaultMultipleDateInterpolation}
-                                    width={375}
-                                    height={320}
+                                    width={(window.innerWidth <= 650) ? window.innerWidth - 150 : 550}
+                                    height={window.innerHeight - 400}
                                     disabledDays={[0, 6]}
                                     minDate={today}
                                     className="calendar"
                                     theme={calendarStyle}
                                 />
+                            </Grid>
                             </Grid>
                             : null
                         }

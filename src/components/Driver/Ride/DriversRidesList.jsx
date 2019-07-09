@@ -124,10 +124,6 @@ export class DriversRidesList extends React.Component {
     });
   }
 
-requestSeen(){
-
-}
-
   handleChange(newValue) {
     let rides = [];
     const { fetchedRides } = this.state;
@@ -191,7 +187,7 @@ requestSeen(){
             <CircularProgress />
           </div>
           : <Grid container className="list-container" >
-            <AppBar className="nav-tabs-container" position="static">
+            <AppBar className="nav-tabs-container" position="static" style={{ "zIndex": 0 }}>
               <Tabs centered value={this.state.tabValue} onChange={((e, newValue) => this.handleChange(newValue))}>
                 <Tab className="nav-tabs" label="Active" />
                 <Tab className="nav-tabs" label="Obsolete" />
@@ -219,7 +215,7 @@ requestSeen(){
                 firstText={"From " + ride.route.fromAddress.street + " " + ride.route.fromAddress.number + ", " + ride.route.fromAddress.city}
                 secondText={"To " + ride.route.toAddress.street + " " + ride.route.toAddress.number + ", " + ride.route.toAddress.city}
                 thirdText={moment(ride.rideDateTime).format("dddd MMM DD hh:mm")}
-                viewed={() => { console.log(this.state);this.setState({ selectedRide: ride, openRideInfo: true }) }}
+                viewed={() => { this.setState({ selectedRide: ride, openRideInfo: true }) }}
                 deleted={() => { this.setState({ openDeleteConfirmation: true, rideToDelete: ride }) }}
                 selected={(e) => { this.handleRideSelection(e, ride) }}
                 new={this.state.requests.filter(x => x.rideId === ride.rideId && (!x.seenByDriver)).length > 0}

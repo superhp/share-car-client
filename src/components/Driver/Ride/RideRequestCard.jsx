@@ -146,6 +146,7 @@ export class RideRequestCard extends React.Component {
             this.state.showNote ?
                 <Card className="generic-card">
                     <TextField
+                       placeholder="Passenger's note"
                         disabled
                         multiline
                         fullWidth

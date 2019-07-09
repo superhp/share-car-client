@@ -76,6 +76,9 @@ button:focus {
 
 .pending-requests {
     background-color: #e8e9eb;
+    margin-top: 20px;
+    overflow-y: scroll;
+    max-height: 70vh;
 }
 
 .generic-container-color {
@@ -275,11 +278,13 @@ th {
 .dialog-content-x {
     padding: 0px !important;
     background-color: #e8e9eb;
+    overflow: visible !important;
 }
 
 .dialog-content {
     padding: 0px !important;
     background-color: #e8e9eb;
+    overflow: visible !important;
 }
 
 .dialog-body {
@@ -289,6 +294,7 @@ th {
 .list-container {
     display: flex;
     justify-content: center;
+    margin-bottom: 9vh;
 }
 
 .new-badge {

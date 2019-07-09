@@ -8,13 +8,14 @@ import history from "../../helpers/history";
 import RideCompletedNotification from "../Passenger/Ride/RideCompletedNotification";
 import api from "../../helpers/axiosHelper";
 import { RoleContext } from "../../helpers/roles";
-
+import GenericDialog from "../common/GenericDialog";
 import "../../styles/roleSelection.css";
 import driverLogo from "../../images/driver.png";
 import passengerLogo from "../../images/passenger.png";
 import { CircularProgress, withStyles } from "@material-ui/core";
-import {styles} from "../../utils/spinnerStyle";
+import { styles } from "../../utils/spinnerStyle";
 import "../../styles/genericStyles.css";
+import Card from "@material-ui/core/Card";
 
 class RoleSelection extends Component<RoleSelectionState, MyProfileState> {
   userService = new UserService();
@@ -32,11 +33,11 @@ class RoleSelection extends Component<RoleSelectionState, MyProfileState> {
 
   componentDidMount() {
     api.get(`/Ride/checkFinished`).then(response => {
-      this.setState({rideNotifications : response.data});
+      this.setState({ rideNotifications: response.data });
       if (response.data.length !== 0) {
-        this.setState({showNotification : true});
+        this.setState({ showNotification: true });
       } else {
-        this.setState({showNotification : false});
+        this.setState({ showNotification: false });
       }
       this.userService.getLoggedInUser(this.updateLoggedInUser);
     });
@@ -61,37 +62,46 @@ class RoleSelection extends Component<RoleSelectionState, MyProfileState> {
   }
 
   render() {
-    const content = this.state.loading ? 
+    const content = this.state.loading ?
       <div className="progress-circle">
-        <CircularProgress/>
+        <CircularProgress />
       </div>
-     : this.state.user === null ? (
-      <p>Failed</p>
-    ) : (
-      <div>
-        {this.state.showNotification ? (
-          <RideCompletedNotification rides={this.state.rideNotifications} />
-        ) : (
-          <div />
-        )}
-        <RoleContext.Consumer>
-          {({ role, changeRole }) => (
-            <div className="role-container">
-              <Link to="/driver/rides" onClick={changeRole("driver")}>
-                <img className="role-image" src={driverLogo} alt=""/>
-              </Link>
-              <h2 className="role-selection">Driver</h2>
-
-              <Link to="/passenger/requests" onClick={changeRole("passenger")}>
-                <img className="role-image" src={passengerLogo} alt=""/>
-              </Link>
-              <h2 className="role-selection">Passenger</h2>
-            </div>
-          )}
-        </RoleContext.Consumer>
-      </div>
-    );
+      : this.state.user === null ? (
+        <p>Failed</p>
+      ) : (
+          <div>
+            {this.state.showNotification ? (
+              <GenericDialog
+                visibleOverflow={false}
+                open={this.state.showNotification}
+                close={() => { this.setState({ showNotification: false }) }}
+                overflowX={true}
+                content={
+                  <RideCompletedNotification 
+                  rides={this.state.rideNotifications} 
+                  />
+                }
+              />
+            ) : (
+                <div />
+              )}
+            <RoleContext.Consumer>
+              {({ role, changeRole }) => (
+                <div className="role-container">
+                  <Link to="/driver/rides" onClick={changeRole("driver")}>
+                    <img className="role-image" src={driverLogo} alt="" />
+                  </Link>
+                  <h2 className="role-selection">Driver</h2>
+                    <Link to="/passenger/requests" onClick={changeRole("passenger")}>
+                      <img className="role-image" src={passengerLogo} alt="" />
+                    </Link>
+                    <h2 className="role-selection">Passenger</h2>
+                </div>
+              )}
+            </RoleContext.Consumer>
+          </div>
+        );
     return <div>{content}</div>;
   }
 }
-export default withStyles(styles) (RoleSelection);
+export default withStyles(styles)(RoleSelection);
